@@ -1,0 +1,17 @@
+[1] "my_makevector_x  <- makeVector(1:5)"
+[1] "my_makevector_x$get()"
+[1] 1 2 3 4 5
+[1] "my_makevector_x$getmean()"
+NULL
+[1] "my_makevector_x$setmean(4)"
+[1] "my_makevector_x$getmean()"
+[1] 4
+[1] "cachemean(my_makevector_x)"
+[1] 4
+[1] "my_makevector_x$set(1:4)"
+[1] "my_makevector_x$get()"
+[1] 1 2 3 4
+[1] "cachemean(my_makevector_x)"
+[1] 2.5
+[1] "my_makevector_x$getmean()"
+[1] 2.5

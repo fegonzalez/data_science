@@ -1,2 +1,10 @@
 *~
 *.*~
+*.zip
+*.tar.gz
+Johns_Hopkins_courses/jh_all_courses
+Johns_Hopkins_courses/repos
+!Johns_Hopkins_courses/2.R_Programming/exercises/3/rprog_data_ProgAssignment3-data.zip
+Johns_Hopkins_courses/2.R_Programming/exercises/3/ex3.html
+Johns_Hopkins_courses/2.R_Programming/exercises/3/ex3_files
+

@@ -1,0 +1,88 @@
+install.packages("slidify")
+install.packages(c("slidify", "ggplot2", "devtools"))
+getwd()
+dir()
+dir
+pwd
+ls
+dir()
+ls()
+ls -l ()
+ls()
+x = 1
+x
+x <- 1
+<
+x
+print(x)
+msg = "hello"
+msg
+print(msg)
+x
+x = (1, 2, 3)
+x = `1, 2, 3]
+;
+3
+[]
+^ss
+a=[2, 3]
+x <- 1:20
+print(x)
+x
+print(x)
+z = 1:3
+z
+z = 1,2,3,4,5
+z = 1:10:2
+z = 1:10:100
+z
+vector()
+v = vector()
+v
+v.1 = 6
+print(v)
+v
+v = vector(4)
+a = 7
+a
+a = 7.5
+a
+a = 7.0
+a
+b = 5.3
+a*b
+c = 5L
+c
+a*c
+b*c
+inf
+Inf
+i=Inf
+i
+1/2
+1/0
+i*3
+i*i
+3/i
+1exp2
+1 e 2
+1e2
+1e(-2)
+1eInf
+NaN
+a
+a.attributes()
+a
+i
+i.attributes
+msg
+msg.attributes
+find.package(package=devtools)
+find.package(package="devtools")
+find.package(package="slidify")
+install_github("slidify", "ramnathv")
+library(devtools)
+install_github("slidify", "ramnathv")
+library(slidify)
+pwd
+getwd()
