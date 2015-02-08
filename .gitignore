@@ -2,9 +2,22 @@
 *.*~
 *.zip
 *.tar.gz
+link2data
+link2doc
+*.mp4
+*.srt
+
+# courses
 Johns_Hopkins_courses/jh_all_courses
 Johns_Hopkins_courses/repos
+
+# course: R_Programming
 !Johns_Hopkins_courses/2.R_Programming/exercises/3/rprog_data_ProgAssignment3-data.zip
 Johns_Hopkins_courses/2.R_Programming/exercises/3/ex3.html
 Johns_Hopkins_courses/2.R_Programming/exercises/3/ex3_files
 
+# course: Getting_Data
+Johns_Hopkins_courses/3.Getting_Data
+
+# course: Exploratory_Analysis
+Johns_Hopkins_courses/4_Exploratory_Analysis
