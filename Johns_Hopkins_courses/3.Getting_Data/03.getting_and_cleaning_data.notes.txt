@@ -1,0 +1,932 @@
+
+############################################################################
+#
+# Notes.-
+#
+1) The goal of this course
+2) Definition of data
+3) The four things you should have
+4) Download data from the Internet
+5) Reading local (flat) files
+6) Reading local (excel) files
+7) Reading XML
+8) Reading JSON (Javascript Object Notation)
+9) data.table   #{data.table package}
+10) Connecting and listing databases RMySQL
+11) HDF5 (hierarchical data format)
+12) Reading data from the web
+13) Reading data from APIs
+14) Reading from other sources
+15) Read Fixed Width Format Files
+16) Subsetting and sorting
+17) Summarizing Data
+18) Creating new variables
+19) Reshaping data
+20) Merging data Description (SQL join)
+
+############################################################################
+
+
+1) The goal of this course
+
+Raw data -> Processing script -> tidy data -> d. analysis -> d. communication
+
+
+2) Definition of data
+
+"Data are values of qualitative or quantitative variables, belonging to a set
+of items (population)"
+
+
+3) The four things you should have
+
+   3.1) Raw data.
+
+   3.2) Tidy data set
+
+    a) There should be one table for each "kind" of variable
+
+    b) If you have multiple tables, they should include a column in the table
+      that allows them to be linked
+
+    c) Include a row at the top of each file with variable names.
+
+    d) In general data should be saved in one file per table.
+
+    e) Each variable in a tidy dataset has been transformed to be interpretable.
+
+    f) Numeric values in tidy data can not represent categories.
+
+    g) Tidy data has no missing values.
+
+    h) Tidy data has one variable per column.
+
+   3.3) Code Book: describing each variable and its values in the tidy dataset.
+
+    a) Information about the variables (including units!) in the data set NOT
+       CONTAINED in the tidy data.
+
+    b) Information about the summary choices you made.
+
+    c) Information about the experimental study design you used.
+
+    c) A common format for this document is a Word/text file.
+
+    d) Section "Study design": thorough description of how you collected the
+    data.
+
+    e) Section "Code book": describes each variable and its units.
+
+
+   3.4) Instruction List: explicit and exact recipe to go from 1 -> 2,3.
+
+    (Ideally) a computer script (R, python, ...)
+
+    a) The input for the script is the raw data
+    b) The output is the processed, tidy data
+    c) There are no parameters to the script
+
+    (If not possible) a detailed step by step list: step 1) do ...
+
+
+
+##--------------------------------------------------------------------------
+## 4) Download data from the Internet
+##--------------------------------------------------------------------------
+
+# Use function:
+download.file() # Important parameters: url, destfile, method
+# Note.- Be sure to record when you downloaded: date_downloaded <- date()
+
+# Example.-
+url_value <- "https://data.baltimorecity.gov/api/views/dz54-2aru/rows.csv?accessType=DOWNLOAD";
+destfile_value <- "./cameras.csv";
+method_value <- "wget"; #"curl";
+download.file(url = url_value, destfile = destfile_value, method = method_value)
+
+
+
+##--------------------------------------------------------------------------
+## 5) Reading local (flat) files
+##--------------------------------------------------------------------------
+
+# Use function:
+read.table()  # read.table("data.csv", sep = ",", header = TRUE)
+read.csv()    # read.csv("data.csv")
+
+Important parameters
+
+* quote - you can tell R whether there are any quoted values quote="" means no
+  quotes.
+# The biggest trouble with reading flat files are quotation marks ` or " placed
+# in data values, setting quote="" often resolves these.
+
+* na.strings - set the character that represents a missing value.
+
+* nrows - how many rows to read of the file (e.g. nrows=10 reads 10 lines).
+
+* skip - number of lines to skip before starting to read
+
+
+
+##--------------------------------------------------------------------------
+## 6) Reading local (excel) files
+##--------------------------------------------------------------------------
+
+# Use function:
+read.xlsx()  {xlsx package}
+read.xlsx2() {xlsx package} # faster but can be unstable for reading for
+			    # reading subsets of rows
+write.xlsx() {xlsx package}
+# i.e.
+# library(xlsx)
+# cameraDataSubset <- read.xlsx("cameras.xlsx", sheetIndex=1,
+#                               colIndex=2:3, rowIndex= 1:4)
+
+The XLConnect package has more options for writing and manipulating Excel files
+The XLConnect vignette is a good place to start for that package
+
+
+
+##--------------------------------------------------------------------------
+## 7) Reading XML
+##--------------------------------------------------------------------------
+
+7.1) Read the file into R
+
+# Use function:
+xmlTreeParse()  {XML package} # generates an XML tree
+xmlRoot
+# i.e.
+# library(XML)
+# fileUrl <- "http://www.w3schools.com/xml/simple.xml"
+# doc <- xmlTreeParse(fileUrl, useInternalNodes=TRUE)
+# rootNode <- xmlRoot(doc)
+# xmlName(rootNode)
+
+7.2) DIRECTLY access parts of the XML document
+
+rootNode[[1]]
+rootNode[[1]][[1]]
+# ... and so on
+
+7.3) PROGRAMATICALLY extract parts of the file
+
+xmlSApply()
+# Applies a function to each of the children of an XMLNode (wrapper of lapply)
+# i.e.
+xmlSApply(rootNode, xmlName)
+xmlSApply(rootNode, xmlValue)
+
+7.4) XPath: is a query language for selecting nodes from an XML document
+# http://en.wikipedia.org/wiki/XPath
+# http://www.stat.berkeley.edu/~statcur/Workshop2/Presentations/XML.pdf
+
+# i.e.
+xpathApply()
+xpathSApply(rootNode, "//price_label", xmlValue)
+
+
+
+##--------------------------------------------------------------------------
+## 8) Reading JSON (Javascript Object Notation)
+##--------------------------------------------------------------------------
+
+ Lightweight data storage
+ Common format for data from APIs.
+ Similar structure to XML but different syntax/format
+ Data stored as: Numbers, Strings, Boolean, Array, Object
+
+ http://en.wikipedia.org/wiki/JSON
+ http://www.r-bloggers.com/new-package-jsonlite-a-smarter-json-encoderdecoder/
+
+8.1) Reading data from JSON {jsonlite package}
+
+fromJSON()  {jsonlite package} # R <- JSON string, URL or file
+# i.e.
+library(jsonlite)
+jsonData <- fromJSON("https://api.github.com/users/jtleek/repos")
+names(jsonData)
+# [1] "id"                "name"              "full_name"         "owner"
+names(jsonData$owner) # Nested objects in JSON
+
+8.2) Writing data frames to JSON {jsonlite package}
+
+toJSON()  {jsonlite package} # JSON <- R
+# i.e.
+myjson <- toJSON(iris, pretty=TRUE)
+cat(myjson)
+
+
+
+##--------------------------------------------------------------------------
+## 9) data.table   #{data.table package}
+##--------------------------------------------------------------------------
+
+Inherets from data.frame
+Much, much faster at subsetting, group, updating, and ordered joins
+
+tables() #show all tables in memory
+
+# example(data.table) #
+
+DT = data.table(x=rep(c("a","b","c"),each=3), y=c(1,3,6), v=1:9)
+# > DT
+#    x y v
+# 1: a 1 1
+# 2: a 3 2
+# 3: a 6 3
+# 4: b 1 4
+# 5: b 3 5
+# 6: b 6 6
+# 7: c 1 7
+# 8: c 3 8
+# 9: c 6 9
+
+9.1) Copy of tablesclass
+#\warning: use SET methods: does not copy, but reference
+DT_bis <- copy(DT)       # safe (set method) copy
+DT_bis = DT              # does not copy, but reference
+
+9.2) keys                # sorts a ‘data.table’ and marks it as sorted.
+setkey(DT,x)             # WARNING: colname not quoted -> x instead of "x"
+setkeyv(DT,c("x"))
+
+9.3) sub-setting
+
+DT["a"]       # binary search (once ordered) # FASTER (for large tables)
+DT[x=="a"]    # vector scan                  # SLOW (for large tables)
+#    x y v
+# 1: a 1 1
+# 2: a 3 2
+# 3: a 6 3
+
+DT[,sum(v),by=key(DT)]     # keyd by
+
+9.4) joins
+
+merge()
+
+X = data.table(c("b","c"),foo=c(4,2))
+# > X
+#    V1 foo
+# 1:  b   4
+# 2:  c   2
+
+> DT[X]           # join
+#    x y v foo
+# 1: b 1 4   4
+# 2: b 3 5   4
+# 3: b 6 6   4
+# 4: c 1 7   2
+# 5: c 3 8   2
+# 6: c 6 9   2
+
+> setkey(DT,x,y)             # 2-column key
+> DT[J("a",3:6)]             # join 2 keys, 4 rows (2 missing)
+#    x y  v
+# 1: a 3  2
+# 2: a 4 NA
+# 3: a 5 NA
+# 4: a 6  3
+
+#\warning  ".SD": working with subsets of a data.table
+> DT[,.SD[2],by=x]           # 2nd row of each group
+#    x y v
+# 1: a 3 2
+# 2: b 3 5
+# 3: c 3 8
+
+> DT[DT$x=="a"]
+#    x y  v v2  m
+# 1: a 1 42 NA 42
+# 2: a 3 42 NA 42
+# 3: a 6 42 NA 42
+
+> DT[,sum(v),x][V1<20]       # compound query
+#    x V1
+# 1: a  6
+# 2: b 15
+
+> DT[!J("a")]                # not join
+
+> DT[x!="b" | y!=3]          # multiple vector scanning approach, slow
+> DT[!J("b",3)]              # same result but much faster
+
+
+9.5) Add & remove elements to a table
+
+> DT[, z:=42L]               # add new column by reference
+> print(DT[,z:=42L])
+#    x y v  z
+# 1: a 1 1 42
+> DT[,z:=NULL]               # remove column by reference
+> DT[,m:=mean(v),by=x][]     # add new column by reference by group
+
+
+9.6) Special vars. '.N': number of elements of a factor
+
+# i.e. questions How many properties are worth $1,000,000 or more?
+
+> DT[, .N, by=x]
+#    x N
+# 1: a 3
+# 2: b 3
+# 3: c 3
+
+9.7) Fast reading (fread):
+require(data.table);
+fread("data.csv") #Similar to ‘read.table’ but FASTER and more convenient
+## Time example.-
+##
+## "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06pid.csv"
+##
+## read.csv:
+##  2.666 0.026 2.691 0 0
+## read.table:
+##  2.544 0.032 2.575 0 0
+## fread:
+##  0.107 0.007 0.115 0 0
+
+
+
+##--------------------------------------------------------------------------
+## 10) Connecting and listing databases RMySQL
+##--------------------------------------------------------------------------
+
+10.1) {RMySQL package}
+
+# Use functions:
+
+dbConnect()     # class MySQLConnection
+dbDisconnect()
+
+dbListTables()  # tables of a DB
+dbListFields()  # fields of a table
+
+dbReadTable()   # database table -> data frame
+dbWriteTable()  # data frame -> database table
+
+dbGetQuery()    # Send query, retrieve results and then clear result set
+                # (data.frame)
+
+## Select a specific subset
+dbSendQuery()   # only submits and synchronously executes the SQL statement to
+dbFetch()       # the database engine.  It does _not_ extracts any records -
+dbClearResult() # for that you need to use the function ‘dbFetch’, and then you
+                # must call ‘dbClearResult’ when you finish fetching the
+                # records you need.
+
+## Example - UCSC database
+##
+library(RMySQL)
+## 1) connect
+## 1.1) to a list of DBs
+ucscDb <- dbConnect(MySQL(),user="genome", host="genome-mysql.cse.ucsc.edu")
+## 1.2) to a concrete DB
+hg19 <- dbConnect(MySQL(), user="genome", db="hg19",
+                  host="genome-mysql.cse.ucsc.edu")
+
+## 2) use
+result <- dbGetQuery(ucscDb,"show databases;");
+allTables <- dbListTables(hg19)
+dbListFields(conn=hg19, name="affyU133Plus2")
+affyData <- dbReadTable(hg19, "affyU133Plus2")
+## dbGetQuery()
+dbGetQuery(hg19, "select count(*) from affyU133Plus2")
+
+## dbSendQuery()  # Select a specific subset of data
+query <- dbSendQuery(hg19,"select * from affyU133Plus2 where misMatches between 1 and 3")
+affyMis <- fetch(query);
+quantile(affyMis$misMatches)
+affyMisSmall <- fetch(query,n=10);
+dbClearResult(query);
+
+## 3) disconnect
+dbDisconnect(ucscDb);
+
+
+10.2) RMySQL {sqldf package}
+
+dbSendQuery()
+sqldf("select * from acs")
+
+
+
+##--------------------------------------------------------------------------
+## 11) HDF5 (hierarchical data format)
+##--------------------------------------------------------------------------
+
+* Hierarchical Data Format (HDF) is a SET OF FILE formats designed to store and
+organize large amounts of numerical data.
+
+* Hierarchical data format, includes only two major types of object:
+
+  + datasets multidimensional array of data elements with metadata
+      - Have a header with name, datatype, dataspace, and storage layout
+      - Have a data array with the data
+
+  + groups containing zero or more data sets and metadata
+      - Have a group header with group name and list of attributes
+      - Have a group symbol table with a list of objects in group
+
+11.1) rhdf5 package
+
+* Can be used to interface with hdf5 data sets
+
+* hdf5 can be used to optimize reading/writing from disc in R
+
+* Used for storing large data sets & Big Data.
+
+* Install HDF5 packages (gnomics & big data)
+
+  download.file("http://bioconductor.org/biocLite.R", "biocLite.R", "wget")
+  #WARNING: at this point, read & edit the file to select CRAN repo
+  source("biocLite.R")
+  biocLite("rhdf5") #downloading rhdf5 dependencies
+  #The downloaded binary packages are in: "/var/folders/rp/06ylvv0n65x1v_jrc5m0khrh0000gn/T//RtmpLpHlIf/downloaded_packages"
+
+# Use functions:
+h5createFile()
+h5createGroup() ## Create groups
+h5write()       ## Write a data set / write data to group / Modify data
+h5read()        ## Reading data
+h5ls(()         ## Observers
+
+## Example - UCSC database
+##
+library(rhdf5)
+## Create groups
+h5createFile("example.h5")
+created = h5createGroup("example.h5","foo")
+created = h5createGroup("example.h5","baa")
+created = h5createGroup("example.h5","foo/foobaa")
+h5ls("example.h5")
+##   group   name     otype dclass dim
+## 0     /    baa H5I_GROUP
+## 1     /    foo H5I_GROUP
+## 2  /foo foobaa H5I_GROUP
+##
+##
+## Write data to groups
+A = matrix(1:10,nr=5,nc=2);
+h5write("example.h5", obj = A, name = "foo/A");
+B = array(seq(0.1,2.0,by=0.1),dim=c(5,2,2));
+attr(B, "scale") <- "liter"
+h5write(B, "example.h5","foo/foobaa/B")
+h5ls("example.h5")
+##         group   name       otype  dclass       dim
+## 0           /    baa   H5I_GROUP
+## 1           /    foo   H5I_GROUP
+## 2        /foo      A H5I_DATASET INTEGER     5 x 2
+## 3        /foo foobaa   H5I_GROUP
+## 4 /foo/foobaa      B H5I_DATASET   FLOAT 5 x 2 x 2
+##
+##
+## Write a data set
+df = data.frame(1L:5L,seq(0,1,length.out=5), c("ab","cde","fghi","a","s"),
+         stringsAsFactors=FALSE)
+h5write(df, "example.h5","df")
+h5ls("example.h5")
+##         group   name       otype   dclass       dim
+## 0           /    baa   H5I_GROUP
+## 1           /     df H5I_DATASET COMPOUND         5
+## 2           /    foo   H5I_GROUP
+## ...
+##
+##
+## Reading data
+h5read("example.h5", "df")
+h5read("example.h5", "foo/foobaa/B")
+##
+##
+## Modify data (Writing and reading chunks)
+h5write(c(12,13,14),"example.h5","foo/A",index=list(1:3,1))
+h5read("example.h5","foo/A")
+
+
+
+##--------------------------------------------------------------------------
+## 12) Reading data from the web
+##--------------------------------------------------------------------------
+
+* Waebscraping: Programatically extracting data from the HTML code of websites.
+
+* Getting data off webpages - readLines()
+## con = url("http://scholar.google.com/citations?user=HI-I6C0AAAAJ&hl=en")
+## htmlCode = readLines(con)
+## close(con)
+
+* Parsing with XML (xpathSApply)
+## library(XML)
+## url <- "http://scholar.google.com/citations?user=HI-I6C0AAAAJ&hl=en"
+## html <- htmlTreeParse(url, useInternalNodes=T)
+## xpathSApply(html, "//title", xmlValue)
+
+* 'httr' package
+
+ + httr allows GET, POST, PUT, DELETE requests if you are authorized
+ + httr works well with Facebook, Google, Twitter, Githb, etc.
+ + Parsing HTML: GET from the 'httr' package
+## library(httr);
+## html2 = GET(url)
+## content2 = content(html2,as="text")
+## parsedHtml = htmlParse(content2,asText=TRUE)
+## xpathSApply(parsedHtml, "//title", xmlValue)
+
+ + Accessing websites with passwords
+     pg1 <- GET("http://httpbin.org/basic-auth/user/passwd")
+
+ + Using handles
+     google = handle("http://google.com")
+     pg1 <- GET(handle=google,path="/")
+     pg2 <- GET(handle=google,path="search")
+
+
+
+##--------------------------------------------------------------------------
+## 13) Reading data from APIs
+##--------------------------------------------------------------------------
+
+* oauth2 protocol      # require(httpuv);
+
+  Example.- quizz2.R::q1()
+
+a) Accessing an application (i.e. Twitter) from R
+
+myapp <- oauth_app("twitter",
+                   key="yourConsumerKeyHere",secret="yourConsumerSecretHere")
+sig <- sign_oauth1.0(myapp,
+                     token = "yourTokenHere",
+                     token_secret = "yourTokenSecretHere")
+homeTL <- GET("https://api.twitter.com/1.1/statuses/home_timeline.json", sig)
+stop_for_status(homeTL);
+
+b)) Converting the json object
+
+json1 = content(homeTL)
+json2 = jsonlite::fromJSON(toJSON(json1))
+json2[1,1:4]
+
+
+
+##--------------------------------------------------------------------------
+## 14) Reading from other sources
+##--------------------------------------------------------------------------
+
+
+14.1) Interacting more directly with files
+
+    file - open a connection to a text file
+    url - open a connection to a url
+    gzfile - open a connection to a .gz file
+    bzfile - open a connection to a .bz2 file
+
+14.2) foreign package
+
+    Loads data from Minitab, S, SAS, SPSS, Stata,Systat
+    Basic functions read.foo
+        read.arff (Weka)
+        read.dta (Stata)
+        read.mtp (Minitab)
+        read.octave (Octave)
+        read.spss (SPSS)
+        read.xport (SAS)
+
+14.3) Reading images
+
+    jpeg - http://cran.r-project.org/web/packages/jpeg/index.html
+    readbitmap - http://cran.r-project.org/web/packages/readbitmap/index.html
+    png - http://cran.r-project.org/web/packages/png/index.html
+    EBImage (Bioconductor) - http://www.bioconductor.org/packages/2.13/bioc/html/EBImage.html
+
+14.4) Reading GIS data
+
+    rgdal - http://cran.r-project.org/web/packages/rgdal/index.html
+    rgeos - http://cran.r-project.org/web/packages/rgeos/index.html
+    raster - http://cran.r-project.org/web/packages/raster/index.html
+
+14.5) Reading music data
+
+    tuneR - http://cran.r-project.org/web/packages/tuneR/
+    seewave - http://rug.mnhn.fr/seewave/
+
+
+
+##--------------------------------------------------------------------------
+## 15) Read Fixed Width Format Files
+##--------------------------------------------------------------------------
+
+read.fwf {utils}
+
+Read a table of fixed width formatted data into a data.frame.
+
+read.fwf(file, widths, header = FALSE, sep = "\t",
+         skip = 0, row.names, col.names, n = -1,
+         buffersize = 2000, fileEncoding = "", ...)
+
+
+
+##--------------------------------------------------------------------------
+## 16) Subsetting and sorting
+##--------------------------------------------------------------------------
+
+16.1) Subsetting
+set.seed(13435)
+X <- data.frame("var1"=sample(1:5),"var2"=sample(6:10),"var3"=sample(11:15))
+X <- X[sample(1:5),];
+#   var1 var2 var3
+# 1    2   NA   15
+# 4    1   10   11
+# 2    3   NA   12
+# 3    5    6   14
+# 5    4    9   13
+X[, 1]                            # by number
+X[, "var1"]                       # by name
+X[(X$var1 <= 3 & X$var3 > 11), ]  # logical ands & ors
+X[which(X$var2 > 8),]             # Dealing with missing values
+
+
+16.2) Sorting (sort & order)
+sort(X$var2,decreasing=TRUE,na.last=T)
+## [1] 10  9  6 NA NA
+X[order(X$var1,X$var3),]
+
+
+16.3) Ordering with plyr {package plyr}   (arrange)
+# NOTE: plyr functions do NOT preserve row.names
+arrange(X,var1)
+arrange(X,desc(var1))
+
+16.4) Adding rows and columns
+X$var4 <- rnorm(5)
+Y <- cbind(X,rnorm(5))
+
+
+
+##--------------------------------------------------------------------------
+## 17) Summarizing Data
+##--------------------------------------------------------------------------
+
+17.1) See data content (data-value info)
+
+head(), tail(), summary(), quantile()
+
+
+17.2) See data structure (data-type info)
+
+str(), object.size()
+
+
+17.3) Handle data
+
+table()
+data()  ## Loads specified data sets, or list the available data sets.
+
+17.3.1) Cross Tabulation (xtabs)
+
+xtabs() to create contingency tables to study:
+        a) The distribution of one factor variable:
+        b) The relationship between two factor variables.
+        c) The relationship between one factor and others.
+
+Example.-
+data(UCBAdmissions)
+DF <- as.data.frame(UCBAdmissions)
+summary(DF)
+##       Admit       Gender   Dept       Freq
+##  Admitted:12   Male  :12   A:4   Min.   :  8.0
+##  Rejected:12   Female:12   B:4   1st Qu.: 80.0
+##                            C:4   Median :170.0
+##                            D:4   Mean   :188.6
+##                            E:4   3rd Qu.:302.5
+##                            F:4   Max.   :512.0
+
+## a)
+xtabs(~ Gender , data = DF)
+## Gender
+##   Male Female
+##     12     12
+
+## b)
+xtabs(~ Gender + Admit , data = DF)
+##         Admit
+## Gender   Admitted Rejected
+##   Male          6        6
+##   Female        6        6
+
+c1) One factor vs ALL the others (~.)
+xtabs(Freq ~. , data = DF)
+## , , Dept = A
+##           Gender
+## Admit      Male Female
+##   Admitted  512     89
+##   Rejected  313     19
+## ...
+## , , Dept = F
+##           Gender
+## Admit      Male Female
+##   Admitted   22     24
+##   Rejected  351    317
+
+c2) One factor vs SOME of the others
+xtabs(Freq ~ Gender + Admit , data = DF)
+##         Admit
+## Gender   Admitted Rejected
+##   Male       1198     1493
+##   Female      557     1278
+
+
+
+17.3.2) Flat contingency tables (ftable)
+
+warpbreaks$replicale <- rep(1:9, length=54)
+xt <- xtabs(breaks ~., data=warpbreaks)
+ftable(xt)
+##              replicale  1  2  3  4  5  6  7  8  9
+## wool tension
+## A    L                 26 30 54 25 70 52 51 26 67
+##      M                 18 21 29 17 12 18 35 30 36
+##      H                 36 21 24 18 10 43 28 15 26
+## B    L                 27 14 29 19 29 31 41 20 44
+##      M                 42 26 19 16 39 28 21 39 29
+##      H                 20 21 24 17 13 15 15 16 28
+
+
+
+##--------------------------------------------------------------------------
+## 18) Creating new variables
+##--------------------------------------------------------------------------
+
+* Auxiliar functions
+
+ifelse()
+
+cut()
+cut2() {library(Hmisc)}
+
+mutate()        # considerably faster than transform for large data frames.
+transform()
+
+
+18.1) Creating binary variables
+
+mydata$zipWrong <- ifelse(mydata$zipCode<0, TRUE, FALSE)
+table(mydata$zipWrong, mydata$zipCode<0)
+##       FALSE TRUE
+## FALSE  1326    0
+## TRUE      0    1
+
+
+18.2) Creating categorical variables
+
+mydata$zipGroups <- cut(mydata$zipCode, breaks=quantile(mydata$zipCode))
+table(mydata$zipGroups)
+## (-2.123e+04,2.12e+04]  (2.12e+04,2.122e+04] (2.122e+04,2.123e+04]
+##                   337                   375                   282  # levels
+
+mydata$zipGroups = cut2(mydata$zipCode,g=4)
+table(mydata$zipGroups)
+## [-21226,21205) [ 21205,21220) [ 21220,21227) [ 21227,21287]
+##            338            375            300            314
+
+
+18.3) Creating factor variables (with factor levels)
+
+factor()
+relevel()  #Reorder Levels of Factor
+
+mydata$zcf <- factor(mydata$zipCode)
+## 32 Levels: -21226 21201 21202 21205 21206 21207 21208 21209 21210 ... 21287
+
+
+
+##--------------------------------------------------------------------------
+## 19) Reshaping data
+##--------------------------------------------------------------------------
+
+* Goal: tidy data
+
+  1. Each variable forms a column
+  2. Each observation forms a row
+  3. Each table/file stores data about one kind of observation
+     (e.g. people/hospitals).
+
+library(reshape2)
+reshape()
+melt()
+dcast()   # cast(data, formula, function)
+
+
+a) "melt" data so that each row is a unique id-variable
+combination.
+
+b) Then you "cast" the melted data into any shape you would like.
+
+## e.g. "http://www.statmethods.net/management/reshape.html"
+mydata <- data.frame(c(1,1,2,2), c(1,2,1,2), c(5,3,6,2), c(6,5,1,4))
+colnames(mydata) <- c("id", "time", "x1", "x2")
+##   id time x1 x2
+## 1  1    1  5  6
+## 2  1    2  3  5
+## 3  2    1  6  1
+## 4  2    2  2  4
+mdata <- melt(mydata, id=c("id","time"), measure.vars=c("x2", "x1"))
+##   id time variable value
+## 1  1    1       x2     6
+## 2  1    2       x2     5
+## 3  2    1       x2     1
+## 4  2    2       x2     4
+## 5  1    1       x1     5
+## 6  1    2       x1     3
+## 7  2    1       x1     6
+## 8  2    2       x1     2
+subjmeans <- dcast(mdata, id~variable, mean)
+##   id  x2 x1
+## 1  1 5.5  4
+## 2  2 2.5  4
+
+c) See "Split-Apply-Combine methodology" at REF.[1]
+
+
+##--------------------------------------------------------------------------
+## 20) Merging data Description (SQL join)
+##--------------------------------------------------------------------------
+
+* Join, like merge, is designed for the types of problems where you would use a
+sql join.
+
+
+merge()      # merges data frames
+             # Important parameters: x,y,by,by.x,by.y,all
+intersect()
+
+join()       # {plyr}: faster, but less full featured - defaults to left join
+             # join(x, y, by = NULL, type = "left", match = "all")
+join_all()   # Recursively join a list of data frames.
+
+
+
+
+############################################################################
+#
+# Glossary:
+#
+############################################################################
+
++ tidy: ordenado
+
++ thorough: minucioso
+
++ chunk: pedazo
+
+
+
+############################################################################
+#
+# References
+#
+############################################################################
+
+[1] My basic R notes  "r.howto"
+
+
+[10] Connecting and listing databases
+
+[10.1]RMySQL vignette - http://cran.r-project.org/web/packages/RMySQL/RMySQL.pdf
+
+[10.2] List of commands - http://www.pantz.org/software/mysql/mysqlcommands.html
+
+[10.3] R commands - http://www.r-bloggers.com/mysql-and-r/
+
+
+[11] HDF5
+
+[11.1] http://www.hdfgroup.org/
+
+[11.2] Tutorial - http://www.bioconductor.org/packages/release/bioc/vignettes/rhdf5/inst/doc/rhdf5.
+
+[11.3] WIKIPEDIA - http://en.wikipedia.org/wiki/Hierarchical_Data_Format
+
+
+[12] Reading data from the web
+
+[12.1] GET (httr package) - http://cran.r-project.org/web/packages/httr/httr.pdf
+
+
+[13] Reading data from APIs
+[13.1] oauth protocol: http://en.wikipedia.org/wiki/OAuth
+[13.2] oauth RFC6749:  https://tools.ietf.org/html/rfc6749
+
+[18.1] A tutorial from the developer of plyr - http://plyr.had.co.nz/09-user/
+[18.2] Andrew Jaffes R notes - http://www.biostat.jhsph.edu/~ajaffe/lec_winterR/Lecture%202.pdf
+[18.3] Categorical and factor variables - http://www.stat.berkeley.edu/classes/s133/factors.html
+
+[19.1]Quick-R ReshapingData - http://www.statmethods.net/management/reshape.html
+
+
+[20] More on merging data
+[20.1] The quick R data merging page - http://www.statmethods.net/management/merging.html
+[20.2] plyr information - http://plyr.had.co.nz/
+[20.3] Types of joins - http://en.wikipedia.org/wiki/Join_(SQL))
+

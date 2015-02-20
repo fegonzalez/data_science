@@ -1,0 +1,1 @@
+define({Cancel:"Cancelar",Insert:"Insertar","Pick File":"Seleccionar el archivo","What size would you like to embed it at?":"¿En qué tamaño te gustaría embeberlo?"});

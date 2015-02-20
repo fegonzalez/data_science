@@ -6,6 +6,10 @@ link2data
 link2doc
 *.mp4
 *.srt
+#R files
+.Rhistory
+.RData
+
 
 # courses
 Johns_Hopkins_courses/jh_all_courses
@@ -17,9 +21,17 @@ Johns_Hopkins_courses/2.R_Programming/exercises/3/ex3_files
 !Johns_Hopkins_courses/2.R_Programming/exercises/3/rprog_data_ProgAssignment3-data.zip
 
 # course: Getting_Data
-Johns_Hopkins_courses/3.Getting_Data/
-!Johns_Hopkins_courses/3.Getting_Data/03.getting_and_cleaning_data.notes.txt
-!Johns_Hopkins_courses/3.Getting_Data/quizz
+
+## ## EXCLUSIONS NOT WOTKING
+# Johns_Hopkins_courses/3.Getting_Data/
+# !Johns_Hopkins_courses/3.Getting_Data/project/*.R
+# !Johns_Hopkins_courses/3.Getting_Data/03.getting_and_cleaning_data.notes.txt
+# !Johns_Hopkins_courses/3.Getting_Data/quizz
+
+Johns_Hopkins_courses/3.Getting_Data/link2*
+Johns_Hopkins_courses/3.Getting_Data/videos
+Johns_Hopkins_courses/3.Getting_Data/lectures_test/data
+Johns_Hopkins_courses/3.Getting_Data/project/data
 
 # course: Exploratory_Analysis
 Johns_Hopkins_courses/4_Exploratory_Analysis/
