@@ -187,11 +187,21 @@ require(data.table);
 ##                subject_30    avg(value)  ...
 ##
 ################################################################################
+
 solve <- function()
 {
-    the_memdata <- struct_memdata();
-    get_source_data();
-    step1(the_memdata);
+    DEBUG_MODE <- FALSE;
+    if(DEBUG_MODE){
+        print(system.time({
+            the_memdata <- struct_memdata();
+            get_source_data();
+            step1(the_memdata);
+    }))}
+    else{
+        the_memdata <- struct_memdata();
+        get_source_data();
+        step1(the_memdata);
+    }
 
     ## tidydata <- source2tidy();
 }
@@ -235,7 +245,6 @@ solve <- function()
 step1<- function(my_memdata)
 {
     ## input validation
-    stopifnot(!is.struct_memdata(my_memdata));
     source_dir <- "./data/UCI HAR Dataset/";
     source_subjecttrain <- paste(source_dir, "train/subject_train.txt", sep="");
     source_xtrain <- paste(source_dir, "train/X_train.txt", sep="");
@@ -318,6 +327,7 @@ step1<- function(my_memdata)
     ## -------------------------------------------------------------
 
     if(DEBUG_MODE){
+        print("step1(): Reading data form files");
         print(system.time(data_subjecttrain <- fread(source_subjecttrain)));
         print(system.time(data_ytrain <- fread(source_ytrain)));
         print(system.time(data_subjecttest <- fread(source_subjecttest)));
@@ -347,17 +357,16 @@ step1<- function(my_memdata)
     my_memdata$set_data_features(data_features);
     my_memdata$set_data_labels(data_labels);
 
-    print(system.time(
-    {
-    stopifnot(identical(my_memdata$get_data_subjecttrain(), data_subjecttrain));
+    stopifnot(identical(my_memdata$get_data_subjecttrain(),
+                        data_subjecttrain));
     stopifnot(identical(my_memdata$get_data_ytrain(), data_ytrain));
     stopifnot(identical(my_memdata$get_data_xtrain(), data_xtrain));
-    stopifnot(identical(my_memdata$get_data_subjecttest(), data_subjecttest));
+    stopifnot(identical(my_memdata$get_data_subjecttest(),
+                        data_subjecttest));
     stopifnot(identical(my_memdata$get_data_ytest(), data_ytest));
     stopifnot(identical(my_memdata$get_data_xtest(), data_xtest));
     stopifnot(identical(my_memdata$get_data_features(), data_features));
     stopifnot(identical(my_memdata$get_data_labels(), data_labels));
-    }));
 }
 
 ##------------------------------------------------------------------------------
@@ -411,6 +420,7 @@ get_source_data<- function()
 
 struct_memdata<- function()
 {
+
   ## stopifnot(is.matrix(x));
 
     data_subjecttrain <- data.table();
@@ -499,7 +509,6 @@ struct_memdata<- function()
          set_data_xtest = set_data_xtest,
          set_data_features = set_data_features,
          set_data_labels = set_data_labels);
-
 }
 
 
