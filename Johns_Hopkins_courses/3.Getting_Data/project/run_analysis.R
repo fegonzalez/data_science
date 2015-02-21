@@ -248,62 +248,68 @@ step1<- function()
     stopifnot(file.exists(source_activity_labels));
 
     ## loading source files into memory data
-    ## \warning Some files must be read with "read.table" due to a bug in fread
-    ## when there are blank spaces before the first column of data
     require(data.table);
     NTRAIN_OBSERVATIONS <- 7352;
     NTEST_OBSERVATIONS <- 2947;
     DEBUG_MODE <- TRUE;
 
+    ## \warning Some files must be read with "read.table" due to a bug in fread
+    ## when there are blank spaces before the first column of data. Then the
+    ## rading time is too long:
+    ## user  system elapsed
+    ## 0.471   0.013   0.485   ## USING fread()
+    ## 25.952   0.098  26.050  ## USING read.table()
+    ##
+    ## To solve this issue during the development phase, intermediate files are
+    ## created to allow the use of fread() on them instead of using the
+    ## original source files.
+
+    ## \warning The FORMAT of the data is not identical in both files due to
+    ## storage format of the values ( 2.5717778e-001 vs 0.25717778) but the
+    ## values of both files has been checked to be identical:
+    ## identical(summary(data_fread), summary(data_readtable))
+    dev_source_xtrain <- "./data/development_X_train.txt";
+    dev_source_xtest <- "./data/development_X_test.txt";
+
     ## -------------------------------------------------------------
     ##Using internal functions to allow quick change of strategy
     ## -------------------------------------------------------------
-    ## WITH nrows
-    ## user  system elapsed
-    ## 9.608   0.030   9.637
-    ##  user  system elapsed
-    ## 3.801   0.012   3.813
-    ## WITHOUT nrows
-    ##      user  system elapsed
-    ## 9.877   0.030   9.906
-    ##  user  system elapsed
-    ## 3.861   0.013   3.875
-
-    ## WITHOUT colClasses              !!!
-    ## user  system elapsed    (with nrows)
-    ## 25.952   0.098  26.050
-    ##   user  system elapsed
-    ##  4.314   0.018   4.331
-    ## user  system elapsed    (without nrows too)
-    ## 28.361   0.137  28.499
-    ## user  system elapsed
-    ## 4.617   0.022   4.639
 
     read_data_xtrain <- function(){
-        return (read.table(source_xtrain,
-                           header=FALSE,
-                           ## row.names=FALSE,
-                           numerals="no.loss",
-                           colClasses="double",
-                           nrows=NTRAIN_OBSERVATIONS
-                           ));
+        if(file.exists(dev_source_xtrain)){
+            return(fread(dev_source_xtrain, sep=" "));
+        }
+        else{
+            retval <- read.table(source_xtrain,
+                                 header=FALSE,
+                                 numerals="no.loss",
+                                 colClasses="double",
+                                 nrows=NTRAIN_OBSERVATIONS);
+            write.table(retval, file=dev_source_xtrain,
+                        row.names=FALSE, col.names=FALSE);
+            return (retval);
+        }
     }
+
     ## -------------------------------------------------------------
+
     read_data_xtest <- function(){
-        return (read.table(source_xtest,
-                           header=FALSE,
-                           ## row.names=FALSE,
-                           numerals="no.loss",
-                           colClasses="double",
-                           nrows=NTEST_OBSERVATIONS
-                           ));
+        if(file.exists(dev_source_xtest)){
+            return(fread(dev_source_xtest, sep=" "));
+        }
+        else{
+            retval <- read.table(source_xtest,
+                                 header=FALSE,
+                                 numerals="no.loss",
+                                 colClasses="double",
+                                 nrows=NTEST_OBSERVATIONS);
+            write.table(retval, file=dev_source_xtest,
+                        row.names=FALSE, col.names=FALSE);
+            return (retval);
+        }
     }
+
     ## -------------------------------------------------------------
-
-    ## ]
-    ## \
-
-    ## browser();
 
     if(DEBUG_MODE){
         print(system.time(data_subjecttrain <- fread(source_subjecttrain)));
@@ -312,9 +318,8 @@ step1<- function()
         print(system.time(data_ytest <- fread(source_ytest)));
         print(system.time(data_features <- fread(source_features, sep=" ")));
         print(system.time(data_labels<-fread(source_activity_labels,sep=" ")));
-        print(system.time(data_xtrain <- read_data_xtrain()));
         print(system.time(data_xtest <- read_data_xtest()));
-
+        print(system.time(data_xtrain <- read_data_xtrain()));
     }
     else{
         data_subjecttrain <- fread(source_subjecttrain);
@@ -323,8 +328,8 @@ step1<- function()
         data_ytest <- fread(source_ytest);
         data_features <- fread(source_features, sep=" ");
         data_labels<-fread(source_activity_labels,sep=" ");
-        data_xtrain <- read_data_xtrain();
         data_xtest <- read_data_xtest();
+        data_xtrain <- read_data_xtrain();
     }
 }
 
