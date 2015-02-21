@@ -350,6 +350,32 @@ fread("data.csv") #Similar to ‘read.table’ but FASTER and more convenient
 
 
 
+INFO) Speed.- fread() vs read.table(): (source file =20 MB of plain text)
+
+## USING fread()
+## user  system elapsed
+## 0.471   0.013   0.485
+##
+## USING read.table()
+##
+## WITH nrows
+## user  system elapsed
+## 9.608   0.030   9.637
+## WITHOUT nrows
+##      user  system elapsed
+## 9.877   0.030   9.906
+##
+## WITHOUT colClasses              !!!
+## user  system elapsed    (with nrows)
+## 25.952   0.098  26.050
+## user  system elapsed    (without nrows too)
+## 28.361   0.137  28.499
+
+Conclusion:
+1) Use fread() if you can.
+2) If using read.table(), use options 'colClasses' and 'nrows').
+
+
 ##--------------------------------------------------------------------------
 ## 10) Connecting and listing databases RMySQL
 ##--------------------------------------------------------------------------
