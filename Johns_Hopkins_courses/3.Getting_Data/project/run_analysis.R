@@ -1,5 +1,8 @@
 ################################################################################
 ##
+## To execute the analysis:  in an R console calls "run_analysis()"
+##
+################################################################################
 ## You should create one R script called run_analysis.R that does the following.
 ##
 ## 1.- Merges the training and the test sets to create one data set.
@@ -25,23 +28,6 @@
 ##
 ################################################################################
 
-
-require(data.table);
-
-
-
-##------------------------------------------------------------------------------
-## step1() Merges the training and the test sets to create one data set.
-##------------------------------------------------------------------------------
-## 1.  import all files (except the inertial signals)
-## 2.  add the values from 'Features.txt' to 'X_test and X_train as column names
-## 3.  add column names to subject_train, subject_test, Y_test and Y_train
-## 4.  convert the values in Y_test and Y-train so that they correspond to
-##     those in 'activety_labels.txt'
-## 5.  Combine columns from subject_train, Y_train and X_train
-## 6.  Combine columns from subject_test, Y_test and X_test
-## 7.  Combine the rows from the previous two tables
-## 8.  tidy the table
 
 
 ## %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -102,7 +88,7 @@ require(data.table);
 ##
 ## ... to tidy data (data.frame)
 ##
-## ("subject_id2") ( feature_names ) ("subject_activity")
+## ("subject_id") ( feature_names ) ("subject_activity")
 ##            (a1) (  ... a2 ...   ) (a3)
 ##            (b1) (  ... b2 ...   ) (b3)
 ##
@@ -159,55 +145,6 @@ require(data.table);
 
 
 
-## -----------------------------------------------------------------------------
-
-################################################################################
-##
-## You should create one R script called run_analysis.R that does the following.
-##
-## 1.- Merges the training and the test sets to create one data set.
-##
-## 2.- Extracts only the measurements on the mean and standard deviation
-##     (std) for each measurement.
-##
-##     My Hint: column names = row values from "features.txt"
-##          extract only column names with the sub-string "mean" or "std" in it.
-##
-## 3.- Uses descriptive activity names to name the activities in the data set
-##
-## 4.- Appropriately labels the data set with descriptive variable names.
-##
-## 5.- From the data set in step 4, creates a second, independent tidy data set
-## with the average of each variable for each activity and each subject.
-##
-##      My Hint:                activity_1   ... activity_n
-##
-##                subject_1     avg(value)  ...
-##                     ...
-##                subject_30    avg(value)  ...
-##
-################################################################################
-
-solve <- function()
-{
-    DEBUG_MODE <- FALSE;
-    if(DEBUG_MODE){
-        print(system.time({
-            the_memdata <- struct_memdata();
-            get_source_data();
-            step1(the_memdata);
-    }))}
-    else{
-        the_memdata <- struct_memdata();
-        get_source_data();
-        step1(the_memdata);
-    }
-
-    ## tidydata <- source2tidy();
-}
-
-
-
 ##------------------------------------------------------------------------------
 ## 1.- Merges the training and the test sets to create one data set.
 ##
@@ -236,13 +173,190 @@ solve <- function()
 ##
 ## ... to tidy data (data.frame)
 ##
-## ("subject_id2") ( feature_names ) ("subject_activity")
+## ("subject_id") ( feature_names ) ("subject_activity")
 ##            (a1) (  ... a2 ...   ) (a3)
 ##            (b1) (  ... b2 ...   ) (b3)
 ##
+## EXPECTED_FULLDATA_ROWS <- 10299; #observations
+## EXPECTED_FULLDATA_COLS <- 563;   #variables
+## nrow(tidy.data) = 10299;
+## ncol(tidy.data) = 563;
 ## -----------------------------------------------------------------------------
 
-step1<- function(my_memdata)
+
+
+require(data.table);
+
+## -----------------------------------------------------------------------------
+
+run_analysis <- function()
+{
+    the_memdata <- struct_memdata();
+
+    DEBUG_MODE <- FALSE;
+
+    if(DEBUG_MODE)
+    {
+        print(system.time(retval <- solve(the_memdata), DEBUG_MODE));
+    }
+    else
+    {
+        retval <- solve(the_memdata,DEBUG_MODE);
+    }
+
+    ## option 1) warning: use "retval <- run_analysis() or the tidy.data will
+    ## be ptinted in the standard output
+    ## option 2) comment the line "return (retval)
+    return (retval);
+}
+
+## -----------------------------------------------------------------------------
+
+solve <- function(my_memdata, DEBUG_MODE=FALSE)
+{
+    get_source_data();
+    source2memory(my_memdata, DEBUG_MODE);
+    mem2tidy(my_memdata, DEBUG_MODE);
+
+    return(my_memdata$get_tidydata_full());
+
+    ## solution <- step5();
+    ## return(solution);
+
+}
+
+## -----------------------------------------------------------------------------
+
+##\input: original source data stored in memory:
+## my_memdata$data_subjecttrain <- data.table();
+## my_memdata$data_ytrain <- data.table();
+## my_memdata$data_xtrain <- data.table();
+## my_memdata$data_subjecttest <- data.table();
+## my_memdata$data_ytest <- data.table();
+## my_memdata$data_xtest <- data.table();
+## my_memdata$data_features <- data.table();
+## my_memdata$data_labels <- data.table();
+##
+##\output: my_memdata$tidydata_full (data.table): tidy data-set in this form:
+##
+## my_memdata$tidydata_full =
+## ("subject_id"    )(col names = data_features)("subject_activity")
+## (data_subjecttrain)(data_xtrain              )(data_ytrain       )
+## (data_subjecttest )(data_xtest               )(data_ytest        )
+##
+## Result of merging the input data tidy according to the steps below:
+##
+## 1.- Merges the training and the test sets to create one data set.
+##
+## 2.- Extracts only the measurements on the mean and standard deviation
+##     (std) for each measurement.
+##
+##     My Hint: column names = row values from "features.txt"
+##          extract only column names with the sub-string "mean" or "std" in it.
+##
+## 3.- Uses descriptive activity names to name the activities in the data set
+##
+## 4.- Appropriately labels the data set with descriptive variable names.
+
+mem2tidy <- function(my_memdata, DEBUG_MODE=FALSE)
+{
+    step1(my_memdata, FALSE);
+    step2(my_memdata, DEBUG_MODE);
+}
+
+##------------------------------------------------------------------------------
+
+## 2.  add the values from 'Features.txt' to 'X_test and X_train as column names
+## 3.  add column names to subject_train, subject_test, Y_test and Y_train
+## 4.  convert the values in Y_test and Y-train so that they correspond to
+##     those in 'activety_labels.txt'
+## 5.  Combine columns from subject_train, Y_train and X_train
+## 6.  Combine columns from subject_test, Y_test and X_test
+## 7.  Combine the rows from the previous two tables
+## 8.  tidy the table
+
+## my_memdata$tidydata_full =
+## ("subject_id"    )(col names = data_features)("subject_activity")
+## (data_subjecttrain)(data_xtrain              )(data_ytrain       )
+## (data_subjecttest )(data_xtest               )(data_ytest        )
+
+## 2.- Extracts only the measurements on the mean and standard deviation
+##     (std) for each measurement.
+##
+##     My Hint: column names = row values from "features.txt"
+##          extract only column names with the sub-string "mean" or "std" in it.
+step2 <- function(my_memdata, DEBUG_MODE=FALSE)
+{
+    ## setting my colnames
+    subject_names <- c("subject_id");
+    features_names <- my_memdata$get_data_features()$V2;
+    activity_names <- c("subject_activity");
+    new_colnames <- c(subject_names, features_names, activity_names);
+
+    tidy_input_dataset <- my_memdata$get_tidydata_full();
+    setnames(tidy_input_dataset, new_colnames);
+    my_memdata$set_tidydata_full(tidy_input_dataset);
+    ## print(tidy_input_dataset);
+
+    ##     colnames:
+    ##   [1] "subject_id"
+    ##   [2] "tBodyAcc-mean()-X"
+    ##       ...
+    ## [562] "angle(Z,gravityMean)"
+    ## [563] "subject_activity"
+
+}
+
+##------------------------------------------------------------------------------
+
+## 1.- Merges the training and the test sets to create one data set.
+step1 <- function(my_memdata, DEBUG_MODE=FALSE)
+{
+
+    ## bind rows
+    aux_dfsubject <- rbind(my_memdata$get_data_subjecttrain(),
+                           my_memdata$get_data_subjecttest());
+    aux_dfx <- rbind(my_memdata$get_data_xtrain(), my_memdata$get_data_xtest());
+    aux_dfy <- rbind(my_memdata$get_data_ytrain(), my_memdata$get_data_ytest());
+
+    ## bind cols
+    tidy_input_dataset <- cbind(aux_dfsubject, aux_dfx, aux_dfy);
+
+    ## store tidy data
+    my_memdata$set_tidydata_full(tidy_input_dataset);
+
+    stopifnot(my_memdata$expected_ncol_tidydata_full() ==
+              ncol(my_memdata$get_tidydata_full()));
+    stopifnot(my_memdata$expected_nrow_tidydata_full() ==
+                  nrow(my_memdata$get_tidydata_full()));
+
+    if(DEBUG_MODE)
+    {
+        system.time(write.table(my_memdata$get_tidydata_full(),
+                                file="./data/test_tidy_full.txt",
+                                row.names=FALSE, col.names=FALSE));
+    }
+}
+
+################################################################################
+## step5() From the data set in step 4, creates a second, independent tidy data
+## set with the average of each variable for each activity and each subject.
+## -----------------------------------------------------------------------------
+## Please upload your data set as a txt file created with write.table() using
+## row.name=FALSE (do not cut and paste a dataset directly into the text box,
+## as this may cause errors saving your submission).
+################################################################################
+step5 <- function()
+{
+    ## \todo IMPLEMENT ME
+}
+
+
+## -----------------------------------------------------------------------------
+
+## \function source2memory()
+## Read the source files and stores its content into memory at "my_memdata"
+source2memory <- function(my_memdata, DEBUG_MODE=FALSE)
 {
     ## input validation
     source_dir <- "./data/UCI HAR Dataset/";
@@ -266,7 +380,7 @@ step1<- function(my_memdata)
     ## loading source files into memory data
     NTRAIN_OBSERVATIONS <- 7352;
     NTEST_OBSERVATIONS <- 2947;
-    DEBUG_MODE <- TRUE;
+
 
     ## \warning Some files must be read with "read.table" due to a bug in fread
     ## when there are blank spaces before the first column of data. Then the
@@ -300,6 +414,7 @@ step1<- function(my_memdata)
                                  numerals="no.loss",
                                  colClasses="double",
                                  nrows=NTRAIN_OBSERVATIONS);
+            retval <- as.data.table(retval);
             write.table(retval, file=dev_source_xtrain,
                         row.names=FALSE, col.names=FALSE);
             return (retval);
@@ -318,6 +433,7 @@ step1<- function(my_memdata)
                                  numerals="no.loss",
                                  colClasses="double",
                                  nrows=NTEST_OBSERVATIONS);
+            retval <- as.data.table(retval);
             write.table(retval, file=dev_source_xtest,
                         row.names=FALSE, col.names=FALSE);
             return (retval);
@@ -327,7 +443,7 @@ step1<- function(my_memdata)
     ## -------------------------------------------------------------
 
     if(DEBUG_MODE){
-        print("step1(): Reading data form files");
+        print("source2memory(): Reading data from files");
         print(system.time(data_subjecttrain <- fread(source_subjecttrain)));
         print(system.time(data_ytrain <- fread(source_ytrain)));
         print(system.time(data_subjecttest <- fread(source_subjecttest)));
@@ -348,6 +464,7 @@ step1<- function(my_memdata)
         data_xtrain <- read_data_xtrain();
     }
 
+    ## stores into memory
     my_memdata$set_data_subjecttrain(data_subjecttrain);
     my_memdata$set_data_ytrain(data_ytrain);
     my_memdata$set_data_xtrain(data_xtrain);
@@ -369,17 +486,6 @@ step1<- function(my_memdata)
     stopifnot(identical(my_memdata$get_data_labels(), data_labels));
 }
 
-##------------------------------------------------------------------------------
-## step5() From the data set in step 4, creates a second, independent tidy data
-## set with the average of each variable for each activity and each subject.
-## -----------------------------------------------------------------------------
-
-## Please upload your data set as a txt file created with write.table() using
-## row.name=FALSE (do not cut and paste a dataset directly into the text box,
-## as this may cause errors saving your submission).
-step5 <- function()
-{
-}
 
 ## -----------------------------------------------------------------------------
 
@@ -409,6 +515,7 @@ get_source_data<- function()
     }
 }
 
+
 ## -----------------------------------------------------------------------------
 ##\class struct_memdata
 ## Data structure that contains:
@@ -417,7 +524,6 @@ get_source_data<- function()
 ## 3) the final data to report as solution
 ## This data is accessible for reading/writing through the get/set methods
 ## -----------------------------------------------------------------------------
-
 struct_memdata<- function()
 {
 
@@ -432,6 +538,16 @@ struct_memdata<- function()
     data_features <- data.table();
     data_labels <- data.table();
 
+    ## \param tidydata_full: created form the source data:
+    ## ("subject_id"    )(col names = data_features)("subject_activity")
+    ## (data_subjecttrain)(data_xtrain              )(data_ytrain       )
+    ## (data_subjecttest )(data_xtest               )(data_ytest        )
+    tidydata_full <- data.table();
+
+    ## \param tidydata_avg: created from 'tidydata_full', but only with the
+    ## average of each variable for each activity and each subject.
+    tidydata_avg <- data.table();
+
     ## ]
     ## \
 
@@ -443,6 +559,9 @@ struct_memdata<- function()
     get_data_xtest <- function() {return(data_xtest);}
     get_data_features <- function() {return(data_features);}
     get_data_labels <- function() {return(data_labels);}
+    get_tidydata_full <- function() {return(tidydata_full);}
+    get_tidydata_avg <- function() {return(tidydata_avg);}
+
 
     set_data_subjecttrain<- function(new_value)
     {
@@ -492,6 +611,21 @@ struct_memdata<- function()
         data_labels <<- new_value;
     }
 
+    set_tidydata_full <- function(new_value)
+    {
+        stopifnot(is.data.table(new_value));
+        tidydata_full <<- new_value;
+    }
+
+    set_tidydata_avg <- function(new_value)
+    {
+        stopifnot(is.data.table(new_value));
+        tidydata_avg <<- new_value;
+    }
+
+    expected_ncol_tidydata_full <- function() {return(563);}
+    expected_nrow_tidydata_full <- function() {return(10299);}
+
 
     list(get_data_subjecttrain = get_data_subjecttrain,
          get_data_ytrain = get_data_ytrain,
@@ -501,6 +635,12 @@ struct_memdata<- function()
          get_data_xtest = get_data_xtest,
          get_data_features = get_data_features,
          get_data_labels = get_data_labels,
+         get_tidydata_full = get_tidydata_full,
+         get_tidydata_avg = get_tidydata_avg,
+
+         expected_ncol_tidydata_full = expected_ncol_tidydata_full,
+         expected_nrow_tidydata_full = expected_nrow_tidydata_full,
+
          set_data_subjecttrain = set_data_subjecttrain,
          set_data_ytrain = set_data_ytrain,
          set_data_xtrain = set_data_xtrain,
@@ -508,7 +648,11 @@ struct_memdata<- function()
          set_data_ytest = set_data_ytest,
          set_data_xtest = set_data_xtest,
          set_data_features = set_data_features,
-         set_data_labels = set_data_labels);
+         set_data_labels = set_data_labels,
+         set_tidydata_full = set_tidydata_full,
+         set_tidydata_avg = set_tidydata_avg);
+
 }
 
+## -----------------------------------------------------------------------------
 

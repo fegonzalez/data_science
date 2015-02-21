@@ -1,1 +1,193 @@
-[1] "the test is void"
+[1] "Checking dim(tidydata_full)"
+[1] TRUE
+[1] TRUE
+Called from: doTryCatch(return(expr), name, parentenv, handler)
+[1] "my_men"
+[1] "my_mem"
+(list "" '(("..." . "")) '("..."))
+(list "" '(("..." . "")) '("..."))
+(list "" '(("..." . "")) '("..."))
+(list "" '(("..." . "")) '("..."))
+(list "" '(("..." . "")) '("..."))
+(list "" '(("..." . "")) '("..."))
+(list "" '(("..." . "")) '("..."))
+(list "" '(("..." . "")) '("..."))
+(list "" '(("..." . "")) '("..."))
+      V1                                   V2
+  1:   1                    tBodyAcc-mean()-X
+  2:   2                    tBodyAcc-mean()-Y
+  3:   3                    tBodyAcc-mean()-Z
+  4:   4                     tBodyAcc-std()-X
+  5:   5                     tBodyAcc-std()-Y
+ ---                                         
+557: 557     angle(tBodyGyroMean,gravityMean)
+558: 558 angle(tBodyGyroJerkMean,gravityMean)
+559: 559                 angle(X,gravityMean)
+560: 560                 angle(Y,gravityMean)
+561: 561                 angle(Z,gravityMean)
+[1] "my_em"
+[1] "my_mem"
+$get_data_subjecttrain
+function () 
+{
+    return(data_subjecttrain)
+}
+<environment: 0x1173c5a38>
+
+$get_data_ytrain
+function () 
+{
+    return(data_ytrain)
+}
+<environment: 0x1173c5a38>
+
+$get_data_xtrain
+function () 
+{
+    return(data_xtrain)
+}
+<environment: 0x1173c5a38>
+
+$get_data_subjecttest
+function () 
+{
+    return(data_subjecttest)
+}
+<environment: 0x1173c5a38>
+
+$get_data_ytest
+function () 
+{
+    return(data_ytest)
+}
+<environment: 0x1173c5a38>
+
+$get_data_xtest
+function () 
+{
+    return(data_xtest)
+}
+<environment: 0x1173c5a38>
+
+$get_data_features
+function () 
+{
+    return(data_features)
+}
+<environment: 0x1173c5a38>
+
+$get_data_labels
+function () 
+{
+    return(data_labels)
+}
+<environment: 0x1173c5a38>
+
+$get_tidydata_full
+function () 
+{
+    return(tidydata_full)
+}
+<environment: 0x1173c5a38>
+
+$get_tidydata_avg
+function () 
+{
+    return(tidydata_avg)
+}
+<environment: 0x1173c5a38>
+
+$expected_ncol_tidydata_full
+function () 
+{
+    return(563)
+}
+<environment: 0x1173c5a38>
+
+$expected_nrow_tidydata_full
+function () 
+{
+    return(10299)
+}
+<environment: 0x1173c5a38>
+
+$set_data_subjecttrain
+function (new_value) 
+{
+    stopifnot(is.data.table(new_value))
+    data_subjecttrain <<- new_value
+}
+<environment: 0x1173c5a38>
+
+$set_data_ytrain
+function (new_value) 
+{
+    stopifnot(is.data.table(new_value))
+    data_ytrain <<- new_value
+}
+<environment: 0x1173c5a38>
+
+$set_data_xtrain
+function (new_value) 
+{
+    stopifnot(is.data.table(new_value))
+    data_xtrain <<- new_value
+}
+<environment: 0x1173c5a38>
+
+$set_data_subjecttest
+function (new_value) 
+{
+    stopifnot(is.data.table(new_value))
+    data_subjecttest <<- new_value
+}
+<environment: 0x1173c5a38>
+
+$set_data_ytest
+function (new_value) 
+{
+    stopifnot(is.data.table(new_value))
+    data_ytest <<- new_value
+}
+<environment: 0x1173c5a38>
+
+$set_data_xtest
+function (new_value) 
+{
+    stopifnot(is.data.table(new_value))
+    data_xtest <<- new_value
+}
+<environment: 0x1173c5a38>
+
+$set_data_features
+function (new_value) 
+{
+    stopifnot(is.data.table(new_value))
+    data_features <<- new_value
+}
+<environment: 0x1173c5a38>
+
+$set_data_labels
+function (new_value) 
+{
+    stopifnot(is.data.table(new_value))
+    data_labels <<- new_value
+}
+<environment: 0x1173c5a38>
+
+$set_tidydata_full
+function (new_value) 
+{
+    stopifnot(is.data.table(new_value))
+    tidydata_full <<- new_value
+}
+<environment: 0x1173c5a38>
+
+$set_tidydata_avg
+function (new_value) 
+{
+    stopifnot(is.data.table(new_value))
+    tidydata_avg <<- new_value
+}
+<environment: 0x1173c5a38>
+

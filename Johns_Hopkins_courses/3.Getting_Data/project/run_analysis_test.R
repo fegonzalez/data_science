@@ -13,7 +13,7 @@
 ## warning) If the file "run_analysis_test.OK" already exists, do not erase nor
 ##          change it.
 ##
-## 1) execute this ("run_analysis_test.R") R script ...
+## 1) execute this  R script ("make_test()" ...
 ##    ... the file "run_analysis_test.last" will be created.
 ##
 ## 2) If "run_analysis_test.OK" already exists, check that files
@@ -37,7 +37,7 @@ source("run_analysis.R")
 ##
 ## begin test code
 ##
-make_run_analysis_test <- function()
+make_test <- function()
 {
     #options(warn = 2) # Convert warnings to errors
     # INFO setting the output file or the test
@@ -47,7 +47,18 @@ make_run_analysis_test <- function()
     sink(file_conn, type=c("output", "message"));
 
     tryCatch({
-        print("the test is void")
+        my_memdata <- struct_memdata();
+        get_source_data();
+        source2memory(my_memdata, FALSE);
+        mem2tidy(my_memdata, FALSE);
+
+        print("Checking dim(tidydata_full)");
+        print(my_memdata$expected_ncol_tidydata_full() ==
+                  ncol(my_memdata$get_tidydata_full()));
+        print(my_memdata$expected_nrow_tidydata_full() ==
+                  nrow(my_memdata$get_tidydata_full()));
+
+        ## solution <- step5();
 
 
         ## print("test 5: invalid data (not a matrix)");
