@@ -72,7 +72,11 @@ test <- function()
 
     ## ACTION: setting my colnames
     subject_names <- c("subject_id");
-    features_names <- as.vector(data_features$V2);
+
+    ## the next 2 are identical
+    ## features_names <- as.vector(data_features$V2);
+    features_names <- (as.data.frame(data_features)[, 2]);
+
     activity_names <- c("subject_activity");
     new_colnames <- c(subject_names, features_names, activity_names);
     setnames(tidy_input_dataset, new_colnames)
@@ -82,7 +86,32 @@ test <- function()
     ## [4] "tBodyAcc-std()-X"  "subject_activity"
 
 
-    ## ACTION: setting my colnames
+    ## ACTION:
+    ## 2.- Extracts only the measurements on the mean and standard deviation
+    ##     (std) for each measurement.
+
+    grepl(pattern=mypattern,ignore.case=TRUE,x=names(retval));
+## [1] FALSE  TRUE FALSE FALSE FALSE
+
+
+    mypattern <- "mean"
+    features <- c("tBodyAcc-mean()-Z", "pepito", "tBodyAcc-std()-X", "sTd().mm", "mEanFreq", "the-meanFreq()");
+
+    grepl(pattern=mypattern,ignore.case=TRUE, x=features)
+    ## [1]  TRUE FALSE FALSE FALSE  TRUE  TRUE
+
+    grepl(pattern=mypattern,ignore.case=FALSE, x=features)
+    ## [1]  TRUE FALSE FALSE FALSE FALSE  TRUE
+
+    mypattern <- "std"
+    grepl(pattern=mypattern,ignore.case=FALSE, x=features)
+    ## [1] FALSE FALSE  TRUE FALSE FALSE FALSE
+
+    grepl("[Mm]ean\\(\\)|std\\(\\)", features)
+    ## [1]  TRUE FALSE  TRUE FALSE FALSE FALSE
+
+    grepl("mean()|std()", x=features, ignore.case=FALSE)
+    ## [1]  TRUE FALSE  TRUE FALSE FALSE  TRUE
 
     return(tidy_input_dataset);
 }

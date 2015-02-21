@@ -58,6 +58,7 @@ make_test <- function()
         print(my_memdata$expected_nrow_tidydata_full() ==
                   nrow(my_memdata$get_tidydata_full()));
 
+        print(colnames(my_memdata$get_tidydata_full()));
         ## solution <- step5();
 
 

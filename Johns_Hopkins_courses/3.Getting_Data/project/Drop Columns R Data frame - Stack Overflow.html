@@ -1,0 +1,3303 @@
+<!DOCTYPE html>
+<html itemscope="" itemtype="http://schema.org/QAPage"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <title>Drop Columns R Data frame - Stack Overflow</title>
+    <link rel="shortcut icon" href="http://cdn.sstatic.net/stackoverflow/img/favicon.ico?v=00a326f96f68">
+    <link rel="apple-touch-icon image_src" href="http://cdn.sstatic.net/stackoverflow/img/apple-touch-icon.png?v=41f6e13ade69">
+    <link rel="search" type="application/opensearchdescription+xml" title="Stack Overflow" href="http://stackoverflow.com/opensearch.xml">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:domain" content="stackoverflow.com">
+    <meta property="og:type" content="website">
+    <meta property="og:image" itemprop="image primaryImageOfPage" content="http://cdn.sstatic.net/stackoverflow/img/apple-touch-icon@2.png?v=ea71a5211a91">
+    <meta name="twitter:title" property="og:title" itemprop="title name" content="Drop Columns R Data frame">
+    <meta name="twitter:description" property="og:description" itemprop="description" content="I have a number of columns that I would like to drop from a data frame.  I know that we can drop them using something like:
+
+df$x &amp;lt;- NULL
+
+
+but I was hoping to do this with fewer commands.
+
+Also...">
+    <meta property="og:url" content="http://stackoverflow.com/questions/4605206/drop-columns-r-data-frame">
+    <link rel="canonical" href="http://stackoverflow.com/questions/4605206/drop-columns-r-data-frame">
+
+    
+    
+    <script src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/quant.js" async=""></script><script src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/beacon.js" async=""></script><script src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/analytics.js" async=""></script><script src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/jquery.js"></script>
+    <script src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/stub.js"></script>
+    <link rel="stylesheet" type="text/css" href="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/all.css">
+    
+    <link rel="alternate" type="application/atom+xml" title="Feed for question 'Drop Columns R Data frame'" href="http://stackoverflow.com/feeds/question/4605206">
+    <meta name="twitter:app:country" content="US">
+    <meta name="twitter:app:name:iphone" content="Stack Exchange iOS">
+    <meta name="twitter:app:id:iphone" content="871299723">
+    <meta name="twitter:app:url:iphone" content="se-zaphod://stackoverflow.com/questions/4605206/drop-columns-r-data-frame">
+    <meta name="twitter:app:name:ipad" content="Stack Exchange iOS">
+    <meta name="twitter:app:id:ipad" content="871299723">
+    <meta name="twitter:app:url:ipad" content="se-zaphod://stackoverflow.com/questions/4605206/drop-columns-r-data-frame">
+    <meta name="twitter:app:name:googleplay" content="Stack Exchange Android">
+    <meta name="twitter:app:url:googleplay" content="http://stackoverflow.com/questions/4605206/drop-columns-r-data-frame">
+    <meta name="twitter:app:id:googleplay" content="com.stackexchange.marvin">
+    <script>
+        
+        StackExchange.ready(function () {
+                
+                StackExchange.using("snippets", function () {
+                    StackExchange.snippets.initSnippetRenderer();
+                });
+                
+
+            StackExchange.using("postValidation", function () {
+                StackExchange.postValidation.initOnBlurAndSubmit($('#post-form'), 2, 'answer');
+            });
+
+            
+            StackExchange.question.init({showAnswerHelp:true,totalCommentCount:1,shownCommentCount:1,highlightColor:'#F4A83D',backgroundColor:'#FFF',questionId:4605206});
+
+            styleCode();
+
+                StackExchange.realtime.subscribeToQuestion('1', '4605206');
+            
+                    });
+    </script>
+
+
+    <script>
+        StackExchange.init({"locale":"en","stackAuthUrl":"https://stackauth.com","serverTime":1424558713,"networkMetaHostname":"meta.stackexchange.com","routeName":"Questions/Show","styleCode":true,"enableUserHovercards":true,"snippets":{"enabled":true,"domain":"stacksnippets.net"},"site":{"name":"Stack Overflow","description":"Q&A for professional and enthusiast programmers","isNoticesTabEnabled":true,"recaptchaPublicKey":"6LdchgIAAAAAAJwGpIzRQSOFaO0pU6s44Xt8aTwc","recaptchaAudioLang":"en","enableNewTagCreationWarning":true,"nonAsciiTags":true,"enableSocialMediaInSharePopup":true},"user":{"fkey":"a675f88a32f6dab047142b3670e2a4c8","isAnonymous":true}});
+        StackExchange.using.setCacheBreakers({"js/prettify-full.en.js":"4b95e790a4df","js/moderator.en.js":"bebd17aca8f9","js/full-anon.en.js":"c6bded2d9379","js/full.en.js":"118a0c7329ea","js/wmd.en.js":"3bfff5276c44","js/third-party/jquery.autocomplete.min.js":"e5f01e97f7c3","js/third-party/jquery.autocomplete.min.en.js":"","js/mobile.en.js":"d96cd4adc9de","js/help.en.js":"b5f40fd81205","js/tageditor.en.js":"3a2a3f54b3e3","js/tageditornew.en.js":"c6eeade977ad","js/inline-tag-editing.en.js":"f53885bdadce","js/revisions.en.js":"989c474e85a9","js/review.en.js":"fd15127f3386","js/tagsuggestions.en.js":"d1ff9b84abe5","js/post-validation.en.js":"e4de945100de","js/explore-qlist.en.js":"4e6f969d97ee","js/events.en.js":"4a965e23a325","js/keyboard-shortcuts.en.js":"c276fe3d637e","js/external-editor.en.js":"1eb5c5c11526","js/external-editor.en.js":"1eb5c5c11526","js/snippet-javascript.en.js":"7700e8b17c10","js/snippet-javascript-codemirror.en.js":"a3d49894d3e1"});
+        StackExchange.using("gps", function() {
+             StackExchange.gps.init(true);
+        });
+    </script>
+    
+        <script>
+            StackExchange.ready(function () {
+                $('#nav-tour').click(function () {
+                    StackExchange.using("gps", function() {
+                        StackExchange.gps.track("aboutpage.click", { aboutclick_location: "headermain" }, true);
+                    });
+                });
+            });
+        </script>
+    
+    
+<script src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/full-anon.js" async=""></script><style type="text/css">.clear { /* generic container (i.e. div) for floating buttons */
+	overflow: hidden !important;
+	width: 100% !important;
+}
+
+a.fantasybutton {
+	background: transparent url("chrome://aimersoft/content/img/button_normal.png") no-repeat !important;
+	color: #444 !important;
+	display: block !important;
+	float: left !important;
+	font: normal 12px arial, sans-serif !important;
+	height: 29px !important;
+	width: 112px !important;
+    
+}
+
+a.fantasybutton:active {
+	background: transparent url("chrome://aimersoft/content/img/button_down.png") no-repeat !important;
+	background-position: bottom right !important;
+	color: #000 !important;
+	outline: none !important; /* hide dotted outline in Firefox */
+}
+
+a.playlistbutton{
+    background: transparent url("chrome://aimersoft/content/img/down_all_normal.png") no-repeat !important;
+	color: #444 !important;
+	display: block !important;
+	float: left !important;
+	font: normal 12px arial, sans-serif !important;
+	height: 28px !important;
+	width: 124px !important;
+    margin-left:8px !important;
+    margin-top:2px !important;
+}
+
+a.playlistbutton:active{
+    background: transparent url("chrome://aimersoft/content/img/down_all_down.png") no-repeat !important;
+
+}
+
+button.wsplaylist {
+	background: transparent url("chrome://aimersoft/content/img/down_all_normal.png") no-repeat !important;
+	height: 28px !important;
+	width: 124px !important;
+    margin-left: 10px !important;
+    margin-top: 0px !important;
+    padding-left:1px !important;
+    padding-right:4px !important;
+    padding-top:6px !important;
+
+}
+
+button.wsplaylist:active {
+	background: transparent url("chrome://aimersoft/content/img/down_all_down.png") no-repeat !important;
+}
+
+#mytubem {
+	margin: 0 !important;
+	padding: 0 !important;
+	z-index: 30 !important;
+}
+
+#mytubem li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	float: left;
+	font: bold 11px arial
+}
+
+#mytubem div {
+	position: absolute;
+	top: 28px;
+	width: 110px;
+	visibility: hidden;
+	margin: 0;
+	padding: 0;
+	background: #9CC02B;
+	border: 1px solid #4C4C4C !important
+}
+
+#mytubem div a {
+	position: relative !important;
+	display: block !important;
+	margin: 0 !important;
+	padding: 5px 10px !important;
+	width: auto;
+	white-space: nowrap !important;
+	text-align: center !important;
+	text-decoration: none !important;
+	background: #000000 !important;
+	color: #FFFFFF !important;
+	font: 12px arial, sans-serif !important
+}
+
+#mytubem div a:hover {
+	background: rgb(135,10,10) !important;
+	color: #FFFFFF !important
+}</style><script src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/snippet-javascript.js" async=""></script><script src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/post-validation.js" async=""></script><script src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/prettify-full.js" async=""></script><script src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/external-editor.js" async=""></script><link rel="stylesheet" type="text/css" href="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/company.css"><link rel="stylesheet" type="text/css" href="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/sidebar.css"></head>
+<body class="question-page new-topbar">
+    <noscript><div id="noscript-padding"></div></noscript>
+    <div id="notify-container"></div>
+    <div id="overlay-header"></div>
+    <div id="custom-header"></div>
+
+
+
+
+<div class="topbar">
+    <div class="topbar-wrapper">
+
+        <div class="js-topbar-dialog-corral">
+
+<div class="topbar-dialog siteSwitcher-dialog dno">
+    <div class="header">
+        <h3><a href="http://stackoverflow.com/">current community</a></h3>
+    </div>
+    <div class="modal-content current-site-container">
+        <ul class="current-site">
+                <li>
+                        <div class="related-links">
+            <a href="http://chat.stackoverflow.com/" class="js-gps-track" data-gps-track="site_switcher.click({ item_type:6 })">chat</a>
+                    <a href="http://blog.stackoverflow.com/" class="js-gps-track" data-gps-track="site_switcher.click({ item_type:7 })">blog</a>
+            </div>
+
+
+
+
+    <a href="http://stackoverflow.com/" class="current-site-link site-link js-gps-track" data-id="1" data-gps-track="
+        site_switcher.click({ item_type:3 })">
+        <div class="site-icon favicon favicon-stackoverflow" title="Stack Overflow"></div>
+        Stack Overflow
+    </a>
+
+                </li>
+                <li class="related-site">
+                        <div class="L-shaped-icon-container">
+        <span class="L-shaped-icon"></span>
+    </div>
+
+                    
+
+
+
+    <a href="http://meta.stackoverflow.com/" class="site-link js-gps-track" data-id="552" data-gps-track="
+            site.switch({ target_site:552, item_type:3 }),
+        site_switcher.click({ item_type:4 })">
+        <div class="site-icon favicon favicon-stackoverflowmeta" title="Meta Stack Overflow"></div>
+        Meta Stack Overflow
+    </a>
+
+                </li>
+                            <li class="related-site">
+                        <div class="L-shaped-icon-container">
+        <span class="L-shaped-icon"></span>
+    </div>
+
+                    <a class="site-link js-gps-track" href="http://careers.stackoverflow.com/?utm_source=stackoverflow.com&amp;utm_medium=site-ui&amp;utm_campaign=multicollider" data-gps-track="site_switcher.click({ item_type:9 })">
+                        <div class="site-icon favicon favicon-careers" title="Stack Overflow Careers"></div>
+                        Stack Overflow Careers
+                    </a>
+                </li>
+        </ul>
+    </div>
+    
+    <div class="header" id="your-communities-header">
+        <h3>
+your communities        </h3>
+            
+    </div>
+    <div class="modal-content" id="your-communities-section">
+            
+            <div class="call-to-login">
+<a href="https://stackoverflow.com/users/signup?returnurl=http%3a%2f%2fstackoverflow.com%2fquestions%2f4605206%2fdrop-columns-r-data-frame" class="login-link js-gps-track" data-gps-track="site_switcher.click({ item_type:10 })">Sign up</a> or <a href="https://stackoverflow.com/users/login?returnurl=http%3a%2f%2fstackoverflow.com%2fquestions%2f4605206%2fdrop-columns-r-data-frame" class="login-link js-gps-track" data-gps-track="site_switcher.click({ item_type:11 })">log in</a> to customize your list.
+            </div>
+    </div>
+    
+    <div class="header">
+        <h3><a href="http://stackexchange.com/sites">more stack exchange communities</a></h3>
+    </div>
+    <div class="modal-content">
+            <div class="child-content"></div>
+    </div>
+</div>
+        </div>
+
+        <div class="network-items">
+
+            <a href="http://stackexchange.com/" class="topbar-icon icon-site-switcher yes-hover js-site-switcher-button js-gps-track" data-gps-track="site_switcher.show" title="A list of all 137 Stack Exchange sites">
+                <span class="hidden-text">Stack Exchange</span>
+            </a>
+
+        </div>
+
+        <div class="topbar-links">
+
+                <div class="links-container">
+                    <span class="topbar-menu-links">
+                            <a href="https://stackoverflow.com/users/signup?returnurl=http%3a%2f%2fstackoverflow.com%2fquestions%2f4605206%2fdrop-columns-r-data-frame" class="login-link">sign up</a>
+                            <a href="https://stackoverflow.com/users/login?returnurl=http%3a%2f%2fstackoverflow.com%2fquestions%2f4605206%2fdrop-columns-r-data-frame" class="login-link">log in</a>
+                            <a href="http://stackoverflow.com/tour">tour</a>
+
+                            <a href="#" class="icon-help js-help-button" title="Help Center and other resources">
+        help
+        <span class="triangle"></span>
+    </a>
+    <div class="topbar-dialog help-dialog js-help-dialog dno">
+        <div class="modal-content">
+            <ul>
+                                    <li>
+                        <a href="http://stackoverflow.com/tour" class="js-gps-track" data-gps-track="help_popup.click({ item_type:1 })">
+                            Tour
+                            <span class="item-summary">
+                                Start here for a quick overview of the site
+                            </span>
+                        </a>
+                    </li>
+                <li>
+                    <a href="http://stackoverflow.com/help" class="js-gps-track" data-gps-track="help_popup.click({ item_type:4 })">
+                        Help Center
+                        <span class="item-summary">
+                            Detailed answers to any questions you might have
+                        </span>
+                    </a>
+                </li>
+                    <li>
+                        <a href="http://meta.stackoverflow.com/" class="js-gps-track" data-gps-track="help_popup.click({ item_type:2 })">
+                            Meta
+                            <span class="item-summary">
+                                Discuss the workings and policies of this site
+                            </span>
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+
+                            <a href="http://careers.stackoverflow.com/?utm_source=stackoverflow.com&amp;utm_medium=site-ui&amp;utm_campaign=anon-topbar">stack overflow careers</a>
+                    </span>
+                </div>
+
+            <div class="search-container">
+                <form id="search" action="/search" method="get" autocomplete="off">
+                    <input name="q" placeholder="search" tabindex="1" autocomplete="off" maxlength="240" type="text">
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <script>
+        StackExchange.ready(function() { StackExchange.topbar.init(); });
+    </script>
+
+    <div class="container">
+        <div id="header">
+            <br class="cbt">
+            <div id="hlogo">
+                <a href="http://stackoverflow.com/">
+                    Stack Overflow
+                </a>
+            </div>
+            <div id="hmenus">
+                <div class="nav mainnavs">
+                    <ul>
+                        <li class="youarehere"><a id="nav-questions" href="http://stackoverflow.com/questions">Questions</a></li>
+                        <li><a id="nav-tags" href="http://stackoverflow.com/tags">Tags</a></li>
+                        <li><a id="nav-users" href="http://stackoverflow.com/users">Users</a></li>
+                        <li><a id="nav-badges" href="http://stackoverflow.com/help/badges">Badges</a></li>
+                        <li><a id="nav-unanswered" href="http://stackoverflow.com/unanswered">Unanswered</a></li>
+                    </ul>
+                </div>
+                <div class="nav askquestion">
+                    <ul>
+                        <li>
+                            <a id="nav-askquestion" href="http://stackoverflow.com/questions/ask">Ask Question</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+
+
+
+        <div id="content" class="snippet-hidden">
+            
+
+<div itemscope="" itemtype="http://schema.org/Question">
+	<link itemprop="image" href="http://cdn.sstatic.net/stackoverflow/img/apple-touch-icon.png">
+			<!--googleoff: all-->
+
+<div id="herobox-mini">
+    <div id="hero-content">
+        <span id="controls">
+            <a href="http://stackoverflow.com/tour" id="tell-me-more" class="button">Take the 2-minute tour</a>
+            <span id="close"><a title="click to dismiss">×</a></span>
+        </span>
+        <div id="blurb">
+            Stack Overflow is a question and answer site for 
+professional and enthusiast programmers. It's 100% free, no registration
+ required.
+        </div>        
+    </div>
+    <script>
+        $('#tell-me-more').click(function () {
+            var clickSource = $("body").attr("class") + '-mini';
+            if ($("body").hasClass("questions-page")) {
+                clickSource = 'questionpagemini';
+            } else if ($("body").hasClass("question-page")) {
+                clickSource = 'questionpagemini';
+            } else if ($("body").hasClass("home-page")) {
+                clickSource = 'homepagemini';
+            }
+
+            StackExchange.using("gps", function () {
+                StackExchange.gps.track("aboutpage.click", { aboutclick_location: clickSource } , true);
+            });
+        });
+        $('#herobox-mini #close').click(function () {
+            StackExchange.using("gps", function () {
+                StackExchange.gps.track("hero.action", { hero_action_type: "close" }, true);
+            });
+            $.cookie("hero", "none", { path: "/", expires: 365 });
+            var $hero = $("#herobox-mini");
+            $hero.slideUp('fast', function () { $hero.remove(); });
+            return false;
+        });
+    </script>
+</div>
+			<!--googleon: all-->
+			<div id="question-header">
+			<h1 itemprop="name"><a href="http://stackoverflow.com/questions/4605206/drop-columns-r-data-frame" class="question-hyperlink">Drop Columns R Data frame</a></h1>
+		</div>
+			<div id="mainbar">
+
+			
+
+<div class="question" data-questionid="4605206" id="question">
+
+    <div class="everyonelovesstackoverflow" id="careers1"><a href="http://careers.stackoverflow.com/" rel="nofollow" target="_blank"><img src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/companypageadfallback-leaderboard-3.png"></a></div>    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+    <input name="_id_" value="4605206" type="hidden">
+    <a class="vote-up-off" title="This question shows research effort; it is useful and clear">up vote</a>
+    <span itemprop="upvoteCount" class="vote-count-post ">220</span>
+    <a class="vote-down-off" title="This question does not show any research effort; it is unclear or not useful">down vote</a>
+    
+    <a class="star-off" href="#" title="This is a favorite question (click again to undo)">favorite</a>
+    <div class="favoritecount"><b>120</b></div>   
+
+</div>
+
+            </td>
+            
+<td class="postcell">
+<div>
+    <div class="post-text" itemprop="text">
+
+        <p>I have a number of columns that I would like to drop from a data frame.  I know that we can drop them using something like:</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">df</span><span class="pun">$</span><span class="pln">x </span><span class="pun">&lt;-</span><span class="pln"> </span><span class="lit">NULL</span></code></pre>
+
+<p>but I was hoping to do this with fewer commands.</p>
+
+<p>Also, I know that I could use this:</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">df</span><span class="pun">[</span><span class="pln"> </span><span class="pun">-</span><span class="pln">c</span><span class="pun">(</span><span class="lit">1</span><span class="pun">,</span><span class="lit">3</span><span class="pun">:</span><span class="lit">6</span><span class="pun">,</span><span class="pln"> </span><span class="lit">12</span><span class="pun">)</span><span class="pln"> </span><span class="pun">]</span></code></pre>
+
+<p>But I am concerned that the relative position of my variables may change.</p>
+
+<p>Given how powerful R is, I figured I would ask to see if there is another way beyond dropping each column 1 by 1.</p>
+
+    </div>
+    <div class="post-taglist">
+        <a href="http://stackoverflow.com/questions/tagged/r" class="post-tag js-gps-track" title="show questions tagged 'r'" rel="tag">r</a> 
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/q/4605206" title="short permalink to this question" class="short-link" id="link-post-4605206">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/4605206/edit" class="suggest-edit-post" title="">improve this question</a></div>        
+    </td>
+    <td class="post-signature" align="right">
+<div class="user-info user-hover">
+    <div class="user-action-time">
+        <a href="http://stackoverflow.com/posts/4605206/revisions" title="show all edits to this post">edited <span title="2015-01-13 01:29:19Z" class="relativetime">Jan 13 at 1:29</span></a>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/1348195/benjamin-gruenbaum"><div class="gravatar-wrapper-32"><img src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/f6dca2295546af21e1cde8e68f2d49bd.jpg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/1348195/benjamin-gruenbaum">Benjamin Gruenbaum</a><br>
+        <span class="reputation-score" title="reputation score 61307" dir="ltr">61.3k</span><span title="17 gold badges"><span class="badge1"></span><span class="badgecount">17</span></span><span title="116 silver badges"><span class="badge2"></span><span class="badgecount">116</span></span><span title="196 bronze badges"><span class="badge3"></span><span class="badgecount">196</span></span>
+    </div>
+</div>    </td>
+    <td class="post-signature owner">
+        <div class="user-info user-hover">
+    <div class="user-action-time">
+        asked <span title="2011-01-05 14:34:29Z" class="relativetime">Jan 5 '11 at 14:34</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/155406/btibert3"><div class="gravatar-wrapper-32"><img src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/1a9847d527c200a719e63f3e8c09101f.jpg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/155406/btibert3">Btibert3</a><br>
+        <span class="reputation-score" title="reputation score " dir="ltr">4,319</span><span title="18 gold badges"><span class="badge1"></span><span class="badgecount">18</span></span><span title="56 silver badges"><span class="badge2"></span><span class="badgecount">56</span></span><span title="104 bronze badges"><span class="badge3"></span><span class="badgecount">104</span></span>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</div>
+</td>
+        </tr>
+                
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-4605206" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-38756564" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="warm">8</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">It would be important for new
+ R users to realize that the first option would change the 
+'df'-dataframe but the second option would not, unless that value were 
+assigned to 'df' with <code>&lt;-</code></span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/1855677/bondeddust" title="118440 reputation" class="comment-user">BondedDust</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment38756564_4605206"><span title="2014-07-24 16:43:45Z" class="relativetime-clean">Jul 24 '14 at 16:43</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+            <div id="comments-link-4605206" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid answering questions in comments.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span><a class="js-show-link comments-link dno" title="expand to show all comments on this post, or add one of your own" href="#" onclick=""></a>
+            </div>
+    </td>
+</tr>        </tbody></table>
+</div>
+
+			<div id="answers">
+
+				<a name="tab-top"></a>
+				<div id="answers-header">
+					<div class="subheader answers-subheader">
+						<h2>
+								15 Answers
+                                <span style="display:none;" itemprop="answerCount">15</span>
+						</h2>
+						<div>
+							<div id="tabs">
+        <a href="http://stackoverflow.com/questions/4605206/drop-columns-r-data-frame?answertab=active#tab-top" title="Answers with the latest activity first">active</a>
+        <a href="http://stackoverflow.com/questions/4605206/drop-columns-r-data-frame?answertab=oldest#tab-top" title="Answers in the order they were provided">oldest</a>
+        <a class="youarehere" href="http://stackoverflow.com/questions/4605206/drop-columns-r-data-frame?answertab=votes#tab-top" title="Answers with the highest score first">votes</a>
+</div>
+						</div>
+					</div>    
+				</div>    
+
+
+
+
+  
+<a name="4605268"></a>
+<div id="answer-4605268" class="answer accepted-answer" data-answerid="4605268" itemscope="" itemtype="http://schema.org/Answer" itemprop="acceptedAnswer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+    <input name="_id_" value="4605268" type="hidden">
+    <a class="vote-up-off" title="This answer is useful">up vote</a>
+    <span itemprop="upvoteCount" class="vote-count-post ">268</span>
+    <a class="vote-down-off" title="This answer is not useful">down vote</a>
+    
+
+
+        <span class="vote-accepted-on load-accepted-answer-date" title="The question owner accepted this as the best answer Jan 5 '11 at 15:32.">accepted</span>
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>You can use a simple list of names :</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">DF </span><span class="pun">&lt;-</span><span class="pln"> data.frame</span><span class="pun">(</span><span class="pln">
+  x</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">,</span><span class="pln">
+  y</span><span class="pun">=</span><span class="lit">10</span><span class="pun">:</span><span class="lit">1</span><span class="pun">,</span><span class="pln">
+  z</span><span class="pun">=</span><span class="pln">rep</span><span class="pun">(</span><span class="lit">5</span><span class="pun">,</span><span class="lit">10</span><span class="pun">),</span><span class="pln">
+  a</span><span class="pun">=</span><span class="lit">11</span><span class="pun">:</span><span class="lit">20</span><span class="pln">
+</span><span class="pun">)</span><span class="pln">
+drops </span><span class="pun">&lt;-</span><span class="pln"> c</span><span class="pun">(</span><span class="str">"x"</span><span class="pun">,</span><span class="str">"z"</span><span class="pun">)</span><span class="pln">
+DF</span><span class="pun">[,!(</span><span class="pln">names</span><span class="pun">(</span><span class="pln">DF</span><span class="pun">)</span><span class="pln"> </span><span class="pun">%in%</span><span class="pln"> drops</span><span class="pun">)]</span></code></pre>
+
+<p>Or, alternatively, you can make a list of those to keep and refer to them by name :</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">keeps </span><span class="pun">&lt;-</span><span class="pln"> c</span><span class="pun">(</span><span class="str">"y"</span><span class="pun">,</span><span class="str">"a"</span><span class="pun">)</span><span class="pln">
+DF</span><span class="pun">[</span><span class="pln">keeps</span><span class="pun">]</span></code></pre>
+
+<p>EDIT :
+For those still not acquainted with the <code>drop</code> argument of the indexing function, if you want to keep one column as a data frame, you do:</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">keeps </span><span class="pun">&lt;-</span><span class="pln"> </span><span class="str">"y"</span><span class="pln">
+DF</span><span class="pun">[,</span><span class="pln">keeps</span><span class="pun">,</span><span class="pln">drop</span><span class="pun">=</span><span class="lit">FALSE</span><span class="pun">]</span></code></pre>
+
+<p><code>drop=TRUE</code> (or not mentioning it) will drop unnecessary dimensions, and hence return a vector with the values of column <code>y</code>.</p>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/4605268" title="short permalink to this answer" class="short-link" id="link-post-4605268">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/4605268/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+    <td class="post-signature" align="right">
+<div class="user-info ">
+    <div class="user-action-time">
+        <a href="http://stackoverflow.com/posts/4605268/revisions" title="show all edits to this post">edited <span title="2013-06-28 10:12:08Z" class="relativetime">Jun 28 '13 at 10:12</span></a>
+    </div>
+    <div class="user-gravatar32">
+        
+    </div>
+    <div class="user-details">
+        <br>
+        
+    </div>
+</div>    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info user-hover">
+    <div class="user-action-time">
+        answered <span title="2011-01-05 14:40:25Z" class="relativetime">Jan 5 '11 at 14:40</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/428790/joris-meys"><div class="gravatar-wrapper-32"><img src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/5e9efaa7a55e807aa53acfe40b68be46.jpg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/428790/joris-meys">Joris Meys</a><br>
+        <span class="reputation-score" title="reputation score 42062" dir="ltr">42.1k</span><span title="13 gold badges"><span class="badge1"></span><span class="badgecount">13</span></span><span title="100 silver badges"><span class="badge2"></span><span class="badgecount">100</span></span><span title="157 bronze badges"><span class="badge3"></span><span class="badgecount">157</span></span>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-4605268" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-25194115" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">1</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">the subset function works better as it won't convert a data frame with one column into a vector</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/525369/mut1na" title="496 reputation" class="comment-user">mut1na</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment25194115_4605268"><span title="2013-06-28 09:06:09Z" class="relativetime-clean">Jun 28 '13 at 9:06</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-25196157" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">1</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">@mut1na check the argument drop=FALSE of the indexing function.</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/428790/joris-meys" title="42062 reputation" class="comment-user">Joris Meys</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment25196157_4605268"><span title="2013-06-28 10:10:19Z" class="relativetime-clean">Jun 28 '13 at 10:10</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-41832025" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">1</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Shouldn't that be <code>DF[,keeps]</code> instead of <code>DF[keeps]</code> ?</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/1428/lindelof" title="10836 reputation" class="comment-user">lindelof</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment41832025_4605268"><span title="2014-10-28 13:53:32Z" class="relativetime-clean">Oct 28 '14 at 13:53</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-41844158" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">@lindelof No. It can, but 
+then you have to add drop=FALSE to keep R from converting your data 
+frame to a vector if you only select a single column. Don't forget that 
+data frames are lists, so list selection (one-dimensional like I did) 
+works perfectly well and always returns a list. Or a data frame in this 
+case, which is why I prefer to use it.</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/428790/joris-meys" title="42062 reputation" class="comment-user">Joris Meys</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment41844158_4605268"><span title="2014-10-28 19:05:07Z" class="relativetime-clean">Oct 28 '14 at 19:05</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+            <div id="comments-link-4605268" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span><a class="js-show-link comments-link dno" title="expand to show all comments on this post, or add one of your own" href="#" onclick=""></a>
+            </div>
+    </td>
+</tr>    </tbody></table>
+</div>
+<div class="everyonelovesstackoverflow" id="careers3"><a href="http://careers.stackoverflow.com/" rel="nofollow" target="_blank"><img src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/companypageadfallback-leaderboard-3.png"></a></div>
+  
+<a name="4605405"></a>
+<div id="answer-4605405" class="answer" data-answerid="4605405" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+    <input name="_id_" value="4605405" type="hidden">
+    <a class="vote-up-off" title="This answer is useful">up vote</a>
+    <span itemprop="upvoteCount" class="vote-count-post ">138</span>
+    <a class="vote-down-off" title="This answer is not useful">down vote</a>
+    
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>There's also the <code>subset</code> command, useful if you know which columns you want:</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">df </span><span class="pun">&lt;-</span><span class="pln"> data.frame</span><span class="pun">(</span><span class="pln"> a </span><span class="pun">=</span><span class="pln"> </span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">,</span><span class="pln"> b </span><span class="pun">=</span><span class="pln"> </span><span class="lit">2</span><span class="pun">:</span><span class="lit">11</span><span class="pun">,</span><span class="pln"> c </span><span class="pun">=</span><span class="pln"> </span><span class="lit">3</span><span class="pun">:</span><span class="lit">12</span><span class="pln"> </span><span class="pun">)</span><span class="pln">
+df </span><span class="pun">&lt;-</span><span class="pln"> subset</span><span class="pun">(</span><span class="pln">df</span><span class="pun">,</span><span class="pln"> select </span><span class="pun">=</span><span class="pln"> c</span><span class="pun">(</span><span class="pln">a</span><span class="pun">,</span><span class="pln">c</span><span class="pun">))</span></code></pre>
+
+<p>UPDATED after comment by @hadley: To <em>drop</em> columns a,c you could do:</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">df </span><span class="pun">&lt;-</span><span class="pln"> subset</span><span class="pun">(</span><span class="pln">df</span><span class="pun">,</span><span class="pln"> select </span><span class="pun">=</span><span class="pln"> </span><span class="pun">-</span><span class="pln">c</span><span class="pun">(</span><span class="pln">a</span><span class="pun">,</span><span class="pln">c</span><span class="pun">)</span><span class="pln"> </span><span class="pun">)</span></code></pre>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/4605405" title="short permalink to this answer" class="short-link" id="link-post-4605405">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/4605405/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+    <td class="post-signature" align="right">
+<div class="user-info ">
+    <div class="user-action-time">
+        <a href="http://stackoverflow.com/posts/4605405/revisions" title="show all edits to this post">edited <span title="2011-01-05 18:37:18Z" class="relativetime">Jan 5 '11 at 18:37</span></a>
+    </div>
+    <div class="user-gravatar32">
+        
+    </div>
+    <div class="user-details">
+        <br>
+        
+    </div>
+</div>    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info user-hover">
+    <div class="user-action-time">
+        answered <span title="2011-01-05 14:52:40Z" class="relativetime">Jan 5 '11 at 14:52</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/415690/prasad-chalasani"><div class="gravatar-wrapper-32"><img src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/899234e4fe0c900678e00b6b42908342.jpg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/415690/prasad-chalasani">Prasad Chalasani</a><br>
+        <span class="reputation-score" title="reputation score " dir="ltr">9,387</span><span title="2 gold badges"><span class="badge1"></span><span class="badgecount">2</span></span><span title="19 silver badges"><span class="badge2"></span><span class="badgecount">19</span></span><span title="43 bronze badges"><span class="badge3"></span><span class="badgecount">43</span></span>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-4605405" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="4" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-5061049" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">1</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">I really wish the R <code>subset</code> function had an option like "allbut = FALSE", which "inverts" the selection when set to TRUE, i.e. retains all columns <i>except</i> those in the <code>select</code> list.</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/415690/prasad-chalasani" title="9387 reputation" class="comment-user">Prasad Chalasani</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment5061049_4605405"><span title="2011-01-05 14:56:20Z" class="relativetime-clean">Jan 5 '11 at 14:56</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-5061333" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">3</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">@prasad, see @joris answer below. A subset without any subset criteria is a bit of overkill. Try simply: <code>df[c("a", "c")]</code></span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/37751/jd-long" title="22736 reputation" class="comment-user">JD Long</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment5061333_4605405"><span title="2011-01-05 15:16:33Z" class="relativetime-clean">Jan 5 '11 at 15:16</span></a></span>
+                    <span class="edited-yes" title="this comment was edited 2 times"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-5061365" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">@JD I knew that, but I like the syntactic convenience of the <code>subset</code>
+ command where you don't need to put quotes around the column names -- I
+ guess I don't mind typing a few extra characters just to avoid quoting 
+names :)</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/415690/prasad-chalasani" title="9387 reputation" class="comment-user">Prasad Chalasani</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment5061365_4605405"><span title="2011-01-05 15:18:46Z" class="relativetime-clean">Jan 5 '11 at 15:18</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-5064329" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="supernova">60</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Or <code>subset(df, select = -b)</code>...</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/16632/hadley" title="39258 reputation" class="comment-user">hadley</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment5064329_4605405"><span title="2011-01-05 18:32:25Z" class="relativetime-clean">Jan 5 '11 at 18:32</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-28241196" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">1</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">@mac <a href="http://stackoverflow.com/questions/12850141/programming-safe-version-of-subset-to-evaluate-its-condition-while-called-from/12852005#12852005" title="programming safe version of subset to evaluate its condition while called from">stackoverflow.com/questions/12850141/…</a></span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/636656/ari-b-friedman" title="27011 reputation" class="comment-user">Ari B. Friedman</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment28241196_4605405"><span title="2013-09-30 18:33:01Z" class="relativetime-clean">Sep 30 '13 at 18:33</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+            <div id="comments-link-4605405" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link  dno" title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”."></a><span class="js-link-separator dno">&nbsp;|&nbsp;</span><a class="js-show-link comments-link " title="expand to show all comments on this post, or add one of your own" href="#" onclick="">show <b>4</b> more comments</a>
+            </div>
+    </td>
+</tr>    </tbody></table>
+</div>
+
+  
+<a name="4605269"></a>
+<div id="answer-4605269" class="answer" data-answerid="4605269" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+    <input name="_id_" value="4605269" type="hidden">
+    <a class="vote-up-off" title="This answer is useful">up vote</a>
+    <span itemprop="upvoteCount" class="vote-count-post ">39</span>
+    <a class="vote-down-off" title="This answer is not useful">down vote</a>
+    
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>You could use <code>%in%</code> like this:</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">df</span><span class="pun">[,</span><span class="pln"> </span><span class="pun">!(</span><span class="pln">colnames</span><span class="pun">(</span><span class="pln">df</span><span class="pun">)</span><span class="pln"> </span><span class="pun">%in%</span><span class="pln"> c</span><span class="pun">(</span><span class="str">"x"</span><span class="pun">,</span><span class="str">"bar"</span><span class="pun">,</span><span class="str">"foo"</span><span class="pun">))]</span></code></pre>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/4605269" title="short permalink to this answer" class="short-link" id="link-post-4605269">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/4605269/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info user-hover">
+    <div class="user-action-time">
+        answered <span title="2011-01-05 14:40:26Z" class="relativetime">Jan 5 '11 at 14:40</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/271616/joshua-ulrich"><div class="gravatar-wrapper-32"><img src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/780efa18d6ac335453cddf3713f55b3a.jpg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/271616/joshua-ulrich">Joshua Ulrich</a><br>
+        <span class="reputation-score" title="reputation score 76301" dir="ltr">76.3k</span><span title="9 gold badges"><span class="badge1"></span><span class="badgecount">9</span></span><span title="127 silver badges"><span class="badge2"></span><span class="badgecount">127</span></span><span title="208 bronze badges"><span class="badge3"></span><span class="badgecount">208</span></span>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-4605269" class="comments  dno">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+                        <tr><td></td><td></td></tr>
+                </tbody>
+		    </table>
+	    </div>
+            <div id="comments-link-4605269" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span><a class="js-show-link comments-link dno" title="expand to show all comments on this post, or add one of your own" href="#" onclick=""></a>
+            </div>
+    </td>
+</tr>    </tbody></table>
+</div>
+
+  
+<a name="13371575"></a>
+<div id="answer-13371575" class="answer" data-answerid="13371575" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+    <input name="_id_" value="13371575" type="hidden">
+    <a class="vote-up-off" title="This answer is useful">up vote</a>
+    <span itemprop="upvoteCount" class="vote-count-post ">19</span>
+    <a class="vote-down-off" title="This answer is not useful">down vote</a>
+    
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>If you want remove the columns by reference and avoid the internal copying associated with <code>data.frames</code> then you can use the <code>data.table</code> package and the function <code>:=</code></p>
+
+<p>You can pass a character vector names to the left hand side of the <code>:=</code> operator, and <code>NULL</code> as the RHS.</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">library</span><span class="pun">(</span><span class="pln">data.table</span><span class="pun">)</span><span class="pln">
+
+df </span><span class="pun">&lt;-</span><span class="pln"> data.frame</span><span class="pun">(</span><span class="pln">a</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">,</span><span class="pln"> b</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">,</span><span class="pln"> c</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">,</span><span class="pln"> d</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">)</span><span class="pln">
+DT </span><span class="pun">&lt;-</span><span class="pln"> data.table</span><span class="pun">(</span><span class="pln">df</span><span class="pun">)</span><span class="pln">
+</span><span class="com"># or more simply  DT &lt;- data.table(a=1:10, b=1:10, c=1:10, d=1:10) #</span><span class="pln">
+
+DT</span><span class="pun">[,</span><span class="pln"> c</span><span class="pun">(</span><span class="str">'a'</span><span class="pun">,</span><span class="str">'b'</span><span class="pun">)</span><span class="pln"> </span><span class="pun">:=</span><span class="pln"> </span><span class="lit">NULL</span><span class="pun">]</span></code></pre>
+
+<p>If you want to predefine the names as as character vector outside the call to <code>[</code>, wrap the name of the object in <code>()</code> or <code>{}</code> to force the LHS to be evaluated in the calling scope not as a name within the scope of <code>DT</code>.</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">del </span><span class="pun">&lt;-</span><span class="pln"> c</span><span class="pun">(</span><span class="str">'a'</span><span class="pun">,</span><span class="str">'b'</span><span class="pun">)</span><span class="pln">
+DT </span><span class="pun">&lt;-</span><span class="pln"> data.table</span><span class="pun">(</span><span class="pln">a</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">,</span><span class="pln"> b</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">,</span><span class="pln"> c</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">,</span><span class="pln"> d</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">)</span><span class="pln">
+DT</span><span class="pun">[,</span><span class="pln"> </span><span class="pun">(</span><span class="pln">del</span><span class="pun">)</span><span class="pln"> </span><span class="pun">:=</span><span class="pln"> </span><span class="lit">NULL</span><span class="pun">]</span><span class="pln">
+DT </span><span class="pun">&lt;-</span><span class="pln">  </span><span class="pun">&lt;-</span><span class="pln"> data.table</span><span class="pun">(</span><span class="pln">a</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">,</span><span class="pln"> b</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">,</span><span class="pln"> c</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">,</span><span class="pln"> d</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">)</span><span class="pln">
+DT</span><span class="pun">[,</span><span class="pln"> </span><span class="pun">{</span><span class="pln">del</span><span class="pun">}</span><span class="pln"> </span><span class="pun">:=</span><span class="pln"> </span><span class="lit">NULL</span><span class="pun">]</span><span class="pln">
+</span><span class="com"># force or `c` would also work.   </span></code></pre>
+
+<p>You can also use <code>set</code>, which avoids the overhead of <code>[.data.table</code>, <strong>and also works for <code>data.frames</code>!</strong></p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">df </span><span class="pun">&lt;-</span><span class="pln"> data.frame</span><span class="pun">(</span><span class="pln">a</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">,</span><span class="pln"> b</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">,</span><span class="pln"> c</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">,</span><span class="pln"> d</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">)</span><span class="pln">
+DT </span><span class="pun">&lt;-</span><span class="pln"> data.table</span><span class="pun">(</span><span class="pln">df</span><span class="pun">)</span><span class="pln">
+
+</span><span class="com"># drop `a` from df (no copying involved)</span><span class="pln">
+
+set</span><span class="pun">(</span><span class="pln">df</span><span class="pun">,</span><span class="pln"> j </span><span class="pun">=</span><span class="pln"> </span><span class="str">'a'</span><span class="pun">,</span><span class="pln"> value </span><span class="pun">=</span><span class="pln"> </span><span class="lit">NULL</span><span class="pun">)</span><span class="pln">
+</span><span class="com"># drop `b` from DT (no copying involved)</span><span class="pln">
+set</span><span class="pun">(</span><span class="pln">DT</span><span class="pun">,</span><span class="pln"> j </span><span class="pun">=</span><span class="pln"> </span><span class="str">'b'</span><span class="pun">,</span><span class="pln"> value </span><span class="pun">=</span><span class="pln"> </span><span class="lit">NULL</span><span class="pun">)</span></code></pre>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/13371575" title="short permalink to this answer" class="short-link" id="link-post-13371575">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/13371575/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+    <td class="post-signature" align="right">
+<div class="user-info ">
+    <div class="user-action-time">
+        <a href="http://stackoverflow.com/posts/13371575/revisions" title="show all edits to this post">edited <span title="2014-05-21 01:17:06Z" class="relativetime">May 21 '14 at 1:17</span></a>
+    </div>
+    <div class="user-gravatar32">
+        
+    </div>
+    <div class="user-details">
+        <br>
+        
+    </div>
+</div>    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2012-11-14 01:02:41Z" class="relativetime">Nov 14 '12 at 1:02</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/1385941/mnel"><div class="gravatar-wrapper-32"><img src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/506d1c51192be184eea0d612f7255bd0.jpg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/1385941/mnel">mnel</a><br>
+        <span class="reputation-score" title="reputation score 52646" dir="ltr">52.6k</span><span title="6 gold badges"><span class="badge1"></span><span class="badgecount">6</span></span><span title="90 silver badges"><span class="badge2"></span><span class="badgecount">90</span></span><span title="119 bronze badges"><span class="badge3"></span><span class="badgecount">119</span></span>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-13371575" class="comments  dno">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+                        <tr><td></td><td></td></tr>
+                </tbody>
+		    </table>
+	    </div>
+            <div id="comments-link-13371575" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span><a class="js-show-link comments-link dno" title="expand to show all comments on this post, or add one of your own" href="#" onclick=""></a>
+            </div>
+    </td>
+</tr>    </tbody></table>
+</div>
+
+  
+<a name="4609568"></a>
+<div id="answer-4609568" class="answer" data-answerid="4609568" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+    <input name="_id_" value="4609568" type="hidden">
+    <a class="vote-up-off" title="This answer is useful">up vote</a>
+    <span itemprop="upvoteCount" class="vote-count-post ">18</span>
+    <a class="vote-down-off" title="This answer is not useful">down vote</a>
+    
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>There is a potentially more powerful strategy based on the fact that 
+grep() will return a numeric vector. If you have a long list of 
+variables as I do in one of my dataset, some variables that end in ".A" 
+and others that end in ".B" and you only want the ones that end in ".A" 
+(along with all the variables that don't match either pattern, do this:</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">dfrm2 </span><span class="pun">&lt;-</span><span class="pln"> dfrm</span><span class="pun">[</span><span class="pln"> </span><span class="pun">,</span><span class="pln"> </span><span class="pun">-</span><span class="pln">grep</span><span class="pun">(</span><span class="str">"\\.B$"</span><span class="pun">,</span><span class="pln"> names</span><span class="pun">(</span><span class="pln">dfrm</span><span class="pun">))</span><span class="pln"> </span><span class="pun">]</span></code></pre>
+
+<p>For the case at hand, using Joris Meys example, it might not be as compact, but it would be:</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">DF </span><span class="pun">&lt;-</span><span class="pln"> DF</span><span class="pun">[,</span><span class="pln"> </span><span class="pun">-</span><span class="pln">grep</span><span class="pun">(</span><span class="pln"> paste</span><span class="pun">(</span><span class="str">"^"</span><span class="pun">,</span><span class="pln">drops</span><span class="pun">,</span><span class="str">"$"</span><span class="pun">,</span><span class="pln"> sep</span><span class="pun">=</span><span class="str">""</span><span class="pun">,</span><span class="pln"> collapse</span><span class="pun">=</span><span class="str">"|"</span><span class="pun">),</span><span class="pln"> names</span><span class="pun">(</span><span class="pln">DF</span><span class="pun">)</span><span class="pln"> </span><span class="pun">)]</span></code></pre>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/4609568" title="short permalink to this answer" class="short-link" id="link-post-4609568">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/4609568/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+    <td class="post-signature" align="right">
+<div class="user-info ">
+    <div class="user-action-time">
+        <a href="http://stackoverflow.com/posts/4609568/revisions" title="show all edits to this post">edited <span title="2014-07-24 16:45:59Z" class="relativetime">Jul 24 '14 at 16:45</span></a>
+    </div>
+    <div class="user-gravatar32">
+        
+    </div>
+    <div class="user-details">
+        <br>
+        
+    </div>
+</div>    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info user-hover">
+    <div class="user-action-time">
+        answered <span title="2011-01-05 21:50:03Z" class="relativetime">Jan 5 '11 at 21:50</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/1855677/bondeddust"><div class="gravatar-wrapper-32"><img src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/8b585495801392398cc821e66e2f648f.png" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/1855677/bondeddust">BondedDust</a><br>
+        <span class="reputation-score" title="reputation score 118440" dir="ltr">118k</span><span title="3 gold badges"><span class="badge1"></span><span class="badgecount">3</span></span><span title="78 silver badges"><span class="badge2"></span><span class="badgecount">78</span></span><span title="175 bronze badges"><span class="badge3"></span><span class="badgecount">175</span></span>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-4609568" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="3" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-25961517" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Nice answer! But you should test your code before posting it :-)</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/1877609/antoine-liz%c3%a9e" title="762 reputation" class="comment-user">Antoine Lizée</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment25961517_4609568"><span title="2013-07-22 19:14:43Z" class="relativetime-clean">Jul 22 '13 at 19:14</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-25965831" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">I believe I have addressed the error.</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/1855677/bondeddust" title="118440 reputation" class="comment-user">BondedDust</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment25965831_4609568"><span title="2013-07-22 21:32:26Z" class="relativetime-clean">Jul 22 '13 at 21:32</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-26051397" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">1</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">I edited it for the errors, 
+you could have accepted it. You also need a right bracket inside the 
+indexation of the first code line. + I think that only one use of 
+"paste()" is needed.</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/1877609/antoine-liz%c3%a9e" title="762 reputation" class="comment-user">Antoine Lizée</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment26051397_4609568"><span title="2013-07-24 22:33:00Z" class="relativetime-clean">Jul 24 '13 at 22:33</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-26051692" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Generally SO notifies me if 
+there is an edit waiting for review. I didn't see a notice 2 days ago 
+and I don't see one now. See if my edit works now.</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/1855677/bondeddust" title="118440 reputation" class="comment-user">BondedDust</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment26051692_4609568"><span title="2013-07-24 22:47:32Z" class="relativetime-clean">Jul 24 '13 at 22:47</span></a></span>
+                    <span class="edited-yes" title="this comment was edited 1 time"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-26053249" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Wow that's weird, my edit has
+ been rejected because supposedly 'changing the spirit of the post' even
+ though I just fixed the code (with exactly the changes you made). I 
+don't really know why SO doesn't automatically propose edits for reviews
+ to the writer... Seems good to me now :-), apart from the missing 
+bracket at the end of the first grep.</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/1877609/antoine-liz%c3%a9e" title="762 reputation" class="comment-user">Antoine Lizée</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment26053249_4609568"><span title="2013-07-25 00:16:07Z" class="relativetime-clean">Jul 25 '13 at 0:16</span></a></span>
+                    <span class="edited-yes" title="this comment was edited 1 time"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+            <div id="comments-link-4609568" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link  dno" title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”."></a><span class="js-link-separator dno">&nbsp;|&nbsp;</span><a class="js-show-link comments-link " title="expand to show all comments on this post, or add one of your own" href="#" onclick="">show <b>3</b> more comments</a>
+            </div>
+    </td>
+</tr>    </tbody></table>
+</div>
+
+  
+<a name="16345433"></a>
+<div id="answer-16345433" class="answer" data-answerid="16345433" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+    <input name="_id_" value="16345433" type="hidden">
+    <a class="vote-up-off" title="This answer is useful">up vote</a>
+    <span itemprop="upvoteCount" class="vote-count-post ">11</span>
+    <a class="vote-down-off" title="This answer is not useful">down vote</a>
+    
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>Out of interest, this flags up one of R's weird multiple syntax inconsistencies.  For example given a two-column data frame:</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">df </span><span class="pun">&lt;-</span><span class="pln"> data.frame</span><span class="pun">(</span><span class="pln">x</span><span class="pun">=</span><span class="lit">1</span><span class="pun">,</span><span class="pln"> y</span><span class="pun">=</span><span class="lit">2</span><span class="pun">)</span></code></pre>
+
+<p>This gives a data frame</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">subset</span><span class="pun">(</span><span class="pln">df</span><span class="pun">,</span><span class="pln"> select</span><span class="pun">=-</span><span class="pln">y</span><span class="pun">)</span></code></pre>
+
+<p>but this gives a vector</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">df</span><span class="pun">[,</span><span class="lit">-2</span><span class="pun">]</span></code></pre>
+
+<p>This is all explained in <code>?[</code> but it's not exactly expected behaviour.  Well at least not to me...</p>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/16345433" title="short permalink to this answer" class="short-link" id="link-post-16345433">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/16345433/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2013-05-02 18:42:27Z" class="relativetime">May 2 '13 at 18:42</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/694488/jkeirstead"><div class="gravatar-wrapper-32"><img src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/a2e8bcadd1cfe06d999aba7330617651.jpg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/694488/jkeirstead">jkeirstead</a><br>
+        <span class="reputation-score" title="reputation score " dir="ltr">392</span><span title="3 silver badges"><span class="badge2"></span><span class="badgecount">3</span></span><span title="13 bronze badges"><span class="badge3"></span><span class="badgecount">13</span></span>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-16345433" class="comments  dno">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+                        <tr><td></td><td></td></tr>
+                </tbody>
+		    </table>
+	    </div>
+            <div id="comments-link-16345433" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span><a class="js-show-link comments-link dno" title="expand to show all comments on this post, or add one of your own" href="#" onclick=""></a>
+            </div>
+    </td>
+</tr>    </tbody></table>
+</div>
+
+  
+<a name="19072346"></a>
+<div id="answer-19072346" class="answer" data-answerid="19072346" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+    <input name="_id_" value="19072346" type="hidden">
+    <a class="vote-up-off" title="This answer is useful">up vote</a>
+    <span itemprop="upvoteCount" class="vote-count-post ">10</span>
+    <a class="vote-down-off" title="This answer is not useful">down vote</a>
+    
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>In addition to the subset and names() + %in% solutions, you can use within and rm, e.g.:</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">within</span><span class="pun">(</span><span class="pln">df</span><span class="pun">,</span><span class="pln"> rm</span><span class="pun">(</span><span class="pln">x</span><span class="pun">))</span></code></pre>
+
+<p>or for multiple variables:</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">within</span><span class="pun">(</span><span class="pln">df</span><span class="pun">,</span><span class="pln"> rm</span><span class="pun">(</span><span class="pln">x</span><span class="pun">,</span><span class="pln"> y</span><span class="pun">))</span></code></pre>
+
+<p>If you're dealing with data.tables it's even easier (per <a href="http://stackoverflow.com/q/9202413">How do you delete a column in data.table?</a>):</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">dt</span><span class="pun">[,</span><span class="pln"> x </span><span class="pun">:=</span><span class="pln"> </span><span class="lit">NULL</span><span class="pun">]</span><span class="pln">   </span><span class="com"># deletes column x by reference instantly</span><span class="pln">
+
+dt</span><span class="pun">[,</span><span class="pln"> </span><span class="pun">!</span><span class="str">"x"</span><span class="pun">,</span><span class="pln"> with</span><span class="pun">=</span><span class="pln">F</span><span class="pun">]</span><span class="pln">   </span><span class="com"># selects all but x into a new data.table</span></code></pre>
+
+<p>or for multiple variables</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">dt</span><span class="pun">[,</span><span class="pln"> c</span><span class="pun">(</span><span class="str">"x"</span><span class="pun">,</span><span class="str">"y"</span><span class="pun">)</span><span class="pln"> </span><span class="pun">:=</span><span class="pln"> </span><span class="lit">NULL</span><span class="pun">]</span><span class="pln">
+
+dt</span><span class="pun">[,</span><span class="pln"> </span><span class="pun">!</span><span class="pln">c</span><span class="pun">(</span><span class="str">"x"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"y"</span><span class="pun">),</span><span class="pln"> with</span><span class="pun">=</span><span class="pln">F</span><span class="pun">]</span></code></pre>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/19072346" title="short permalink to this answer" class="short-link" id="link-post-19072346">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/19072346/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+    <td class="post-signature" align="right">
+<div class="user-info user-hover">
+    <div class="user-action-time">
+        <a href="http://stackoverflow.com/posts/19072346/revisions" title="show all edits to this post">edited <span title="2013-09-30 18:05:22Z" class="relativetime">Sep 30 '13 at 18:05</span></a>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/403310/matt-dowle"><div class="gravatar-wrapper-32"><img src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/AdypU.jpg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/403310/matt-dowle">Matt Dowle</a><br>
+        <span class="reputation-score" title="reputation score 23224" dir="ltr">23.2k</span><span title="5 gold badges"><span class="badge1"></span><span class="badgecount">5</span></span><span title="58 silver badges"><span class="badge2"></span><span class="badgecount">58</span></span><span title="112 bronze badges"><span class="badge3"></span><span class="badgecount">112</span></span>
+    </div>
+</div>    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2013-09-28 22:28:56Z" class="relativetime">Sep 28 '13 at 22:28</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/1840471/max-ghenis"><div class="gravatar-wrapper-32"><img src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/dnKrL.jpg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/1840471/max-ghenis">Max Ghenis</a><br>
+        <span class="reputation-score" title="reputation score " dir="ltr">558</span><span title="5 silver badges"><span class="badge2"></span><span class="badgecount">5</span></span><span title="14 bronze badges"><span class="badge3"></span><span class="badgecount">14</span></span>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-19072346" class="comments  dno">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+                        <tr><td></td><td></td></tr>
+                </tbody>
+		    </table>
+	    </div>
+            <div id="comments-link-19072346" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span><a class="js-show-link comments-link dno" title="expand to show all comments on this post, or add one of your own" href="#" onclick=""></a>
+            </div>
+    </td>
+</tr>    </tbody></table>
+</div>
+
+  
+<a name="21719511"></a>
+<div id="answer-21719511" class="answer" data-answerid="21719511" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+    <input name="_id_" value="21719511" type="hidden">
+    <a class="vote-up-off" title="This answer is useful">up vote</a>
+    <span itemprop="upvoteCount" class="vote-count-post ">9</span>
+    <a class="vote-down-off" title="This answer is not useful">down vote</a>
+    
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>list(NULL) also works:</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pun">&gt;</span><span class="pln"> dat </span><span class="pun">&lt;-</span><span class="pln"> mtcars
+</span><span class="pun">&gt;</span><span class="pln"> colnames</span><span class="pun">(</span><span class="pln">dat</span><span class="pun">)</span><span class="pln">
+ </span><span class="pun">[</span><span class="lit">1</span><span class="pun">]</span><span class="pln"> </span><span class="str">"mpg"</span><span class="pln">  </span><span class="str">"cyl"</span><span class="pln">  </span><span class="str">"disp"</span><span class="pln"> </span><span class="str">"hp"</span><span class="pln">   </span><span class="str">"drat"</span><span class="pln"> </span><span class="str">"wt"</span><span class="pln">   </span><span class="str">"qsec"</span><span class="pln"> </span><span class="str">"vs"</span><span class="pln">   </span><span class="str">"am"</span><span class="pln">   </span><span class="str">"gear"</span><span class="pln">
+</span><span class="pun">[</span><span class="lit">11</span><span class="pun">]</span><span class="pln"> </span><span class="str">"carb"</span><span class="pln">
+</span><span class="pun">&gt;</span><span class="pln"> dat</span><span class="pun">[,</span><span class="pln">c</span><span class="pun">(</span><span class="str">"mpg"</span><span class="pun">,</span><span class="str">"cyl"</span><span class="pun">,</span><span class="str">"wt"</span><span class="pun">)]</span><span class="pln"> </span><span class="pun">&lt;-</span><span class="pln"> list</span><span class="pun">(</span><span class="lit">NULL</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">&gt;</span><span class="pln"> colnames</span><span class="pun">(</span><span class="pln">dat</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">[</span><span class="lit">1</span><span class="pun">]</span><span class="pln"> </span><span class="str">"disp"</span><span class="pln"> </span><span class="str">"hp"</span><span class="pln">   </span><span class="str">"drat"</span><span class="pln"> </span><span class="str">"qsec"</span><span class="pln"> </span><span class="str">"vs"</span><span class="pln">   </span><span class="str">"am"</span><span class="pln">   </span><span class="str">"gear"</span><span class="pln"> </span><span class="str">"carb"</span></code></pre>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/21719511" title="short permalink to this answer" class="short-link" id="link-post-21719511">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/21719511/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2014-02-12 05:34:52Z" class="relativetime">Feb 12 '14 at 5:34</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/1974918/vincent"><div class="gravatar-wrapper-32"><img src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/ne8IU.jpg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/1974918/vincent">Vincent</a><br>
+        <span class="reputation-score" title="reputation score " dir="ltr">1,819</span><span title="6 silver badges"><span class="badge2"></span><span class="badgecount">6</span></span><span title="14 bronze badges"><span class="badge3"></span><span class="badgecount">14</span></span>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-21719511" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-36542400" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">1</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Brilliant! This extends the 
+NULL assignment to a single column in a natural way, and (seemingly) 
+avoids copying (although I don't know what happens under the hood so it 
+may be no more efficient in memory usage ... but seems to me clearly 
+more efficient syntactically.)</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/234784/c-urchin" title="1110 reputation" class="comment-user">c-urchin</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment36542400_21719511"><span title="2014-05-20 16:15:48Z" class="relativetime-clean">May 20 '14 at 16:15</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-38126295" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">3</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">You do not need list(NULL), NULL is sufficient. e.g: dat[,4]=NULL</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/1919382/cousincocaine" title="391 reputation" class="comment-user">CousinCocaine</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment38126295_21719511"><span title="2014-07-07 08:29:07Z" class="relativetime-clean">Jul 7 '14 at 8:29</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-40462559" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">OP's question was how to 
+delete multiple columns. dat[,4:5] &lt;- NULL won't work. That is where 
+list(NULL) comes in. It works for 1 or more columns.</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/1974918/vincent" title="1819 reputation" class="comment-user">Vincent</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment40462559_21719511"><span title="2014-09-16 00:01:45Z" class="relativetime-clean">Sep 16 '14 at 0:01</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+            <div id="comments-link-21719511" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span><a class="js-show-link comments-link dno" title="expand to show all comments on this post, or add one of your own" href="#" onclick=""></a>
+            </div>
+    </td>
+</tr>    </tbody></table>
+</div>
+
+  
+<a name="8811993"></a>
+<div id="answer-8811993" class="answer" data-answerid="8811993" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+    <input name="_id_" value="8811993" type="hidden">
+    <a class="vote-up-off" title="This answer is useful">up vote</a>
+    <span itemprop="upvoteCount" class="vote-count-post ">8</span>
+    <a class="vote-down-off" title="This answer is not useful">down vote</a>
+    
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>Another possibility:</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">df </span><span class="pun">&lt;-</span><span class="pln"> df</span><span class="pun">[,</span><span class="pln"> setdiff</span><span class="pun">(</span><span class="pln">names</span><span class="pun">(</span><span class="pln">df</span><span class="pun">),</span><span class="pln"> c</span><span class="pun">(</span><span class="str">"a"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"c"</span><span class="pun">))]</span></code></pre>
+
+<p>or</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">df </span><span class="pun">&lt;-</span><span class="pln"> df</span><span class="pun">[,</span><span class="pln"> grep</span><span class="pun">(</span><span class="str">'^(a|c)$'</span><span class="pun">,</span><span class="pln"> names</span><span class="pun">(</span><span class="pln">df</span><span class="pun">),</span><span class="pln"> invert</span><span class="pun">=</span><span class="lit">TRUE</span><span class="pun">)]</span></code></pre>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/8811993" title="short permalink to this answer" class="short-link" id="link-post-8811993">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/8811993/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+    <td class="post-signature" align="right">
+<div class="user-info ">
+    <div class="user-action-time">
+        <a href="http://stackoverflow.com/posts/8811993/revisions" title="show all edits to this post">edited <span title="2012-01-11 19:07:36Z" class="relativetime">Jan 11 '12 at 19:07</span></a>
+    </div>
+    <div class="user-gravatar32">
+        
+    </div>
+    <div class="user-details">
+        <br>
+        
+    </div>
+</div>    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2012-01-10 23:17:34Z" class="relativetime">Jan 10 '12 at 23:17</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/1106621/scentoni"><div class="gravatar-wrapper-32"><img src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/29c7c7615bc78e0230b0577b1a9b392b.png" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/1106621/scentoni">scentoni</a><br>
+        <span class="reputation-score" title="reputation score " dir="ltr">189</span><span title="2 silver badges"><span class="badge2"></span><span class="badgecount">2</span></span><span title="2 bronze badges"><span class="badge3"></span><span class="badgecount">2</span></span>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-8811993" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-11005878" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Note that the closing ")" of grep function should be moved further so as to include the x and invert arguments.</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/1079872/mbask" title="1142 reputation" class="comment-user">mbask</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment11005878_8811993"><span title="2012-01-11 11:19:05Z" class="relativetime-clean">Jan 11 '12 at 11:19</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-11016413" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">@Charlie oops, thanks--fixed now.</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/1106621/scentoni" title="189 reputation" class="comment-user">scentoni</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment11016413_8811993"><span title="2012-01-11 19:08:26Z" class="relativetime-clean">Jan 11 '12 at 19:08</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-34492960" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Too bad that this is not upvoted more because use of <code>setdiff</code> is the optimal especially in the case of a very large number of columns.</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/1504321/ctbrown" title="752 reputation" class="comment-user">ctbrown</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment34492960_8811993"><span title="2014-03-25 21:42:04Z" class="relativetime-clean">Mar 25 '14 at 21:42</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+            <div id="comments-link-8811993" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span><a class="js-show-link comments-link dno" title="expand to show all comments on this post, or add one of your own" href="#" onclick=""></a>
+            </div>
+    </td>
+</tr>    </tbody></table>
+</div>
+
+  
+<a name="19729628"></a>
+<div id="answer-19729628" class="answer" data-answerid="19729628" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+    <input name="_id_" value="19729628" type="hidden">
+    <a class="vote-up-off" title="This answer is useful">up vote</a>
+    <span itemprop="upvoteCount" class="vote-count-post ">6</span>
+    <a class="vote-down-off" title="This answer is not useful">down vote</a>
+    
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>Quick-R has a very nice page describing how to subset data based on observation(rows) or variable(columns):
+<a href="http://www.statmethods.net/management/subset.html">http://www.statmethods.net/management/subset.html</a></p>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/19729628" title="short permalink to this answer" class="short-link" id="link-post-19729628">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/19729628/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2013-11-01 15:15:50Z" class="relativetime">Nov 1 '13 at 15:15</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/2945415/kyw"><div><img src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/8e7f9c537a2c5618efa60533da21f031.png" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/2945415/kyw">KYW</a><br>
+        <span class="reputation-score" title="reputation score " dir="ltr">61</span><span title="1 silver badge"><span class="badge2"></span><span class="badgecount">1</span></span><span title="1 bronze badge"><span class="badge3"></span><span class="badgecount">1</span></span>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-19729628" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-39789453" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">This was the most helpful of all the comments here. Thanks!</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/1388280/george-d-girton" title="141 reputation" class="comment-user">George D Girton</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment39789453_19729628"><span title="2014-08-25 18:50:11Z" class="relativetime-clean">Aug 25 '14 at 18:50</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+            <div id="comments-link-19729628" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span><a class="js-show-link comments-link dno" title="expand to show all comments on this post, or add one of your own" href="#" onclick=""></a>
+            </div>
+    </td>
+</tr>    </tbody></table>
+</div>
+
+  
+<a name="4607063"></a>
+<div id="answer-4607063" class="answer" data-answerid="4607063" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+    <input name="_id_" value="4607063" type="hidden">
+    <a class="vote-up-off" title="This answer is useful">up vote</a>
+    <span itemprop="upvoteCount" class="vote-count-post ">5</span>
+    <a class="vote-down-off" title="This answer is not useful">down vote</a>
+    
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>I keep thinking there must be a better idiom, but for subtraction of columns by name, I tend to do the following:</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">df </span><span class="pun">&lt;-</span><span class="pln"> data.frame</span><span class="pun">(</span><span class="pln">a</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">,</span><span class="pln"> b</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">,</span><span class="pln"> c</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">,</span><span class="pln"> d</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">)</span><span class="pln">
+
+</span><span class="com"># return everything except a and c</span><span class="pln">
+df </span><span class="pun">&lt;-</span><span class="pln"> df</span><span class="pun">[,-</span><span class="pln">match</span><span class="pun">(</span><span class="pln">c</span><span class="pun">(</span><span class="str">"a"</span><span class="pun">,</span><span class="str">"c"</span><span class="pun">),</span><span class="pln">names</span><span class="pun">(</span><span class="pln">df</span><span class="pun">))]</span><span class="pln">
+df</span></code></pre>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/4607063" title="short permalink to this answer" class="short-link" id="link-post-4607063">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/4607063/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info user-hover">
+    <div class="user-action-time">
+        answered <span title="2011-01-05 17:21:58Z" class="relativetime">Jan 5 '11 at 17:21</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/37751/jd-long"><div class="gravatar-wrapper-32"><img src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/GiarY.jpg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/37751/jd-long">JD Long</a><br>
+        <span class="reputation-score" title="reputation score 22736" dir="ltr">22.7k</span><span title="24 gold badges"><span class="badge1"></span><span class="badgecount">24</span></span><span title="103 silver badges"><span class="badge2"></span><span class="badgecount">103</span></span><span title="196 bronze badges"><span class="badge3"></span><span class="badgecount">196</span></span>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-4607063" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-5064341" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">2</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Not a good idea to negate match - <code>df[,-match(c("e","f"),names(df))]</code></span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/16632/hadley" title="39258 reputation" class="comment-user">hadley</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment5064341_4607063"><span title="2011-01-05 18:33:24Z" class="relativetime-clean">Jan 5 '11 at 18:33</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-5101857" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">1</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Uh oh, really? Why not?</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/37751/jd-long" title="22736 reputation" class="comment-user">JD Long</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment5101857_4607063"><span title="2011-01-08 22:17:10Z" class="relativetime-clean">Jan 8 '11 at 22:17</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-21693213" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">@hadley why not?</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/513006/abe" title="1487 reputation" class="comment-user">Abe</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment21693213_4607063"><span title="2013-03-12 07:37:42Z" class="relativetime-clean">Mar 12 '13 at 7:37</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-21793563" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">3</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Because of the example I gave: if there are no matches you get an error</span>
+                –&nbsp;
+                    <a href="http://stackoverflow.com/users/16632/hadley" title="39258 reputation" class="comment-user">hadley</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment21793563_4607063"><span title="2013-03-14 15:23:52Z" class="relativetime-clean">Mar 14 '13 at 15:23</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+            <div id="comments-link-4607063" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span><a class="js-show-link comments-link dno" title="expand to show all comments on this post, or add one of your own" href="#" onclick=""></a>
+            </div>
+    </td>
+</tr>    </tbody></table>
+</div>
+
+  
+<a name="24318269"></a>
+<div id="answer-24318269" class="answer" data-answerid="24318269" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+    <input name="_id_" value="24318269" type="hidden">
+    <a class="vote-up-off" title="This answer is useful">up vote</a>
+    <span itemprop="upvoteCount" class="vote-count-post ">3</span>
+    <a class="vote-down-off" title="This answer is not useful">down vote</a>
+    
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">DF </span><span class="pun">&lt;-</span><span class="pln"> data.frame</span><span class="pun">(</span><span class="pln">
+  x</span><span class="pun">=</span><span class="lit">1</span><span class="pun">:</span><span class="lit">10</span><span class="pun">,</span><span class="pln">
+  y</span><span class="pun">=</span><span class="lit">10</span><span class="pun">:</span><span class="lit">1</span><span class="pun">,</span><span class="pln">
+  z</span><span class="pun">=</span><span class="pln">rep</span><span class="pun">(</span><span class="lit">5</span><span class="pun">,</span><span class="lit">10</span><span class="pun">),</span><span class="pln">
+  a</span><span class="pun">=</span><span class="lit">11</span><span class="pun">:</span><span class="lit">20</span><span class="pln">
+</span><span class="pun">)</span><span class="pln">
+DF</span><span class="pun">[</span><span class="pln">c</span><span class="pun">(</span><span class="str">"a"</span><span class="pun">,</span><span class="str">"x"</span><span class="pun">)]</span><span class="pln"> </span><span class="pun">&lt;-</span><span class="pln"> list</span><span class="pun">(</span><span class="lit">NULL</span><span class="pun">)</span></code></pre>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/24318269" title="short permalink to this answer" class="short-link" id="link-post-24318269">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/24318269/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2014-06-20 00:27:53Z" class="relativetime">Jun 20 '14 at 0:27</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/2906900/kun-ren"><div class="gravatar-wrapper-32"><img src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/2V3ON.jpg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/2906900/kun-ren">Kun Ren</a><br>
+        <span class="reputation-score" title="reputation score " dir="ltr">663</span><span title="3 silver badges"><span class="badge2"></span><span class="badgecount">3</span></span><span title="10 bronze badges"><span class="badge3"></span><span class="badgecount">10</span></span>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-24318269" class="comments  dno">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+                        <tr><td></td><td></td></tr>
+                </tbody>
+		    </table>
+	    </div>
+            <div id="comments-link-24318269" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span><a class="js-show-link comments-link dno" title="expand to show all comments on this post, or add one of your own" href="#" onclick=""></a>
+            </div>
+    </td>
+</tr>    </tbody></table>
+</div>
+
+  
+<a name="25533002"></a>
+<div id="answer-25533002" class="answer" data-answerid="25533002" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+    <input name="_id_" value="25533002" type="hidden">
+    <a class="vote-up-off" title="This answer is useful">up vote</a>
+    <span itemprop="upvoteCount" class="vote-count-post ">3</span>
+    <a class="vote-down-off" title="This answer is not useful">down vote</a>
+    
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>Here is a <code>dplyr</code> way to go about it:</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="com">#df[ -c(1,3:6, 12) ]  # original</span><span class="pln">
+df.cut </span><span class="pun">&lt;-</span><span class="pln"> df </span><span class="pun">%.%</span><span class="pln"> select</span><span class="pun">(-</span><span class="pln">col.to.drop.1</span><span class="pun">,</span><span class="pln"> </span><span class="pun">-</span><span class="pln">col.to.drop.2</span><span class="pun">,</span><span class="pln"> </span><span class="lit">...</span><span class="pun">,</span><span class="pln"> </span><span class="pun">-</span><span class="pln">col.to.drop.6</span><span class="pun">)</span><span class="pln">  </span><span class="com"># with dplyr::select()</span></code></pre>
+
+<p>I like this because it's intuitive to read &amp; understand without 
+annotation and robust to columns changing position within the data 
+frame. It also follows the vectorized idiom using <code>-</code> to remove elements.</p>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/25533002" title="short permalink to this answer" class="short-link" id="link-post-25533002">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/25533002/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+    <td class="post-signature" align="right">
+<div class="user-info ">
+    <div class="user-action-time">
+        <a href="http://stackoverflow.com/posts/25533002/revisions" title="show all edits to this post">edited <span title="2014-08-27 17:22:15Z" class="relativetime">Aug 27 '14 at 17:22</span></a>
+    </div>
+    <div class="user-gravatar32">
+        
+    </div>
+    <div class="user-details">
+        <br>
+        
+    </div>
+</div>    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2014-08-27 17:01:54Z" class="relativetime">Aug 27 '14 at 17:01</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/1546381/c-gutierrez"><div class="gravatar-wrapper-32"><img src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/6e7d108389a67ec8ec6313b10bd8fdc3.jpg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/1546381/c-gutierrez">c.gutierrez</a><br>
+        <span class="reputation-score" title="reputation score " dir="ltr">587</span><span title="3 silver badges"><span class="badge2"></span><span class="badgecount">3</span></span><span title="9 bronze badges"><span class="badge3"></span><span class="badgecount">9</span></span>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-25533002" class="comments  dno">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+                        <tr><td></td><td></td></tr>
+                </tbody>
+		    </table>
+	    </div>
+            <div id="comments-link-25533002" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span><a class="js-show-link comments-link dno" title="expand to show all comments on this post, or add one of your own" href="#" onclick=""></a>
+            </div>
+    </td>
+</tr>    </tbody></table>
+</div>
+
+  
+<a name="27082262"></a>
+<div id="answer-27082262" class="answer" data-answerid="27082262" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+    <input name="_id_" value="27082262" type="hidden">
+    <a class="vote-up-off" title="This answer is useful">up vote</a>
+    <span itemprop="upvoteCount" class="vote-count-post ">1</span>
+    <a class="vote-down-off" title="This answer is not useful">down vote</a>
+    
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>Another <code>dplyr</code> answer.  If your variables have some common naming structure, you might try <code>starts_with()</code>.  For example</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">library</span><span class="pun">(</span><span class="pln">dplyr</span><span class="pun">)</span><span class="pln">
+df </span><span class="pun">&lt;-</span><span class="pln"> data.frame</span><span class="pun">(</span><span class="pln">var1 </span><span class="pun">=</span><span class="pln"> rnorm</span><span class="pun">(</span><span class="lit">5</span><span class="pun">),</span><span class="pln"> var2 </span><span class="pun">=</span><span class="pln"> rnorm</span><span class="pun">(</span><span class="lit">5</span><span class="pun">),</span><span class="pln"> var3 </span><span class="pun">=</span><span class="pln"> rnorm </span><span class="pun">(</span><span class="lit">5</span><span class="pun">),</span><span class="pln"> 
+                 var4 </span><span class="pun">=</span><span class="pln"> rnorm</span><span class="pun">(</span><span class="lit">5</span><span class="pun">),</span><span class="pln"> char1 </span><span class="pun">=</span><span class="pln"> rnorm</span><span class="pun">(</span><span class="lit">5</span><span class="pun">),</span><span class="pln"> char2 </span><span class="pun">=</span><span class="pln"> rnorm</span><span class="pun">(</span><span class="lit">5</span><span class="pun">))</span><span class="pln">
+df
+</span><span class="com">#        var2      char1        var4       var3       char2       var1</span><span class="pln">
+</span><span class="com">#1 -0.4629512 -0.3595079 -0.04763169  0.6398194  0.70996579 0.75879754</span><span class="pln">
+</span><span class="com">#2  0.5489027  0.1572841 -1.65313658 -1.3228020 -1.42785427 0.31168919</span><span class="pln">
+</span><span class="com">#3 -0.1707694 -0.9036500  0.47583030 -0.6636173  0.02116066 0.03983268</span><span class="pln">
+df1 </span><span class="pun">&lt;-</span><span class="pln"> df </span><span class="pun">%&gt;%</span><span class="pln"> select</span><span class="pun">(-</span><span class="pln">starts_with</span><span class="pun">(</span><span class="str">"char"</span><span class="pun">))</span><span class="pln">
+df1
+</span><span class="com">#        var2        var4       var3       var1</span><span class="pln">
+</span><span class="com">#1 -0.4629512 -0.04763169  0.6398194 0.75879754</span><span class="pln">
+</span><span class="com">#2  0.5489027 -1.65313658 -1.3228020 0.31168919</span><span class="pln">
+</span><span class="com">#3 -0.1707694  0.47583030 -0.6636173 0.03983268</span></code></pre>
+
+<p>If you want to drop a sequence of variables in the data frame, you can use <code>:</code>.  For example if you wanted to drop <code>var2</code>, <code>var3</code>, and <em>all</em> variables in between, you'd just be left with <code>var1</code>:</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">df2 </span><span class="pun">&lt;-</span><span class="pln"> df1 </span><span class="pun">%&gt;%</span><span class="pln"> select</span><span class="pun">(-</span><span class="pln">c</span><span class="pun">(</span><span class="pln">var2</span><span class="pun">:</span><span class="pln">var3</span><span class="pun">)</span><span class="pln"> </span><span class="pun">)</span><span class="pln">  
+df2
+</span><span class="com">#        var1</span><span class="pln">
+</span><span class="com">#1 0.75879754</span><span class="pln">
+</span><span class="com">#2 0.31168919</span><span class="pln">
+</span><span class="com">#3 0.03983268</span></code></pre>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/27082262" title="short permalink to this answer" class="short-link" id="link-post-27082262">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/27082262/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2014-11-22 20:37:02Z" class="relativetime">Nov 22 '14 at 20:37</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/3371532/pat-w"><div><img src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/8bd1c45398f4c1ec87bc9267c80916d7.png" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/3371532/pat-w">Pat W.</a><br>
+        <span class="reputation-score" title="reputation score " dir="ltr">181</span><span title="1 silver badge"><span class="badge2"></span><span class="badgecount">1</span></span><span title="17 bronze badges"><span class="badge3"></span><span class="badgecount">17</span></span>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-27082262" class="comments  dno">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+                        <tr><td></td><td></td></tr>
+                </tbody>
+		    </table>
+	    </div>
+            <div id="comments-link-27082262" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span><a class="js-show-link comments-link dno" title="expand to show all comments on this post, or add one of your own" href="#" onclick=""></a>
+            </div>
+    </td>
+</tr>    </tbody></table>
+</div>
+
+  
+<a name="27296084"></a>
+<div id="answer-27296084" class="answer" data-answerid="27296084" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+    <input name="_id_" value="27296084" type="hidden">
+    <a class="vote-up-off" title="This answer is useful">up vote</a>
+    <span itemprop="upvoteCount" class="vote-count-post ">1</span>
+    <a class="vote-down-off" title="This answer is not useful">down vote</a>
+    
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>There's a function called <code>dropNamed()</code> in Bernd Bischl's <code>BBmisc</code> package that does exactly this.</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">BBmisc</span><span class="pun">::</span><span class="pln">dropNamed</span><span class="pun">(</span><span class="pln">df</span><span class="pun">,</span><span class="pln"> </span><span class="str">"x"</span><span class="pun">)</span></code></pre>
+
+<p>The advantage is that it avoids repeating the data frame argument and thus is suitable for piping in <code>magrittr</code> (just like the <code>dplyr</code> approaches):</p>
+
+<pre style="" class="lang-r prettyprint prettyprinted"><code><span class="pln">df </span><span class="pun">%&gt;%</span><span class="pln"> BBmisc</span><span class="pun">::</span><span class="pln">dropNamed</span><span class="pun">(</span><span class="str">"x"</span><span class="pun">)</span></code></pre>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/27296084" title="short permalink to this answer" class="short-link" id="link-post-27296084">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/27296084/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2014-12-04 14:06:22Z" class="relativetime">Dec 4 '14 at 14:06</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/946850/krlmlr"><div class="gravatar-wrapper-32"><img src="Drop%20Columns%20R%20Data%20frame%20-%20Stack%20Overflow_files/cd2b0800be217835ac2c333a654fa67f.png" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/946850/krlmlr">krlmlr</a><br>
+        <span class="reputation-score" title="reputation score " dir="ltr">6,348</span><span title="2 gold badges"><span class="badge1"></span><span class="badgecount">2</span></span><span title="22 silver badges"><span class="badge2"></span><span class="badgecount">22</span></span><span title="57 bronze badges"><span class="badge3"></span><span class="badgecount">57</span></span>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-27296084" class="comments  dno">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+                        <tr><td></td><td></td></tr>
+                </tbody>
+		    </table>
+	    </div>
+            <div id="comments-link-27296084" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span><a class="js-show-link comments-link dno" title="expand to show all comments on this post, or add one of your own" href="#" onclick=""></a>
+            </div>
+    </td>
+</tr>    </tbody></table>
+</div>
+									<a name="new-answer"></a>
+						<form id="post-form" action="/questions/4605206/answer/submit" method="post" class="post-form">
+						    <input id="post-id" value="4605206" type="hidden">
+                            <input id="qualityBanWarningShown" name="qualityBanWarningShown" value="false" type="hidden">
+                            <input name="referrer" value="http://www.google.es/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;ved=0CCMQFjAA&amp;url=http%3A%2F%2Fstackoverflow.com%2Fquestions%2F4605206%2Fdrop-columns-r-data-frame&amp;ei=dQrpVIalOsv3UtK7gfgL&amp;usg=AFQjCNGTIfi9nyRWe8arUaVTsRboM9t5Tw&amp;bvm=bv.86475890,d.d24" type="hidden">
+							<h2 class="space">Your Answer</h2>
+
+
+
+            <script>
+            StackExchange.ifUsing("editor", function () {
+                StackExchange.using("externalEditor", function () {
+                    StackExchange.using("snippets", function () {
+                        StackExchange.snippets.init();
+                    });
+                });
+            }, "code-snippets");
+        </script>
+    
+
+<script>
+    StackExchange.ready(function() {
+        initTagRenderer("".split(" "), "".split(" "));
+       
+        StackExchange.using("externalEditor", function() {
+            // Have to fire editor after snippets, if snippets enabled
+            if (StackExchange.options.snippets.enabled) {
+                StackExchange.using("snippets", function() {
+                    createEditor();
+                });
+            }
+            else {
+                createEditor();
+            }
+        });
+
+        function createEditor() {
+            prepareEditor({
+                heartbeatType: 'answer',
+                bindNavPrevention: true,
+                postfix: "",
+                    onDemand: true,
+                    discardSelector: ".discard-answer"
+                ,immediatelyShowMarkdownHelp:true
+                });
+                
+
+        }
+    });  
+</script>
+
+
+<div id="post-editor" class="post-editor">
+
+    <div style="position: relative;">     
+        <div class="wmd-container">
+            <div id="wmd-button-bar" class="wmd-button-bar"><ul id="wmd-button-row" class="wmd-button-row"><li style="left: 0px;" class="wmd-button" id="wmd-bold-button"><span style="background-position: 0px -20px;"></span></li><li style="left: 25px;" class="wmd-button" id="wmd-italic-button"><span style="background-position: -20px -20px;"></span></li><li style="left: 50px;" class="wmd-spacer" id="wmd-spacer1"><span style="background-position: -40px -20px;"></span></li><li style="left: 75px;" class="wmd-button" id="wmd-link-button"><span style="background-position: -40px -20px;"></span></li><li style="left: 100px;" class="wmd-button" id="wmd-quote-button"><span style="background-position: -60px -20px;"></span></li><li style="left: 125px;" class="wmd-button" id="wmd-code-button"><span style="background-position: -80px -20px;"></span></li><li style="left: 150px;" class="wmd-button" id="wmd-image-button"><span style="background-position: -100px -20px;"></span></li><li style="left: 175px;" class="wmd-spacer" id="wmd-spacer2"><span style="background-position: -120px -20px;"></span></li><li style="left: 200px;" class="wmd-button" id="wmd-olist-button"><span style="background-position: -120px -20px;"></span></li><li style="left: 225px;" class="wmd-button" id="wmd-ulist-button"><span style="background-position: -140px -20px;"></span></li><li style="left: 250px;" class="wmd-button" id="wmd-heading-button"><span style="background-position: -160px -20px;"></span></li><li style="left: 275px;" class="wmd-button" id="wmd-hr-button"><span style="background-position: -180px -20px;"></span></li><li style="left: 300px;" class="wmd-spacer" id="wmd-spacer3"><span style="background-position: -200px -20px;"></span></li><li style="left: 325px;" class="wmd-button" id="wmd-undo-button"><span style="background-position: -200px -20px;"></span></li><li style="left: 350px;" class="wmd-button" id="wmd-redo-button"><span style="background-position: -220px -20px;"></span></li></ul></div>
+            <textarea id="wmd-input" class="wmd-input" name="post-text" cols="92" rows="15" tabindex="101" data-min-length=""></textarea>
+        </div>
+    </div>
+
+    <div class="fl" style="margin-top: 8px; height:24px;">&nbsp;</div>
+    <div id="draft-saved" class="draft-saved community-option fl" style="margin-top: 8px; height:24px; display:none;">draft saved</div>
+
+    <div id="draft-discarded" class="draft-discarded community-option fl" style="margin-top: 8px; height:24px; display:none;">draft discarded</div>
+
+
+
+    <div id="wmd-preview" class="wmd-preview"></div>
+    <div></div>
+    <div class="edit-block">
+        <input id="fkey" name="fkey" value="a675f88a32f6dab047142b3670e2a4c8" type="hidden">
+        <input id="author" name="author" type="text">
+    </div>
+</div>
+							<div style="position: relative;">
+								
+            <div class="form-item new-post-login">
+        
+                <div class="new-login-form">
+                    <div class="new-login-left">
+                        <h3>Sign up or <a id="login-link" href="http://stackoverflow.com/users/login?returnurl=%2fquestions%2f4605206%2fdrop-columns-r-data-frame%23new-answer">log in</a></h3>
+                        <script>
+                            StackExchange.ready(function () {
+                                StackExchange.helpers.onClickDraftSave('#login-link');
+                            });
+                        </script>
+                        <div class="preferred-login google-login">
+                            <p><span class="icon"></span><span>Sign up using Google</span></p>
+                        </div>
+                        <div class="preferred-login facebook-login">
+                            <p><span class="icon"></span><span>Sign up using Facebook</span></p>
+                        </div>
+                        <div class="preferred-login stackexchange-login">
+                            <p><span class="icon"></span><span>Sign up using Stack Exchange</span></p>
+                        </div>
+                    </div>
+                    <input name="manual-openid" class="manual-openid" type="hidden">
+                    <input name="use-facebook" class="use-facebook" value="false" type="hidden">
+                    <input name="use-google" class="use-google" value="false" type="hidden">
+                    <input class="submit-openid" value="Submit" style="display:none" type="button">
+                    <div class="new-login-right">
+                                <h3>Post as a guest</h3>
+    <div class="form-item">
+        <table>
+        <tbody><tr>
+                    <td class="vm">
+                <div>
+                    <label for="display-name">Name</label>
+                    <input id="display-name" name="display-name" size="30" maxlength="30" tabindex="105" type="text">
+                </div>
+                <div>
+                    <label for="m-address">Email</label>
+                    <input id="m-address" name="m-address" size="30" maxlength="100" tabindex="106" placeholder="required, but never shown" type="email">
+                </div>
+            </td>
+        </tr>
+        </tbody></table>
+    </div>
+
+                    </div>
+                </div>
+            </div>
+            <script>
+                StackExchange.ready(
+                    function () {
+                        StackExchange.openid.initPostLogin('.new-post-login', '%2fquestions%2f4605206%2fdrop-columns-r-data-frame%23new-answer');
+                    }
+                );
+            </script>
+            <noscript>
+                        <h3>Post as a guest</h3>
+    <div class="form-item">
+        <table>
+        <tr>
+                    <td class="vm">
+                <div>
+                    <label for="display-name">Name</label>
+                    <input id="display-name" name="display-name" type="text" size="30" maxlength="30" value="" tabindex="105">
+                </div>
+                <div>
+                    <label for="m-address">Email</label>
+                    <input id="m-address" name="m-address" type="email" size="30" maxlength="100" value="" tabindex="106" placeholder="required, but never shown" />
+                </div>
+            </td>
+        </tr>
+        </table>
+    </div>
+
+            </noscript>
+							</div>
+           
+															<div class="form-submit cbt">
+									<input id="submit-button" value="Post Your Answer" tabindex="110" type="submit">
+									<a href="#" class="discard-answer dno">discard</a>
+
+<p class="privacy-policy-agreement">
+By posting your answer, you agree to the <a href="http://stackexchange.com/legal/privacy-policy" target="_blank">privacy policy</a> and <a href="http://stackexchange.com/legal/terms-of-service" target="_blank">terms of service</a>.</p>
+<input name="legalLinksShown" value="1" type="hidden">								</div>
+						</form>
+
+
+
+						<h2 class="bottom-notice" data-loc="1">
+Not the answer you're looking for?							Browse other questions tagged <a href="http://stackoverflow.com/questions/tagged/r" class="post-tag" title="show questions tagged 'r'" rel="tag">r</a>  or <a href="http://stackoverflow.com/questions/ask">ask your own question</a>.						</h2>
+			</div>
+		</div>
+				<div id="sidebar" class="show-votes">
+						    <div class="module question-stats">
+			        <table id="qinfo">
+			            <tbody><tr>
+			                <td>
+			                    <p class="label-key">asked</p>
+			                </td>
+			                <td style="padding-left: 10px">
+			                    <p class="label-key" title="2011-01-05 14:34:29Z"><b>4 years ago</b></p>
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>
+			                    <p class="label-key">viewed</p>
+			                </td>
+
+			                <td style="padding-left: 10px">
+			                    <p class="label-key">
+			                        <b>232939 times</b>
+			                    </p>
+			                </td>
+			            </tr>
+			                <tr>
+			                    <td>
+			                        <p class="label-key">active</p>
+			                    </td>
+			                    <td style="padding-left: 10px">
+			                        <p class="label-key"><b><a href="http://stackoverflow.com/questions/4605206/drop-columns-r-data-frame?lastactivity" class="lastactivity-link" title="2015-01-13 01:29:19Z">1 month ago</a></b></p>
+			                    </td>
+			                </tr>
+			        </tbody></table>
+			    </div>
+						
+			<div class="everyonelovesstackoverflow" id="careers2">
+        </div>
+        <div id="hireme">
+            <script>
+window.careers_adurl="//careers.stackoverflow.com/gethired/companyjs",window.careers_cssurl="//cdn-careers.sstatic.net/careers/gethired/company.min.css?v=cace662f1716",window.careers_cssurl2="//cdn-careers.sstatic.net/careers/gethired/sidebar.min.css?v=19f7c7921388",window.careers_adselector="#hireme",StackExchange.ready(function(){var r=window.StackExchange,a=r&&r.options&&r.options.user&&r.options.user.accountId,c="//cdn-careers.sstatic.net/careers/gethired/company-loader.min.js?v=a3fbb7a205be";$.ajax({url:c+(a?(-1===c.indexOf("?")?"?":"&")+"accountId="+a:""),dataType:"script",cache:!1})});            </script>
+            
+        </div>
+			<div style="margin-bottom: 10px;">
+        
+
+<style type="text/css">
+#newsletter-ad {
+    width: 190px;
+    height: 250px;
+    overflow: hidden;
+    background: url('//cdn.sstatic.net/stackoverflow/img/newsletter-ad.png');
+    padding: 0 15px 0 15px;
+}
+#newsletter-ad-header {
+    margin-top: 60px;
+}
+#newsletter-ad ul {
+    margin: 1em 0 1em 1.5em;
+}
+#newsletter-ad ul li {
+    margin-bottom: 5px;
+}
+#newsletter-signup-container {
+    text-align: center;
+}
+#newsletter-preview-container {
+    margin-top: 10px;
+    text-align: center;
+}
+#newsletter-email-input {
+    width: 200px;
+}
+</style>
+
+<script>
+    StackExchange.ready(function () {
+        StackExchange.newsletterAd.init();
+    });
+</script>
+
+<div id="newsletter-ad">
+    <p id="newsletter-ad-header">Get the <b>weekly newsletter!</b></p>
+    <ul>
+        <li>Top questions and answers</li>
+        <li>Important announcements</li>
+        <li>Unanswered questions</li>
+    </ul>
+    <div id="newsletter-signup-container"><input id="newsletter-signup" value="Sign up for the newsletter" type="button"></div>
+    <p id="newsletter-preview-container">see an <a href="http://stackexchange.com/newsletters/newsletter?site=stackoverflow.com" id="newsletter-preview">example newsletter</a></p>
+    <div class="dno">
+        
+<p class="privacy-policy-agreement">
+By subscribing, you agree to the <a href="http://stackexchange.com/legal/privacy-policy" target="_blank">privacy policy</a> and <a href="http://stackexchange.com/legal/terms-of-service" target="_blank">terms of service</a>.</p>
+<input name="legalLinksShown" value="1" type="hidden">
+    </div>
+</div>
+
+    </div>  
+    
+            <div class="module sidebar-linked">
+	<h4 id="h-linked">Linked</h4>
+	<div class="linked" data-tracker="lq=1">
+<div class="spacer">
+	<a href="http://stackoverflow.com/q/13558922?lq=1" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes answered-accepted default">4</div>
+	</a>
+	<a href="http://stackoverflow.com/questions/13558922/how-to-delete-a-column-in-r-dataframe?lq=1" class="question-hyperlink">How to delete a column in R dataframe</a>
+</div><div class="spacer">
+	<a href="http://stackoverflow.com/q/12868581?lq=1" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes answered-accepted default">2</div>
+	</a>
+	<a href="http://stackoverflow.com/questions/12868581/list-all-column-except-for-one-in-r?lq=1" class="question-hyperlink">List all column except for one in R</a>
+</div><div class="spacer">
+	<a href="http://stackoverflow.com/q/8746414?lq=1" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes  default">1</div>
+	</a>
+	<a href="http://stackoverflow.com/questions/8746414/r-unselect-matrix-or-data-frame-columns-by-name?lq=1" class="question-hyperlink">R: Unselect matrix or data.frame columns by name</a>
+</div><div class="spacer">
+	<a href="http://stackoverflow.com/q/25157021?lq=1" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes answered-accepted default">0</div>
+	</a>
+	<a href="http://stackoverflow.com/questions/25157021/removing-columns-from-data-frame-using-r?lq=1" class="question-hyperlink">Removing columns from data frame using R</a>
+</div><div class="spacer">
+	<a href="http://stackoverflow.com/q/13558378?lq=1" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes  default">-1</div>
+	</a>
+	<a href="http://stackoverflow.com/questions/13558378/drop-a-list-of-columns-from-data-frame?lq=1" class="question-hyperlink">Drop a list of columns from data frame</a>
+</div><div class="spacer">
+	<a href="http://stackoverflow.com/q/7681150?lq=1" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes  default">1</div>
+	</a>
+	<a href="http://stackoverflow.com/questions/7681150/more-concise-way-to-drop-a-column-than-data-colnames-data-in-todrop?lq=1" class="question-hyperlink">More concise way to drop a column than data[ , !colnames( data ) %in% “todrop” ]</a>
+</div><div class="spacer">
+	<a href="http://stackoverflow.com/q/23771824?lq=1" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes  default">2</div>
+	</a>
+	<a href="http://stackoverflow.com/questions/23771824/how-to-delete-column-from-data-frame-without-causing-memory-allocation?lq=1" class="question-hyperlink">How to delete column from data frame without causing memory allocation?</a>
+</div><div class="spacer">
+	<a href="http://stackoverflow.com/q/9202413?lq=1" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes answered-accepted default">45</div>
+	</a>
+	<a href="http://stackoverflow.com/questions/9202413/how-do-you-delete-a-column-in-data-table?lq=1" class="question-hyperlink">How do you delete a column in data.table?</a>
+</div><div class="spacer">
+	<a href="http://stackoverflow.com/q/4835342?lq=1" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes answered-accepted default">12</div>
+	</a>
+	<a href="http://stackoverflow.com/questions/4835342/how-can-i-get-a-dataframe-with-columns-temporarily-removed-by-name?lq=1" class="question-hyperlink">How can I get a dataframe with columns temporarily removed by name?</a>
+</div><div class="spacer">
+	<a href="http://stackoverflow.com/q/12850141?lq=1" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes answered-accepted default">8</div>
+	</a>
+	<a href="http://stackoverflow.com/questions/12850141/programming-safe-version-of-subset-to-evaluate-its-condition-while-called-from?lq=1" class="question-hyperlink">Programming-safe version of subset - to evaluate its condition while called from another function</a>
+</div>					<div class="spacer more">
+				<a href="http://stackoverflow.com/questions/linked/4605206?lq=1">see more linked questions…</a>
+			</div>
+	</div>
+</div>
+
+				<div class="module sidebar-related">
+					<h4 id="h-related">Related</h4>
+                    <div class="related js-gps-related-questions" data-tracker="rq=1">
+                        <div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/10085806?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">53
+    </div>
+</a><a href="http://stackoverflow.com/questions/10085806/extracting-specific-columns-from-a-data-frame?rq=1" class="question-hyperlink">Extracting specific columns from a data frame</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/11367485?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">4
+    </div>
+</a><a href="http://stackoverflow.com/questions/11367485/rename-columns-of-a-data-frame-by-searching-column-name?rq=1" class="question-hyperlink">Rename columns of a data frame by searching column name</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/13019003?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">3
+    </div>
+</a><a href="http://stackoverflow.com/questions/13019003/multiply-columns-of-data-frames?rq=1" class="question-hyperlink">multiply columns of data frames</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/13558378?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes default">-1
+    </div>
+</a><a href="http://stackoverflow.com/questions/13558378/drop-a-list-of-columns-from-data-frame?rq=1" class="question-hyperlink">Drop a list of columns from data frame</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/15170777?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">8
+    </div>
+</a><a href="http://stackoverflow.com/questions/15170777/add-a-rank-column-to-a-data-frame?rq=1" class="question-hyperlink">Add a “rank” column to a data frame</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/17074072?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">1
+    </div>
+</a><a href="http://stackoverflow.com/questions/17074072/transpose-multi-column-data-frame-by-group?rq=1" class="question-hyperlink">Transpose multi-column data frame by group</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/22470439?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">0
+    </div>
+</a><a href="http://stackoverflow.com/questions/22470439/reshaping-a-data-frame-by-combining-columns-in-a-data-frame?rq=1" class="question-hyperlink">Reshaping a data frame by “combining” columns in a data frame</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/25702680?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">0
+    </div>
+</a><a href="http://stackoverflow.com/questions/25702680/rearranging-the-columns-of-a-data-frame?rq=1" class="question-hyperlink">Rearranging the columns of a data frame</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/26595702?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">1
+    </div>
+</a><a href="http://stackoverflow.com/questions/26595702/is-element-on-column-of-lists-in-data-frame?rq=1" class="question-hyperlink">is.element on column of lists in data frame</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/26607732?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">-1
+    </div>
+</a><a href="http://stackoverflow.com/questions/26607732/r-column-operation-on-a-data-frame?rq=1" class="question-hyperlink">R : Column operation on a data frame</a>
+</div>
+
+                    </div>
+				</div>
+            
+<div id="hot-network-questions" class="module">
+    <h4>
+        <a href="http://stackexchange.com/questions?tab=hot" class="js-gps-track" data-gps-track="posts_hot_network.click({ item_type:1, location:11 })">
+            Hot Network Questions
+        </a>
+    </h4>
+    <ul>
+            <li>
+                <div class="favicon favicon-english" title="English Language &amp; Usage Stack Exchange"></div><a href="http://english.stackexchange.com/questions/227761/derogatory-term-for-a-corporate-employee" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:97 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Derogatory term for a corporate employee
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-gaming" title="Arqade"></div><a href="http://gaming.stackexchange.com/questions/207300/how-can-i-make-a-discovery-scan" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:41 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How can I make a discovery scan?
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-unix" title="Unix &amp; Linux Stack Exchange"></div><a href="http://unix.stackexchange.com/questions/185894/ext4-filesystem-size" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:106 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    ext4 filesystem size
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-academia" title="Academia Stack Exchange"></div><a href="http://academia.stackexchange.com/questions/40288/can-i-force-my-professor-to-give-me-a-copy-of-his-powerpoint-presentation" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:415 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Can I force my professor to give me a copy of his powerpoint presentation?
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-cs" title="Computer Science Stack Exchange"></div><a href="http://cs.stackexchange.com/questions/39597/how-can-i-academically-say-that-one-computer-is-slower-than-the-other" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:419 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How can I academically say that 'one computer is slower than the other'?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-electronics" title="Electrical Engineering Stack Exchange"></div><a href="http://electronics.stackexchange.com/questions/156394/can-i-use-a-multilayer-ceramic-capacitor-instead-of-a-ceramic-disc-capacitor-wit" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:135 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Can I use a multilayer ceramic capacitor instead of a
+ ceramic disc capacitor with the same capacitance (0.1 microFarad)
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-stackoverflow" title="Stack Overflow"></div><a href="http://stackoverflow.com/questions/28572833/why-use-pythons-os-module-methods-instead-of-executing-shell-commands-directly" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:1 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why use Python's os module methods instead of executing shell commands directly?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-engineering" title="Engineering Stack Exchange"></div><a href="http://engineering.stackexchange.com/questions/1742/ah-strong-am-i-with-the-force-but-how-do-i-measure-it" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:595 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Ah, strong am I with the Force, but how do I measure it?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-vi" title="Vi and Vim Stack Exchange"></div><a href="http://vi.stackexchange.com/questions/2001/how-do-i-jump-to-the-location-of-my-last-edit" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:599 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How do I jump to the location of my last edit?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-codegolf" title="Programming Puzzles &amp; Code Golf Stack Exchange"></div><a href="http://codegolf.stackexchange.com/questions/45736/fifty-shades-of-grey" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:200 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Fifty Shades of Grey
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-history" title="History Stack Exchange"></div><a href="http://history.stackexchange.com/questions/20524/was-there-a-constitutional-mechanism-to-overturn-the-election-of-adolf-hitler" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:324 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Was there a constitutional mechanism to overturn the election of Adolf Hitler?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-math" title="Mathematics Stack Exchange"></div><a href="http://math.stackexchange.com/questions/1158773/how-do-people-who-study-intensely-abstract-mathematics-imagine-or-understand-t" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:69 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How do people who study intensely abstract 
+mathematics "imagine" or understand the concepts they are studying or 
+being taught?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-security" title="Information Security Stack Exchange"></div><a href="http://security.stackexchange.com/questions/82005/is-password-knocking-a-good-idea" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:162 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Is "password knocking" a good idea?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-chemistry" title="Chemistry Stack Exchange"></div><a href="http://chemistry.stackexchange.com/questions/26453/storing-large-quantities-of-koh" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:431 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Storing large quantities of KOH
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-magento" title="Magento Stack Exchange"></div><a href="http://magento.stackexchange.com/questions/58166/cleaning-up-magento-installation-which-files-folders-can-be-deleted" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:479 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Cleaning up Magento installation: Which files &amp; folders can be deleted?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-vi" title="Vi and Vim Stack Exchange"></div><a href="http://vi.stackexchange.com/questions/1915/how-do-i-delete-a-large-block-of-text-without-counting-the-lines" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:599 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How do I delete a large block of text without counting the lines?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-emacs" title="Emacs Stack Exchange"></div><a href="http://emacs.stackexchange.com/questions/9465/how-to-shift-a-selected-area-of-text-in-emacs-by-a-certain-number-of-spaces" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:583 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How to shift a selected area of text in Emacs by a certain number of spaces?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-travel" title="Travel Stack Exchange"></div><a href="http://travel.stackexchange.com/questions/43645/how-to-book-a-ticket-for-an-unborn-infant" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:273 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How to book a ticket for an unborn infant?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-academia" title="Academia Stack Exchange"></div><a href="http://academia.stackexchange.com/questions/40260/how-to-motivate-speakers-to-give-less-specialized-talks-at-a-colloquium" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:415 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How to motivate speakers to give less specialized talks at a "colloquium?"
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-askubuntu" title="Ask Ubuntu"></div><a href="http://askubuntu.com/questions/587626/will-creating-a-text-file-in-vi-change-my-computer" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:89 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Will creating a text file in vi change my computer?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-travel" title="Travel Stack Exchange"></div><a href="http://travel.stackexchange.com/questions/43639/is-it-rude-to-refuse-to-eat-from-the-same-plate-in-parts-of-the-middle-east" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:273 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Is it rude to refuse to eat from the same plate in parts of the Middle East?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-stackoverflow" title="Stack Overflow"></div><a href="http://stackoverflow.com/questions/28645966/query-to-extract-random-rows-from-a-table" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:1 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    query to extract random rows from a table
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-math" title="Mathematics Stack Exchange"></div><a href="http://math.stackexchange.com/questions/1158694/definition-of-a-bounded-sequence" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:69 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Definition of a bounded sequence
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-ell" title="English Language Learners Stack Exchange"></div><a href="http://ell.stackexchange.com/questions/51042/why-does-the-i-in-na%c3%afve-have-two-dots" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:481 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why does the "i" in naïve have "two dots"?
+                </a>
+
+            </li>
+    </ul>
+
+        
+</div>
+		</div>
+	
+<div id="feed-link">
+    <div id="feed-link-text">
+        <a href="http://stackoverflow.com/feeds/question/4605206" title="feed of this question and its answers">
+            <span class="feed-icon"></span>question feed
+        </a>
+    </div>
+</div>	<script>
+StackExchange.ready(function(){$.get('/posts/4605206/ivc/1d8d');});
+</script>
+<noscript>
+    <div><img src="/posts/4605206/ivc/1d8d" class="dno" alt="" width="0" height="0"></div>
+</noscript><div style="display:none" id="prettify-lang">lang-r</div></div>
+
+
+
+        </div>
+    </div>
+    <div id="footer" class="categories">
+        <div class="footerwrap">
+            <div id="footer-menu">
+                <div class="top-footer-links">
+                        <a href="http://stackoverflow.com/tour">tour</a>
+                    <a href="http://stackoverflow.com/help">help</a>
+                    <a href="http://blog.stackoverflow.com/?blb=1">blog</a>
+                        <a href="http://chat.stackoverflow.com/">chat</a>
+                    <a href="http://data.stackexchange.com/">data</a>
+                    <a href="http://stackexchange.com/legal">legal</a>
+                    <a href="http://stackexchange.com/legal/privacy-policy">privacy policy</a>
+                    <a href="http://stackexchange.com/work-here">work here</a>
+                    <a href="http://stackexchange.com/mediakit">advertising info</a>
+
+                    <a onclick='StackExchange.switchMobile("on")'>mobile</a>
+                    <b><a href="http://stackoverflow.com/contact">contact us</a></b>
+                        <b><a href="http://meta.stackoverflow.com/">feedback</a></b>
+                    
+                </div>
+                <div id="footer-sites">
+                    <table>
+    <tbody><tr>
+            <th colspan="3">
+                Technology
+            </th>
+            <th>
+                Life / Arts
+            </th>
+            <th>
+                Culture / Recreation
+            </th>
+            <th>
+                Science
+            </th>
+            <th>
+                Other
+            </th>
+    </tr>
+    <tr>
+            <td>
+                <ol>
+                        <li><a href="http://stackoverflow.com/" title="professional and enthusiast programmers">Stack Overflow</a></li>
+                        <li><a href="http://serverfault.com/" title="system and network administrators">Server Fault</a></li>
+                        <li><a href="http://superuser.com/" title="computer enthusiasts and power users">Super User</a></li>
+                        <li><a href="http://webapps.stackexchange.com/" title="power users of web applications">Web Applications</a></li>
+                        <li><a href="http://askubuntu.com/" title="Ubuntu users and developers">Ask Ubuntu</a></li>
+                        <li><a href="http://webmasters.stackexchange.com/" title="pro webmasters">Webmasters</a></li>
+                        <li><a href="http://gamedev.stackexchange.com/" title="professional and independent game developers">Game Development</a></li>
+                        <li><a href="http://tex.stackexchange.com/" title="users of TeX, LaTeX, ConTeXt, and related typesetting systems">TeX - LaTeX</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="http://programmers.stackexchange.com/" title="professional programmers interested in conceptual questions about software development">Programmers</a></li>
+                        <li><a href="http://unix.stackexchange.com/" title="users of Linux, FreeBSD and other Un*x-like operating systems.">Unix &amp; Linux</a></li>
+                        <li><a href="http://apple.stackexchange.com/" title="power users of Apple hardware and software">Ask Different (Apple)</a></li>
+                        <li><a href="http://wordpress.stackexchange.com/" title="WordPress developers and administrators">WordPress Development</a></li>
+                        <li><a href="http://gis.stackexchange.com/" title="cartographers, geographers and GIS professionals">Geographic Information Systems</a></li>
+                        <li><a href="http://electronics.stackexchange.com/" title="electronics and electrical engineering professionals, students, and enthusiasts">Electrical Engineering</a></li>
+                        <li><a href="http://android.stackexchange.com/" title="enthusiasts and power users of the Android operating system">Android Enthusiasts</a></li>
+                        <li><a href="http://security.stackexchange.com/" title="Information security professionals">Information Security</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="http://dba.stackexchange.com/" title="database professionals who wish to improve their database skills and learn from others in the community">Database Administrators</a></li>
+                        <li><a href="http://drupal.stackexchange.com/" title="Drupal developers and administrators">Drupal Answers</a></li>
+                        <li><a href="http://sharepoint.stackexchange.com/" title="SharePoint enthusiasts">SharePoint</a></li>
+                        <li><a href="http://ux.stackexchange.com/" title="user experience researchers and experts">User Experience</a></li>
+                        <li><a href="http://mathematica.stackexchange.com/" title="users of Mathematica">Mathematica</a></li>
+                        <li><a href="http://salesforce.stackexchange.com/" title="Salesforce administrators, implementation experts, developers and anybody in-between">Salesforce</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#technology" class="more">
+                                more (14)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://photo.stackexchange.com/" title="professional, enthusiast and amateur photographers">Photography</a></li>
+                        <li><a href="http://scifi.stackexchange.com/" title="science fiction and fantasy enthusiasts">Science Fiction &amp; Fantasy</a></li>
+                        <li><a href="http://graphicdesign.stackexchange.com/" title="Graphic Design professionals, students, and enthusiasts">Graphic Design</a></li>
+                        <li><a href="http://cooking.stackexchange.com/" title="professional and amateur chefs">Seasoned Advice (cooking)</a></li>
+                        <li><a href="http://diy.stackexchange.com/" title="contractors and serious DIYers">Home Improvement</a></li>
+                        <li><a href="http://money.stackexchange.com/" title="people who want to be financially literate">Personal Finance &amp; Money</a></li>
+                        <li><a href="http://academia.stackexchange.com/" title="academics and those enrolled in higher education">Academia</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#lifearts" class="more">
+                                more (10)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://english.stackexchange.com/" title="linguists, etymologists, and serious English language enthusiasts">English Language &amp; Usage</a></li>
+                        <li><a href="http://skeptics.stackexchange.com/" title="scientific skepticism">Skeptics</a></li>
+                        <li><a href="http://judaism.stackexchange.com/" title="those who base their lives on Jewish law and tradition and anyone interested in learning more">Mi Yodeya (Judaism)</a></li>
+                        <li><a href="http://travel.stackexchange.com/" title="road warriors and seasoned travelers">Travel</a></li>
+                        <li><a href="http://christianity.stackexchange.com/" title="committed Christians, experts in Christianity and those interested in learning more">Christianity</a></li>
+                        <li><a href="http://gaming.stackexchange.com/" title="passionate videogamers on all platforms">Arqade (gaming)</a></li>
+                        <li><a href="http://bicycles.stackexchange.com/" title="people who build and repair bicycles, people who train cycling, or commute on bicycles">Bicycles</a></li>
+                        <li><a href="http://rpg.stackexchange.com/" title="gamemasters and players of tabletop, paper-and-pencil role-playing games">Role-playing Games</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#culturerecreation" class="more">
+                                more (21)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://math.stackexchange.com/" title="people studying math at any level and professionals in related fields">Mathematics</a></li>
+                        <li><a href="http://stats.stackexchange.com/" title="people interested in statistics, machine learning, data analysis, data mining, and data visualization">Cross Validated (stats)</a></li>
+                        <li><a href="http://cstheory.stackexchange.com/" title="theoretical computer scientists and researchers in related fields">Theoretical Computer Science</a></li>
+                        <li><a href="http://physics.stackexchange.com/" title="active researchers, academics and students of physics">Physics</a></li>
+                        <li><a href="http://mathoverflow.net/" title="professional mathematicians">MathOverflow</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#science" class="more">
+                                more (7)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://stackapps.com/" title="apps, scripts, and development with the Stack Exchange API">Stack Apps</a></li>
+                        <li><a href="http://meta.stackexchange.com/" title="meta-discussion of the Stack Exchange family of Q&amp;A websites">Meta Stack Exchange</a></li>
+                        <li><a href="http://area51.stackexchange.com/" title="proposing new sites in the Stack Exchange network">Area 51</a></li>
+                        <li><a href="http://careers.stackoverflow.com/">Stack Overflow Careers</a></li>
+                    
+                </ol>
+            </td>
+    </tr>
+</tbody></table>
+                </div>
+            </div>
+
+            <div id="copyright">
+                site design / logo © 2015 stack exchange inc; user contributions licensed under <a href="http://creativecommons.org/licenses/by-sa/3.0/" rel="license">cc by-sa 3.0</a> 
+                with <a href="http://blog.stackoverflow.com/2009/06/attribution-required/" rel="license">attribution required</a>
+            </div>
+            <div id="svnrev">
+                rev 2015.2.20.2331
+            </div>
+            
+        </div>
+    </div>
+    <noscript>
+        <div id="noscript-warning">Stack Overflow works best with JavaScript enabled<img src="http://pixel.quantserve.com/pixel/p-c1rF4kxgLUzNc.gif" alt="" class="dno"></div>
+    </noscript>
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () { (i[r].q = i[r].q || []).push(arguments) }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m);
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-5620270-1');        
+        
+        ga('set', 'dimension2', '|r|');         
+        ga('send', 'pageview');
+        var _qevents = _qevents || [],
+            _comscore = _comscore || [];
+        (function () {
+            var ssl='https:'==document.location.protocol,
+                s=document.getElementsByTagName('script')[0],
+                qc=document.createElement('script');
+            qc.async=true;
+            qc.src=(ssl?'https://secure':'http://edge')+'.quantserve.com/quant.js';
+            s.parentNode.insertBefore(qc, s);
+            var sc=document.createElement('script');
+            sc.async=true;
+            sc.src=(ssl?'https://sb':'http://b') + '.scorecardresearch.com/beacon.js';
+            s.parentNode.insertBefore(sc, s);
+        })();
+        _comscore.push({ c1: "2", c2: "17440561" });
+        _qevents.push({ qacct: "p-c1rF4kxgLUzNc" });
+    </script>        
+    
+    
+</body></html>
