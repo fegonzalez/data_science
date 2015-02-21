@@ -26,6 +26,10 @@
 ################################################################################
 
 
+require(data.table);
+
+
+
 ##------------------------------------------------------------------------------
 ## step1() Merges the training and the test sets to create one data set.
 ##------------------------------------------------------------------------------
@@ -156,6 +160,7 @@
 
 
 ## -----------------------------------------------------------------------------
+
 ################################################################################
 ##
 ## You should create one R script called run_analysis.R that does the following.
@@ -184,8 +189,9 @@
 ################################################################################
 solve <- function()
 {
+    the_memdata <- struct_memdata();
     get_source_data();
-    step1();
+    step1(the_memdata);
 
     ## tidydata <- source2tidy();
 }
@@ -226,9 +232,10 @@ solve <- function()
 ##
 ## -----------------------------------------------------------------------------
 
-step1<- function()
+step1<- function(my_memdata)
 {
     ## input validation
+    stopifnot(!is.struct_memdata(my_memdata));
     source_dir <- "./data/UCI HAR Dataset/";
     source_subjecttrain <- paste(source_dir, "train/subject_train.txt", sep="");
     source_xtrain <- paste(source_dir, "train/X_train.txt", sep="");
@@ -248,7 +255,6 @@ step1<- function()
     stopifnot(file.exists(source_activity_labels));
 
     ## loading source files into memory data
-    require(data.table);
     NTRAIN_OBSERVATIONS <- 7352;
     NTEST_OBSERVATIONS <- 2947;
     DEBUG_MODE <- TRUE;
@@ -331,6 +337,27 @@ step1<- function()
         data_xtest <- read_data_xtest();
         data_xtrain <- read_data_xtrain();
     }
+
+    my_memdata$set_data_subjecttrain(data_subjecttrain);
+    my_memdata$set_data_ytrain(data_ytrain);
+    my_memdata$set_data_xtrain(data_xtrain);
+    my_memdata$set_data_subjecttest(data_subjecttest);
+    my_memdata$set_data_ytest(data_ytest);
+    my_memdata$set_data_xtest(data_xtest);
+    my_memdata$set_data_features(data_features);
+    my_memdata$set_data_labels(data_labels);
+
+    print(system.time(
+    {
+    stopifnot(identical(my_memdata$get_data_subjecttrain(), data_subjecttrain));
+    stopifnot(identical(my_memdata$get_data_ytrain(), data_ytrain));
+    stopifnot(identical(my_memdata$get_data_xtrain(), data_xtrain));
+    stopifnot(identical(my_memdata$get_data_subjecttest(), data_subjecttest));
+    stopifnot(identical(my_memdata$get_data_ytest(), data_ytest));
+    stopifnot(identical(my_memdata$get_data_xtest(), data_xtest));
+    stopifnot(identical(my_memdata$get_data_features(), data_features));
+    stopifnot(identical(my_memdata$get_data_labels(), data_labels));
+    }));
 }
 
 ##------------------------------------------------------------------------------
@@ -374,5 +401,105 @@ get_source_data<- function()
 }
 
 ## -----------------------------------------------------------------------------
+##\class struct_memdata
+## Data structure that contains:
+## 1) the data loaded from the source files;
+## 2) the intermediate data created;
+## 3) the final data to report as solution
+## This data is accessible for reading/writing through the get/set methods
+## -----------------------------------------------------------------------------
+
+struct_memdata<- function()
+{
+  ## stopifnot(is.matrix(x));
+
+    data_subjecttrain <- data.table();
+    data_ytrain <- data.table();
+    data_xtrain <- data.table();
+    data_subjecttest <- data.table();
+    data_ytest <- data.table();
+    data_xtest <- data.table();
+    data_features <- data.table();
+    data_labels <- data.table();
+
+    ## ]
+    ## \
+
+    get_data_subjecttrain <- function() {return(data_subjecttrain);}
+    get_data_ytrain <- function() {return(data_ytrain);}
+    get_data_xtrain <- function() {return(data_xtrain);}
+    get_data_subjecttest <- function() {return(data_subjecttest);}
+    get_data_ytest <- function() {return(data_ytest);}
+    get_data_xtest <- function() {return(data_xtest);}
+    get_data_features <- function() {return(data_features);}
+    get_data_labels <- function() {return(data_labels);}
+
+    set_data_subjecttrain<- function(new_value)
+    {
+        stopifnot(is.data.table(new_value));
+        data_subjecttrain <<- new_value;
+    }
+
+    set_data_ytrain<- function(new_value)
+    {
+        stopifnot(is.data.table(new_value));
+        data_ytrain <<- new_value;
+    }
+
+    set_data_xtrain<- function(new_value)
+    {
+        stopifnot(is.data.table(new_value));
+        data_xtrain <<- new_value;
+    }
+
+    set_data_subjecttest<- function(new_value)
+    {
+        stopifnot(is.data.table(new_value));
+        data_subjecttest <<- new_value;
+    }
+
+    set_data_ytest<- function(new_value)
+    {
+        stopifnot(is.data.table(new_value));
+        data_ytest <<- new_value;
+    }
+
+    set_data_xtest<- function(new_value)
+    {
+        stopifnot(is.data.table(new_value));
+        data_xtest <<- new_value;
+    }
+
+    set_data_features<- function(new_value)
+    {
+        stopifnot(is.data.table(new_value));
+        data_features <<- new_value;
+    }
+
+    set_data_labels<- function(new_value)
+    {
+        stopifnot(is.data.table(new_value));
+        data_labels <<- new_value;
+    }
+
+
+    list(get_data_subjecttrain = get_data_subjecttrain,
+         get_data_ytrain = get_data_ytrain,
+         get_data_xtrain = get_data_xtrain,
+         get_data_subjecttest = get_data_subjecttest,
+         get_data_ytest = get_data_ytest,
+         get_data_xtest = get_data_xtest,
+         get_data_features = get_data_features,
+         get_data_labels = get_data_labels,
+         set_data_subjecttrain = set_data_subjecttrain,
+         set_data_ytrain = set_data_ytrain,
+         set_data_xtrain = set_data_xtrain,
+         set_data_subjecttest = set_data_subjecttest,
+         set_data_ytest = set_data_ytest,
+         set_data_xtest = set_data_xtest,
+         set_data_features = set_data_features,
+         set_data_labels = set_data_labels);
+
+}
 
 
