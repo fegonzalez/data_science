@@ -17,6 +17,12 @@
 ## 5.- From the data set in step 4, creates a second, independent tidy data set
 ## with the average of each variable for each activity and each subject.
 ##
+##      My Hint:                activity_1   ... activity_n
+##
+##                subject_1     avg(value)  ...
+##                     ...
+##                subject_30    avg(value)  ...
+##
 ################################################################################
 
 
@@ -56,19 +62,20 @@
 ## $ADD_TO_DOC
 ##
 ## 1.- List of source files used to create the tidy data.
-
-"train/subject_train.txt" : 7352 observations; 1 variables
-"train/X_train.txt"       : 7352 observations; 561 variables
-"train/y_train.txt"       : 7352 observations; 1 variables
-
-"test/subject_test.txt"   : 2947 observations; 1 variables
-"test/X_test.txt"         : 2947 observations; 561 variables
-"test/y_test.txt"         : 2947 observations; 1 variables
-
-"features.txt"            : 561 observations; 2 vars
-
-"activity_labels.txt"     : 6 observations; 2 vars
-
+##
+## "train/subject_train.txt" : 7352 observations; 1 variables
+## "train/X_train.txt"       : 7352 observations; 561 variables
+## "train/y_train.txt"       : 7352 observations; 1 variables
+##
+## "test/subject_test.txt"   : 2947 observations; 1 variables
+## "test/X_test.txt"         : 2947 observations; 561 variables
+## "test/y_test.txt"         : 2947 observations; 1 variables
+##
+## "features.txt"            : 561 observations; 2 vars
+##
+## "activity_labels.txt"     : 6 observations; 2 vars
+##
+## %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 ## %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ##
@@ -78,8 +85,8 @@
 ##
 ## In this point is explained which part of the final tidy data-set comes from
 ## which part/file of the source data files.
-
-
+##
+##
 ## The next diagram briefly shows the process explained bellow:
 ##
 ## From source data files ...
@@ -94,14 +101,14 @@
 ## ("subject_id2") ( feature_names ) ("subject_activity")
 ##            (a1) (  ... a2 ...   ) (a3)
 ##            (b1) (  ... b2 ...   ) (b3)
-
-
+##
+##
 ## 2.1) Tidy dataset from up to bottom (rows = observations)
 ##
 ## Section a) Training observations: 7352 observations ; rows 1-7352
 ## Section b) Test observations:     2947 observations ; rows 7353-10299
-
-
+##
+##
 ## 2.2) Tidy dataset from left to right (columns = variables)
 ##
 ## Section 1) subject variable:
@@ -117,7 +124,7 @@
 ## "test/subject_test.txt" file.
 ##
 ## Source files: "train/subject_train.txt" , "test/subject_test.txt".
-
+##
 ## Section 2) X-observations
 ##
 ## colnumber: 2 to 562
@@ -131,7 +138,7 @@
 ## ordered copy of the observations in "test/X_test.txt" file.
 ##
 ## Source files: "features.txt", "train/X_train.txt", "test/X_test.txt".
-
+##
 ## Section 3) Y-observations
 ##
 ## colnumber: 563
@@ -142,27 +149,184 @@
 ## observations in "train/y_train.txt" file; "section b" observations are an
 ## ordered copy of the observations in "test/y_test.txt" file.
 ##
-## Source files: "train/Y_train.txt", "test/Y_test.txt".
-
-
+## Source files: "train/Y_train.txt", "test/Y_test.
 ##
 ## %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
+## -----------------------------------------------------------------------------
+################################################################################
+##
+## You should create one R script called run_analysis.R that does the following.
+##
+## 1.- Merges the training and the test sets to create one data set.
+##
+## 2.- Extracts only the measurements on the mean and standard deviation
+##     (std) for each measurement.
+##
+##     My Hint: column names = row values from "features.txt"
+##          extract only column names with the sub-string "mean" or "std" in it.
+##
+## 3.- Uses descriptive activity names to name the activities in the data set
+##
+## 4.- Appropriately labels the data set with descriptive variable names.
+##
+## 5.- From the data set in step 4, creates a second, independent tidy data set
+## with the average of each variable for each activity and each subject.
+##
+##      My Hint:                activity_1   ... activity_n
+##
+##                subject_1     avg(value)  ...
+##                     ...
+##                subject_30    avg(value)  ...
+##
+################################################################################
+solve <- function()
+{
+    get_source_data();
+    step1();
 
+    ## tidydata <- source2tidy();
+}
+
+
+
+##------------------------------------------------------------------------------
+## 1.- Merges the training and the test sets to create one data set.
+##
+##
+## 1.- List of source files used to create the tidy data.
+##
+## "train/subject_train.txt" : 7352 observations; 1 variables
+## "train/X_train.txt"       : 7352 observations; 561 variables
+## "train/y_train.txt"       : 7352 observations; 1 variables
+##
+## "test/subject_test.txt"   : 2947 observations; 1 variables
+## "test/X_test.txt"         : 2947 observations; 561 variables
+## "test/y_test.txt"         : 2947 observations; 1 variables
+##
+## "features.txt"            : 561 observations; 2 vars
+##
+## "activity_labels.txt"     : 6 observations; 2 vars
+##
+##
+## From source data files ...
+##
+##                           (  features.txt   )
+## (train/subject_train.txt) (train/X_train.txt) (train/y_train.txt)
+## (test/subject_test.txt  ) (test/X_test.txt  ) (test/y_test.txt)
+##
+##
+## ... to tidy data (data.frame)
+##
+## ("subject_id2") ( feature_names ) ("subject_activity")
+##            (a1) (  ... a2 ...   ) (a3)
+##            (b1) (  ... b2 ...   ) (b3)
+##
+## -----------------------------------------------------------------------------
 
 step1<- function()
 {
+    ## input validation
+    source_dir <- "./data/UCI HAR Dataset/";
+    source_subjecttrain <- paste(source_dir, "train/subject_train.txt", sep="");
+    source_xtrain <- paste(source_dir, "train/X_train.txt", sep="");
+    source_ytrain <- paste(source_dir, "train/Y_train.txt", sep="");
+    source_subjecttest <- paste(source_dir, "test/subject_test.txt", sep="");
+    source_xtest <- paste(source_dir, "test/X_test.txt", sep="");
+    source_ytest <- paste(source_dir, "test/Y_test.txt", sep="");
+    source_features <- paste(source_dir, "features.txt", sep="");
+    source_activity_labels <- paste(source_dir, "activity_labels.txt", sep="");
+    stopifnot(file.exists(source_subjecttrain));
+    stopifnot(file.exists(source_xtrain));
+    stopifnot(file.exists(source_ytrain));
+    stopifnot(file.exists(source_subjecttest));
+    stopifnot(file.exists(source_xtest));
+    stopifnot(file.exists(source_ytest));
+    stopifnot(file.exists(source_features));
+    stopifnot(file.exists(source_activity_labels));
 
-    stopifnot(file.exists("./data"));
-    stopifnot(file.exists("./data/UCI HAR Dataset/train/X_train.txt"));
-    stopifnot(file.exists("./data/UCI HAR Dataset/train/y_train.txt"));
+    ## loading source files into memory data
+    ## \warning Some files must be read with "read.table" due to a bug in fread
+    ## when there are blank spaces before the first column of data
+    require(data.table);
+    NTRAIN_OBSERVATIONS <- 7352;
+    NTEST_OBSERVATIONS <- 2947;
+    DEBUG_MODE <- TRUE;
 
+    ## -------------------------------------------------------------
+    ##Using internal functions to allow quick change of strategy
+    ## -------------------------------------------------------------
+    ## WITH nrows
+    ## user  system elapsed
+    ## 9.608   0.030   9.637
+    ##  user  system elapsed
+    ## 3.801   0.012   3.813
+    ## WITHOUT nrows
+    ##      user  system elapsed
+    ## 9.877   0.030   9.906
+    ##  user  system elapsed
+    ## 3.861   0.013   3.875
 
+    ## WITHOUT colClasses              !!!
+    ## user  system elapsed    (with nrows)
+    ## 25.952   0.098  26.050
+    ##   user  system elapsed
+    ##  4.314   0.018   4.331
+    ## user  system elapsed    (without nrows too)
+    ## 28.361   0.137  28.499
+    ## user  system elapsed
+    ## 4.617   0.022   4.639
 
+    read_data_xtrain <- function(){
+        return (read.table(source_xtrain,
+                           header=FALSE,
+                           ## row.names=FALSE,
+                           numerals="no.loss",
+                           colClasses="double",
+                           nrows=NTRAIN_OBSERVATIONS
+                           ));
+    }
+    ## -------------------------------------------------------------
+    read_data_xtest <- function(){
+        return (read.table(source_xtest,
+                           header=FALSE,
+                           ## row.names=FALSE,
+                           numerals="no.loss",
+                           colClasses="double",
+                           nrows=NTEST_OBSERVATIONS
+                           ));
+    }
+    ## -------------------------------------------------------------
+
+    ## ]
+    ## \
+
+    ## browser();
+
+    if(DEBUG_MODE){
+        print(system.time(data_subjecttrain <- fread(source_subjecttrain)));
+        print(system.time(data_ytrain <- fread(source_ytrain)));
+        print(system.time(data_subjecttest <- fread(source_subjecttest)));
+        print(system.time(data_ytest <- fread(source_ytest)));
+        print(system.time(data_features <- fread(source_features, sep=" ")));
+        print(system.time(data_labels<-fread(source_activity_labels,sep=" ")));
+        print(system.time(data_xtrain <- read_data_xtrain()));
+        print(system.time(data_xtest <- read_data_xtest()));
+
+    }
+    else{
+        data_subjecttrain <- fread(source_subjecttrain);
+        data_ytrain <- fread(source_ytrain);
+        data_subjecttest <- fread(source_subjecttest);
+        data_ytest <- fread(source_ytest);
+        data_features <- fread(source_features, sep=" ");
+        data_labels<-fread(source_activity_labels,sep=" ");
+        data_xtrain <- read_data_xtrain();
+        data_xtest <- read_data_xtest();
+    }
 }
-
 
 ##------------------------------------------------------------------------------
 ## step5() From the data set in step 4, creates a second, independent tidy data
@@ -176,42 +340,32 @@ step5 <- function()
 {
 }
 
-
 ## -----------------------------------------------------------------------------
 
-solve <- function()
+##\function get_source_data()
+## Given "RWW" as the current R working directory, this functions download,
+## unzip and stores the source data ready to used in the directory named
+## "RWW/data/UCI HAR Dataset":
+get_source_data<- function()
 {
-    get_source_data();
-
-    ## tidydata <- source2tidy();
-}
-
-## -----------------------------------------------------------------------------
-
-get_source_data<- function() {
     if(!file.exists("./data")){dir.create("./data")}
     dest_file_name <- "projectfiles_dataset.zip";
     dest_file_path <- paste("./data/", dest_file_name, sep="");
     file_url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip";
     dest_method <- "curl";
 
-    ## downloading
+    ## download
     if(!file.exists(dest_file_path))
     {
         download.file(file_url, destfile=dest_file_path, method=dest_method);
     }
 
-    ## unzipping
+    ## unzip
     if(!file.exists("./data/UCI HAR Dataset/"))
     {
         require(utils);
         unzip(dest_file_path, exdir="./data/");
     }
-
-    ## require(data.table);
-    ## retval <- fread(dest_file_path, sep=",");
-    ## return(retval);
-
 }
 
 ## -----------------------------------------------------------------------------

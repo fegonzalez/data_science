@@ -25,14 +25,14 @@ test <- function()
 {
     require(data.table); ## fread(dest_file_path, sep=" ");
 
-    source_xtraining <- "./xtraining.txt";
+    source_xtrain <- "./xtraining.txt";
     source_xtest <- "./xtest.txt";
-    source_ytraining <- "./ytraining.txt";
+    source_ytrain <- "./ytraining.txt";
     source_ytest <- "./ytest.txt";
 
-    df_xtraining <- read.table(source_xtraining, header=FALSE,
+    df_xtrain <- read.table(source_xtrain, header=FALSE,
                                colClasses="double", numerals="no.loss");
-    ## print(df_xtraining);
+    ## print(df_xtrain);
     ##          V1          V2          V3
     ## 1 0.2571778 -0.02328523 -0.01465376
     ## 2 0.2860267 -0.01316336 -0.11908252
@@ -47,13 +47,13 @@ test <- function()
     ## is.double(df_xtest[1,2])
     ## [1] TRUE
 
-    df_ytraining <- read.table(source_ytraining, header=FALSE,
+    df_ytrain <- read.table(source_ytrain, header=FALSE,
                                colClasses="double", numerals="no.loss");
     df_ytest<-read.table(source_ytest, header=FALSE,
                          colClasses="double", numerals="no.loss");
 
-    dfx <- rbind(df_xtraining, df_xtest);
-    dfy <- rbind(df_ytraining, df_ytest);
+    dfx <- rbind(df_xtrain, df_xtest);
+    dfy <- rbind(df_ytrain, df_ytest);
     tidy_input_dataset <- cbind(dfx, dfy);
     ## print(tidy_input_dataset);
     ##          V1          V2          V3 V1
