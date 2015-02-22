@@ -76,11 +76,8 @@ test <- function()
     ## the next 2 are identical
     ## features_names <- as.vector(data_features$V2);
     features_names <- (as.data.frame(data_features)[, 2]);
-
-    browser();
-
-    activity_names <- c("subject_activity");
-    new_colnames <- c(subject_names, features_names, activity_names);
+    data_labels <- c("subject_activity");
+    new_colnames <- c(subject_names, features_names, data_labels);
     setnames(tidy_input_dataset, new_colnames)
     print(tidy_input_dataset);
     ## colnames(retval)
@@ -116,4 +113,33 @@ test <- function()
     ## unix >>grep "std" features.txt |wc
     ##       33      66     779               # ->   33 valores
 
+}
+
+step3 <- function()
+{
+    require(data.table); ## fread(dest_file_path, sep=" ");
+    dt <- data.table(c(1,2,3,4,5,6), c(1,1,2,1,3,3));
+    print(dt);
+
+    source_dir <- "./data/UCI HAR Dataset/";
+    source_activity_labels <- paste(source_dir, "activity_labels.txt", sep="");
+    source_activity_labels <- paste(source_dir, "activity_labels.txt", sep="");
+    data_labels<-fread(source_activity_labels,sep=" ");
+    print(data_labels);
+
+    new_colnames <- c("index", "subject_activity");
+    setnames(dt, new_colnames);
+    print(dt);
+
+
+    for(loopi in 1:nrow(data_labels))
+    {
+        print(loopi);
+        print(data_labels$V1[loopi]);
+        print(data_labels$V2[loopi]);
+        dt$subject_activity[dt$subject_activity==data_labels$V1[loopi]] <-
+            data_labels$V2[loopi];
+    }
+
+    return(dt);
 }

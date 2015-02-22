@@ -260,10 +260,42 @@ mem2tidy <- function(my_memdata, DEBUG_MODE=FALSE)
 {
     step1(my_memdata, FALSE);
     steps4and2(my_memdata, DEBUG_MODE); #join 4 & 2: implementation decision
+    step3(my_memdata, DEBUG_MODE);
 }
+
 
 ##------------------------------------------------------------------------------
 
+## 1.- Merges the training and the test sets to create one data set.
+step1 <- function(my_memdata, DEBUG_MODE=FALSE)
+{
+
+    ## bind rows
+    aux_dfsubject <- rbind(my_memdata$get_data_subjecttrain(),
+                           my_memdata$get_data_subjecttest());
+    aux_dfx <- rbind(my_memdata$get_data_xtrain(), my_memdata$get_data_xtest());
+    aux_dfy <- rbind(my_memdata$get_data_ytrain(), my_memdata$get_data_ytest());
+
+    ## bind cols
+    tidy_input_dataset <- cbind(aux_dfsubject, aux_dfx, aux_dfy);
+
+    ## store tidy data
+    my_memdata$set_tidydata_full(tidy_input_dataset);
+
+    stopifnot(my_memdata$expected_step1_ncol_tidydata_full() ==
+              ncol(my_memdata$get_tidydata_full()));
+    stopifnot(my_memdata$expected_nrow_tidydata_full() ==
+                  nrow(my_memdata$get_tidydata_full()));
+
+    if(DEBUG_MODE)
+    {
+        system.time(write.table(my_memdata$get_tidydata_full(),
+                                file="./data/test_tidy_full.txt",
+                                row.names=FALSE, col.names=FALSE));
+    }
+}
+
+##------------------------------------------------------------------------------
 
 ## \function steps4and2(my_memdata, DEBUG_MODE=FALSE)
 ## \brief Execute step 4 & 2 (in this order) of the project instructions.
@@ -365,36 +397,55 @@ steps4and2 <- function(my_memdata, DEBUG_MODE=FALSE)
     }
 }
 
-##------------------------------------------------------------------------------
 
-## 1.- Merges the training and the test sets to create one data set.
-step1 <- function(my_memdata, DEBUG_MODE=FALSE)
+################################################################################
+##\function step3((my_memdata, DEBUG_MODE)
+##\brief Execute step 3 of the project: 3.- Uses descriptive activity names to
+## name the activities in the data set
+##
+## %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+##
+## $ADD_TO_DOC
+##
+## Giving the descriptive values (WALKING, ...) read from the source file
+## "activity_labels.txt", replace in the column $subject_activity of the tidy
+## data set, each numerical value (1, 2, .., 6) with the correspondence
+## descriptive value in that file.
+##
+## e.g. Given "activity_labels.txt"equal to
+## 1 WALKING
+## 2 WALKING_UPSTAIRS
+## 3 WALKING_DOWNSTAIRS
+## 4 SITTING
+##
+## e.g. Given tidydata_full$subject_activity equal to
+## 1
+## 1
+## 2
+## 3
+## 3
+## after execute step3(), tidydata_full$subject_activity will be equal to
+## WALKING
+## WALKING
+## WALKING_UPSTAIRS
+## WALKING_DOWNSTAIRS
+## WALKING_DOWNSTAIRS
+##
+## %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+step3 <- function(my_memdata, DEBUG_MODE=FALSE)
 {
-
-    ## bind rows
-    aux_dfsubject <- rbind(my_memdata$get_data_subjecttrain(),
-                           my_memdata$get_data_subjecttest());
-    aux_dfx <- rbind(my_memdata$get_data_xtrain(), my_memdata$get_data_xtest());
-    aux_dfy <- rbind(my_memdata$get_data_ytrain(), my_memdata$get_data_ytest());
-
-    ## bind cols
-    tidy_input_dataset <- cbind(aux_dfsubject, aux_dfx, aux_dfy);
-
-    ## store tidy data
-    my_memdata$set_tidydata_full(tidy_input_dataset);
-
-    stopifnot(my_memdata$expected_step1_ncol_tidydata_full() ==
-              ncol(my_memdata$get_tidydata_full()));
-    stopifnot(my_memdata$expected_nrow_tidydata_full() ==
-                  nrow(my_memdata$get_tidydata_full()));
-
-    if(DEBUG_MODE)
+    dt <- my_memdata$get_tidydata_full();
+    for(loopi in 1:nrow(data_labels))
     {
-        system.time(write.table(my_memdata$get_tidydata_full(),
-                                file="./data/test_tidy_full.txt",
-                                row.names=FALSE, col.names=FALSE));
+        dt$subject_activity[dt$subject_activity ==
+                                my_memdata$get_data_labels()$V1[loopi]] <-
+                                    my_memdata$get_data_labels()$V2[loopi];
+
+        my_memdata$set_tidydata_full(dt);
     }
 }
+
 
 ################################################################################
 ## step5() From the data set in step 4, creates a second, independent tidy data

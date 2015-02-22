@@ -95,3 +95,9 @@
 [63] "fBodyBodyAccJerkMag-std()"   "fBodyBodyGyroMag-mean()"    
 [65] "fBodyBodyGyroMag-std()"      "fBodyBodyGyroJerkMag-mean()"
 [67] "fBodyBodyGyroJerkMag-std()"  "subject_activity"           
+[1] "Steps 3.- Uses descriptive activity names to"
+[1] 5 5 5
+[1] TRUE
+[1] TRUE
+[1] "STANDING" "STANDING" "STANDING"
+[1] "WALKING_UPSTAIRS" "WALKING_UPSTAIRS" "WALKING_UPSTAIRS"

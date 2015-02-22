@@ -67,6 +67,18 @@ make_test <- function()
                   nrow(my_memdata$get_tidydata_full()));
         print(colnames(my_memdata$get_tidydata_full()));
 
+        print("Steps 3.- Uses descriptive activity names to");
+        tidy_colnames <- colnames(my_memdata$get_tidydata_full());
+        print(head((my_memdata$get_tidydata_full()$subject_activity), 3));
+        step3(my_memdata, FALSE);
+        print(my_memdata$expected_step2_ncol_tidydata_full() ==
+                  ncol(my_memdata$get_tidydata_full()));
+        print(my_memdata$expected_nrow_tidydata_full() ==
+                  nrow(my_memdata$get_tidydata_full()));
+
+        print(head((my_memdata$get_tidydata_full()$subject_activity), 3));
+        print(tail((my_memdata$get_tidydata_full()$subject_activity), 3));
+
     }, error=function(error_cond) {
         error_msg <- paste("Test error: <<", error_cond, ">>");
         print(error_msg);
