@@ -1,7 +1,57 @@
 ################################################################################
 ##
-## To execute the analysis:  in an R console calls "run_analysis()"
+## $ADD_TO_DOC
 ##
+##
+## INFO.- Project execution
+##
+##
+## System Requirements:
+##
+## - R
+## - Active Internet connection (at least for the first execution)
+##
+##
+## Note.- Let's call "RWW" the directory where the input scrip stands.
+##
+## Input files:
+##
+##     RWW/run_analysis.R
+##
+## Execution steps:
+##
+##     1) Open a R session.
+##     2) Set the working directory to the one where "run_analysis.R" stands.
+##     3) In the R console type:
+##
+##                source("run_analysis.R")
+##                run_analysis()
+##
+## Output files:
+##
+##     RWW/project_solution.txt
+##
+##     View: to view the file with a proper format, use an "excel-type"
+##     application. Open the file selecting blank-space as separator.
+##
+## Additional notes.-
+##
+##     First execution:
+##
+##     For the first execution of the project's script, or when the source data
+##     is not found in the expected place (see bellow), the source data is
+##     automatically downloaded and installed in the system.
+##
+##     a) RWW/data directory is created.
+##     b) Source file downloaded: RWW/data/projectfiles_dataset.zip
+##     c) source data unzipped:   RWW/data/UCI HAR Dataset/
+##
+##     Therefore, for this first time, the total execution time will include
+##     these operations.
+##
+## %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 ################################################################################
 ## You should create one R script called run_analysis.R that does the following.
 ##
@@ -135,15 +185,17 @@
 ## observations: "section a" observations are an ordered copy of the
 ## observations in "train/y_train.txt" file; "section b" observations are an
 ## ordered copy of the observations in "test/y_test.txt" file.
-## Finally the values of theses obsertavions are changed from numbers (1-6), to
+## Finally the values of theses observations are changed from numbers (1-6), to
 ## the descriptive labels following "activity_labels.txt"
 ## Source files: "train/Y_train.txt", "test/Y_test., "activity_labels.txt"
 ##
 ## %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+ require(data.table);
+ require(reshape2);   ## melt & dcast
 
-require(data.table);
+
 
 ## -----------------------------------------------------------------------------
 
@@ -159,11 +211,6 @@ run_analysis <- function(DEBUG_MODE = FALSE)
     {
         retval <- solve(the_memdata,DEBUG_MODE);
     }
-
-    ## option 1) warning: use "retval <- run_analysis() or the tidy.data will
-    ## be ptinted in the standard output
-    ## option 2) comment the line "return (retval)
-    return (retval);
 }
 
 ## -----------------------------------------------------------------------------
@@ -172,14 +219,76 @@ solve <- function(my_memdata, DEBUG_MODE=FALSE)
 {
     get_source_data();
     source2memory(my_memdata, FALSE);
-    mem2tidy(my_memdata, DEBUG_MODE);
-    step5(my_memdata, DEBUG_MODE);
+    mem2tidy(my_memdata, FALSE);
+    step5(my_memdata, FALSE);
+    write_solution(my_memdata, DEBUG_MODE);
+}
 
-    ## return(my_memdata$get_tidydata_full());
+## -----------------------------------------------------------------------------
 
-    ## solution <- step5();
-    ## return(solution);
+################################################################################
+## \function write_solution(my_memdata, DEBUG_MODE)
+## \brief write the solution data produced at step5() into a file according to
+## the project instruction:
+##
+## output file: "project_solution.txt" in the same directory that run_analysis.R
+##
+################################################################################
+## $ADD_TO_DOC
+##
+## NOTICE.- Output file:
+##
+## Name: "project_solution.txt"
+##
+## Directory: in the same directory that run_analysis.R.
+##
+## View: to view the file with a proper format, use an "excel-type"
+## application. Open the file selecting blank-space as separator.
+##
+## Format: one header row, followed by 180 observations; where var1 .. var68
+## are the names of each measure "avg(tBodyAcc-mean()-X), ..., "
+## fBodyBodyGyroJerkMag-std()). It will look like this:
+##
+## subject_id | subject_activity | avg(var1) | ...  | avg(var68)
+## -------------------------------------------------------------
+##     1      | LAYING           | value     | ...  | value
+##     1      | SITTING | value  | ...       | value
+##     ...
+##     1      | WALKING_UPSTAIRS | value     | ...  | value
+##     2      | LAYING           | value     | ...  | value
+##     ...
+##     6      | WALKING_UPSTAIRS | value     | ...  | value
+##
+## %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+write_solution <- function(my_memdata, DEBUG_MODE)
+{
+    outputfile <- "project_solution.txt";
+    write.table(my_memdata$get_tidydata_avg(),
+                outputfile,
+                sep=" ",
+                row.name=FALSE);
+
+    if(DEBUG_MODE)
+    {
+        checksolution <- fread(outputfile,
+                               sep=" ",
+                               header=TRUE);
+
+        stopifnot(identical(ncol(checksolution),
+                            ncol(my_memdata$get_tidydata_avg())));
+
+        stopifnot(identical(nrow(checksolution),
+                            nrow(my_memdata$get_tidydata_avg())));
+
+        stopifnot(identical(colnames(checksolution),
+                            colnames(my_memdata$get_tidydata_avg())));
+        print("head(checksolution), 1");
+        print(head(checksolution), 1);
+        print("head(my_memdata$get_tidydata_avg()), 1)");
+        print(head(my_memdata$get_tidydata_avg()), 1);
+        ## stopifnot(identical(checksolution, my_memdata$get_tidydata_avg()));
+    }
 }
 
 ## -----------------------------------------------------------------------------
@@ -245,13 +354,6 @@ step1 <- function(my_memdata, DEBUG_MODE=FALSE)
               ncol(my_memdata$get_tidydata_full()));
     stopifnot(my_memdata$expected_nrow_tidydata_full() ==
                   nrow(my_memdata$get_tidydata_full()));
-
-    if(DEBUG_MODE)
-    {
-        system.time(write.table(my_memdata$get_tidydata_full(),
-                                file="./data/test_tidy_full.txt",
-                                row.names=FALSE, col.names=FALSE));
-    }
 }
 
 ##------------------------------------------------------------------------------
@@ -299,8 +401,8 @@ steps4and2 <- function(my_memdata, DEBUG_MODE=FALSE)
     new_colnames <- c(subject_names, features_names, activity_names);
 
 
-    ## WARNIGN class(tidy_input_dataset) must be data.frame  to
-    ## tidy_input_dataset[wantedvars] work remopving false columns.
+    ## WARNING class(tidy_input_dataset) must be data.frame  to
+    ## tidy_input_dataset[wantedvars] work removing false columns.
     ## That operation does not works over data.table().
 
     tidy_input_dataset <- as.data.frame(my_memdata$get_tidydata_full());
@@ -313,7 +415,7 @@ steps4and2 <- function(my_memdata, DEBUG_MODE=FALSE)
                         x=colnames(tidy_input_dataset),
                         ignore.case=FALSE);
 
-    #preserve first & las colums
+    #preserve first & last columns
     wantedvars[1] <- TRUE;
     wantedvars[length(wantedvars)] <- TRUE;
 
@@ -409,22 +511,76 @@ step3 <- function(my_memdata, DEBUG_MODE=FALSE)
 ################################################################################
 ## step5() From the data set in step 4, creates a second, independent tidy data
 ## set with the average of each variable for each activity and each subject.
-## -----------------------------------------------------------------------------
-## Please upload your data set as a txt file created with write.table() using
-## row.name=FALSE (do not cut and paste a dataset directly into the text box,
-## as this may cause errors saving your submission).
-################################################################################
-
+## %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ##
-##      My Hint:                activity_1   ... activity_n
+## $ADD_TO_DOC
 ##
-##                subject_1     avg(value)  ...
-##                     ...
-##                subject_30    avg(value)  ...
+## NOTICE.- Final data format:
+##
+## The final data set will be a table like the following, with 180 observations;
+## where var1 .. var68 are the names of each measure (tBodyAcc-mean()-X, ...)
+##
+## subject_id | subject_activity | avg(var1) | ...  | avg(var68)
+## -------------------------------------------------------------
+##     1      | LAYING           | value     | ...  | value
+##     1      | SITTING | value  | ...       | value
+##     ...
+##     1      | WALKING_UPSTAIRS | value     | ...  | value
+##     2      | LAYING           | value     | ...  | value
+##     ...
+##     6      | WALKING_UPSTAIRS | value     | ...  | value
+##
+##
+## %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 step5 <- function(my_memdata, DEBUG_MODE=FALSE)
 {
-    ## \todo IMPLEMENT ME
+    dt <- my_memdata$get_tidydata_full();
+    dt <- melt(dt, id=c("subject_id", "subject_activity"));
+
+    if(DEBUG_MODE){
+        system.time({
+            avgdt <- dcast.data.table(dt,
+                                      subject_id+subject_activity ~variable,
+                                      mean);
+        });}
+    else{
+        avgdt <- dcast.data.table(dt,
+                                  subject_id+subject_activity ~variable,
+                                  mean);
+        }
+
+
+    #\warning Make descriptive colnames: avg(variable_name)
+    old_colnames <- colnames(avgdt);
+    new_colnames <- colnames(avgdt);
+    new_colnames <- gsub("^*", "avg(", new_colnames);
+    new_colnames <- gsub("*$", ")", new_colnames);
+    new_colnames[1:2] <- old_colnames[1:2];
+    setnames(avgdt, new_colnames);
+
+
+    stopifnot(my_memdata$expected_ncol_tidydata_avg() ==
+              ncol(avgdt));
+    stopifnot(my_memdata$expected_nrow_tidydata_avg() ==
+              nrow(avgdt));
+
+    ## finally: store the changes made
+    my_memdata$set_tidydata_avg(avgdt);
+    stopifnot(my_memdata$expected_ncol_tidydata_avg() ==
+              ncol(my_memdata$get_tidydata_avg()));
+    stopifnot(my_memdata$expected_nrow_tidydata_avg() ==
+              nrow(my_memdata$get_tidydata_avg()));
+
+    if(DEBUG_MODE)
+    {
+        print(head(my_memdata$get_tidydata_avg()));
+        print(tail(my_memdata$get_tidydata_avg()));
+        print(colnames(my_memdata$get_tidydata_avg()));
+        print(ncol(my_memdata$get_tidydata_avg()));
+        print(nrow(my_memdata$get_tidydata_avg()));
+    }
+
 }
 
 
@@ -460,7 +616,7 @@ source2memory <- function(my_memdata, DEBUG_MODE=FALSE)
 
     ## \warning Some files must be read with "read.table" due to a bug in fread
     ## when there are blank spaces before the first column of data. Then the
-    ## rading time is too long:
+    ## reading time is too long:
     ## user  system elapsed
     ## 0.471   0.013   0.485   ## USING fread()
     ## 25.952   0.098  26.050  ## USING read.table()
@@ -624,9 +780,6 @@ struct_memdata<- function()
     ## average of each variable for each activity and each subject.
     tidydata_avg <- data.table();
 
-    ## ]
-    ## \
-
     get_data_subjecttrain <- function() {return(data_subjecttrain);}
     get_data_ytrain <- function() {return(data_ytrain);}
     get_data_xtrain <- function() {return(data_xtrain);}
@@ -702,6 +855,8 @@ struct_memdata<- function()
     expected_step1_ncol_tidydata_full <- function() {return(563);}
     expected_nrow_tidydata_full <- function() {return(10299);}
     expected_step2_ncol_tidydata_full <- function() {return(68);}
+    expected_ncol_tidydata_avg <- function() {return(68);}
+    expected_nrow_tidydata_avg <- function() {return(180);}
 
 
     list(get_data_subjecttrain = get_data_subjecttrain,
@@ -718,6 +873,8 @@ struct_memdata<- function()
          expected_step1_ncol_tidydata_full = expected_step1_ncol_tidydata_full,
          expected_nrow_tidydata_full = expected_nrow_tidydata_full,
          expected_step2_ncol_tidydata_full = expected_step2_ncol_tidydata_full,
+         expected_ncol_tidydata_avg = expected_ncol_tidydata_avg,
+         expected_nrow_tidydata_avg = expected_nrow_tidydata_avg,
 
          set_data_subjecttrain = set_data_subjecttrain,
          set_data_ytrain = set_data_ytrain,

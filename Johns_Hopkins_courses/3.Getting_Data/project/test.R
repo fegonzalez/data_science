@@ -142,3 +142,66 @@ step3 <- function()
 
     return(dt);
 }
+
+
+step5 <- function()
+{
+    require(data.table); #dcast.data.table
+    require(reshape2);   ## reshape2:::dcast takes 192.1 seconds
+
+
+    new_colnames <- c("id", "x1", "x2", "x3", "activity");
+    mydata <- data.table(sample(letters[23:26], 20, replace=TRUE),
+                         rnorm(20, mean = 100, sd = 18),
+                         rnorm(20, mean = 4, sd = 0.5),
+                         rnorm(20, mean = 0, sd = 9),
+                         sample(LETTERS[1:3], 20, replace=TRUE));
+    setnames(mydata, new_colnames);
+
+    ## MELT
+    ## mydata <- melt(mydata, id=c("id","activity"),
+    ##                measure.vars=c("x2", "x1", "x3"));
+    ## ## CAST
+    ## avg <- dcast(mydata, id+activity ~variable, mean);
+
+
+    mydata <- melt(mydata, id=c("id","activity"));
+                   ## measure.vars=c("x2", "x1", "x3"));
+    ## CAST
+    system.time({
+        avg <- dcast.data.table(mydata, id+activity ~variable, mean);
+    });
+
+    ## system.time({
+    ##     avg <- reshape2:::dcast(mydata, id+activity ~variable, mean);
+    ## });
+
+    return (avg);
+}
+
+writeout <- function()
+{
+    x <- c("uno", "dos-().v");
+    newx <- gsub("^*", "avg(", x);
+    newx <- gsub("*$", ")", newx);
+    print(newx);
+
+    new_colnames <- c("id", "x1", "x2", "x3", "activity");
+    mydata <- data.table(sample(letters[23:26], 20, replace=TRUE),
+                         rnorm(20, mean = 100, sd = 18),
+                         rnorm(20, mean = 4, sd = 0.5),
+                         rnorm(20, mean = 0, sd = 9),
+                         sample(LETTERS[1:3], 20, replace=TRUE));
+    setnames(mydata, new_colnames);
+
+    old_colnames <- colnames(mydata);
+    print(old_colnames[1:2])
+    new_colnames <- colnames(mydata);
+    new_colnames <- gsub("^*", "avg(", new_colnames);
+    new_colnames <- gsub("*$", ")", new_colnames);
+    new_colnames[1:2] <- old_colnames[1:2];
+    print(new_colnames);
+    setnames(mydata, new_colnames);
+    print(colnames(mydata));
+}
+

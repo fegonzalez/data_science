@@ -728,13 +728,41 @@ summary(DF)
 ##                            E:4   3rd Qu.:302.5
 ##                            F:4   Max.   :512.0
 
-## a)
+## DF
+##       Admit Gender Dept Freq
+## 1  Admitted   Male    A  512
+## 2  Rejected   Male    A  313
+## 3  Admitted Female    A   89
+## 4  Rejected Female    A   19
+## 5  Admitted   Male    B  353
+## 6  Rejected   Male    B  207
+## 7  Admitted Female    B   17
+## 8  Rejected Female    B    8
+## 9  Admitted   Male    C  120
+## 10 Rejected   Male    C  205
+## 11 Admitted Female    C  202
+## 12 Rejected Female    C  391
+## 13 Admitted   Male    D  138
+## 14 Rejected   Male    D  279
+## 15 Admitted Female    D  131
+## 16 Rejected Female    D  244
+## 17 Admitted   Male    E   53
+## 18 Rejected   Male    E  138
+## 19 Admitted Female    E   94
+## 20 Rejected Female    E  299
+## 21 Admitted   Male    F   22
+## 22 Rejected   Male    F  351
+## 23 Admitted Female    F   24
+## 24 Rejected Female    F  317
+
+## a) The distribution of one factor variable:
+
 xtabs(~ Gender , data = DF)
 ## Gender
 ##   Male Female
 ##     12     12
 
-## b)
+## b) The relationship between two factor variables.
 xtabs(~ Gender + Admit , data = DF)
 ##         Admit
 ## Gender   Admitted Rejected
@@ -756,7 +784,7 @@ xtabs(Freq ~. , data = DF)
 ##   Rejected  351    317
 
 c2) One factor vs SOME of the others
-xtabs(Freq ~ Gender + Admit , data = DF)
+ xtabs(Freq ~ Gender + Admit , data = DF)
 ##         Admit
 ## Gender   Admitted Rejected
 ##   Male       1198     1493
@@ -764,7 +792,16 @@ xtabs(Freq ~ Gender + Admit , data = DF)
 
 
 
-17.3.2) Flat contingency tables (ftable)
+17.3.2) Flat contingency tables over xtabs results (ftable)
+
+## head(warpbreaks)
+##   breaks wool tension replicale
+## 1     26    A       L         1
+## 2     30    A       L         2
+## 3     54    A       L         3
+## 4     25    A       L         4
+## 5     70    A       L         5
+## 6     52    A       L         6
 
 warpbreaks$replicale <- rep(1:9, length=54)
 xt <- xtabs(breaks ~., data=warpbreaks)
@@ -838,15 +875,13 @@ mydata$zcf <- factor(mydata$zipCode)
   3. Each table/file stores data about one kind of observation
      (e.g. people/hospitals).
 
-library(reshape2)
-reshape()
-melt()
-dcast()   # cast(data, formula, function)
-
 
 a) "melt" data so that each row is a unique id-variable combination.
 
 b) Then you "cast" the melted data into any shape you would like.
+
+reshape2:::dcast(data, formula, function)
+dcast.data.table(data, formula, function)  #faster for data tables
 
 ## e.g. "http://www.statmethods.net/management/reshape.html"
 mydata <- data.frame(c(1,1,2,2), c(1,2,1,2), c(5,3,6,2), c(6,5,1,4))
@@ -856,7 +891,8 @@ colnames(mydata) <- c("id", "time", "x1", "x2")
 ## 2  1    2  3  5
 ## 3  2    1  6  1
 ## 4  2    2  2  4
-mydata <- melt(mydata, id=c("id","time"), measure.vars=c("x2", "x1"))
+mydata <- melt(mydata, id=c("id","time"))
+               measure.vars=c("x2", "x1"))#optional select a subset of vars
 ##   id time variable value
 ## 1  1    1       x2     6
 ## 2  1    2       x2     5
@@ -866,10 +902,20 @@ mydata <- melt(mydata, id=c("id","time"), measure.vars=c("x2", "x1"))
 ## 6  1    2       x1     3
 ## 7  2    1       x1     6
 ## 8  2    2       x1     2
-subjmeans <- dcast(mydata, id~variable, mean)
+avg <- dcast(mydata, id ~ variable, mean)
 ##   id  x2 x1
 ## 1  1 5.5  4
 ## 2  2 2.5  4
+##
+mydata <- as.data.table(mydata);
+avg <- dcast.data.table(mydata, id + time ~ variable, mean)
+##
+##   id time x2 x1
+## 1  1    1  6  5
+## 2  1    2  5  3
+## 3  2    1  1  6
+## 4  2    2  4  2
+
 
 c) See "Split-Apply-Combine methodology" at REF.[1]
 

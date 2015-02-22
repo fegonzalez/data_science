@@ -79,6 +79,16 @@ make_test <- function()
         print(my_memdata$expected_nrow_tidydata_full() ==
                   nrow(my_memdata$get_tidydata_full()));
 
+        print("Steps 5.- tidy data: average (variable/activity/subject.");
+        step5(my_memdata, FALSE);
+
+        fulltidy <- my_memdata$get_tidydata_full();
+        avgtidy <- my_memdata$get_tidydata_avg();
+        print(head(avgtidy, 8));
+        print(tail(avgtidy, 8));
+        print(colnames(avgtidy));
+        print(ncol(avgtidy));
+        print(nrow(avgtidy));
 
     }, error=function(error_cond) {
         error_msg <- paste("Test error: <<", error_cond, ">>");
