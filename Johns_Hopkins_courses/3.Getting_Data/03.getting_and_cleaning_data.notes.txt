@@ -314,7 +314,7 @@ X = data.table(c("b","c"),foo=c(4,2))
 > DT[!J("b",3)]              # same result but much faster
 
 
-9.5) Add & remove elements to a table
+9.5) Add & remove elements to a table  (operator ':=' )
 
 > DT[, z:=42L]               # add new column by reference
 > print(DT[,z:=42L])
@@ -844,8 +844,7 @@ melt()
 dcast()   # cast(data, formula, function)
 
 
-a) "melt" data so that each row is a unique id-variable
-combination.
+a) "melt" data so that each row is a unique id-variable combination.
 
 b) Then you "cast" the melted data into any shape you would like.
 
@@ -857,7 +856,7 @@ colnames(mydata) <- c("id", "time", "x1", "x2")
 ## 2  1    2  3  5
 ## 3  2    1  6  1
 ## 4  2    2  2  4
-mdata <- melt(mydata, id=c("id","time"), measure.vars=c("x2", "x1"))
+mydata <- melt(mydata, id=c("id","time"), measure.vars=c("x2", "x1"))
 ##   id time variable value
 ## 1  1    1       x2     6
 ## 2  1    2       x2     5
@@ -867,7 +866,7 @@ mdata <- melt(mydata, id=c("id","time"), measure.vars=c("x2", "x1"))
 ## 6  1    2       x1     3
 ## 7  2    1       x1     6
 ## 8  2    2       x1     2
-subjmeans <- dcast(mdata, id~variable, mean)
+subjmeans <- dcast(mydata, id~variable, mean)
 ##   id  x2 x1
 ## 1  1 5.5  4
 ## 2  2 2.5  4

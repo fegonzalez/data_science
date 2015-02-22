@@ -58,7 +58,7 @@ test <- function()
     dfy <- rbind(df_ytrain, df_ytest);
     aux_dfsubject <- c(1,4,24,30);
     data_features <- data.table(c(1,2,3),
-        c("tBodyAcc-mean()-Z", "pepito", "tBodyAcc-std()-X"));
+        c("tBodyAcc-mean()-Z", "fBodyBodyGyroJerkMag-meanFreq()", "tBodyAcc-std()-X"));
     tidy_input_dataset <- cbind(aux_dfsubject, dfx, dfy);
     print(tidy_input_dataset);
     ##          V1          V2          V3 V1
@@ -77,41 +77,43 @@ test <- function()
     ## features_names <- as.vector(data_features$V2);
     features_names <- (as.data.frame(data_features)[, 2]);
 
+    browser();
+
     activity_names <- c("subject_activity");
     new_colnames <- c(subject_names, features_names, activity_names);
     setnames(tidy_input_dataset, new_colnames)
     print(tidy_input_dataset);
     ## colnames(retval)
-    ## [1] "subject_id"        "tBodyAcc-mean()-Z" "pepito"
-    ## [4] "tBodyAcc-std()-X"  "subject_activity"
+
+    ## [1] "subject_id" "tBodyAcc-mean()-Z" "fBodyBodyGyroJerkMag-meanFreq()"
+    ## [4] "tBodyAcc-std()-X" "subject_activity"
 
 
     ## ACTION:
     ## 2.- Extracts only the measurements on the mean and standard deviation
     ##     (std) for each measurement.
+    ## mean_std_pattern <- "[Mm]ean\\(\\)|std\\(\\)";
+    mean_std_pattern <- "mean\\()|std\\()"
+    wantedvars <- grepl(mean_std_pattern,
+                                 x=colnames(tidy_input_dataset),
+                                 ignore.case=FALSE)
 
-    grepl(pattern=mypattern,ignore.case=TRUE,x=names(retval));
-## [1] FALSE  TRUE FALSE FALSE FALSE
+    wantedvars[1] <- TRUE; #preserve first & las colums
+    print(wantedvars);
+    wantedvars[length(wantedvars)] <- TRUE;
+    print(wantedvars);
 
-
-    mypattern <- "mean"
-    features <- c("tBodyAcc-mean()-Z", "pepito", "tBodyAcc-std()-X", "sTd().mm", "mEanFreq", "the-meanFreq()");
-
-    grepl(pattern=mypattern,ignore.case=TRUE, x=features)
-    ## [1]  TRUE FALSE FALSE FALSE  TRUE  TRUE
-
-    grepl(pattern=mypattern,ignore.case=FALSE, x=features)
-    ## [1]  TRUE FALSE FALSE FALSE FALSE  TRUE
-
-    mypattern <- "std"
-    grepl(pattern=mypattern,ignore.case=FALSE, x=features)
-    ## [1] FALSE FALSE  TRUE FALSE FALSE FALSE
-
-    grepl("[Mm]ean\\(\\)|std\\(\\)", features)
-    ## [1]  TRUE FALSE  TRUE FALSE FALSE FALSE
-
-    grepl("mean()|std()", x=features, ignore.case=FALSE)
-    ## [1]  TRUE FALSE  TRUE FALSE FALSE  TRUE
-
+    print(tidy_input_dataset);
+    ## print(tidy_input_dataset[wantedvars]);
+    tidy_input_dataset <- tidy_input_dataset[wantedvars];
+    print(tidy_input_dataset);
     return(tidy_input_dataset);
+
+    ## CONSOLE grep
+
+    ## pattern <- "std"
+
+    ## unix >>grep "std" features.txt |wc
+    ##       33      66     779               # ->   33 valores
+
 }

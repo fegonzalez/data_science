@@ -50,28 +50,22 @@ make_test <- function()
         my_memdata <- struct_memdata();
         get_source_data();
         source2memory(my_memdata, FALSE);
-        mem2tidy(my_memdata, FALSE);
 
-        print("Checking dim(tidydata_full)");
-        print(my_memdata$expected_ncol_tidydata_full() ==
+        step1(my_memdata, FALSE);
+        print("Step 1.- Checking dim(tidydata_full)");
+        print(my_memdata$expected_step1_ncol_tidydata_full() ==
                   ncol(my_memdata$get_tidydata_full()));
         print(my_memdata$expected_nrow_tidydata_full() ==
                   nrow(my_memdata$get_tidydata_full()));
-
         print(colnames(my_memdata$get_tidydata_full()));
-        ## solution <- step5();
 
-
-        ## print("test 5: invalid data (not a matrix)");
-        ## tryCatch({my_cachematrix$set(c(1,2));}, error = function(e) e);
-        ## print("... so the stored matrix didn't change.");
-        ## print("my_cachematrix$get()");
-        ## print(my_cachematrix$get());
-        ## print("my_cachematrix$getInverse()");
-        ## print(my_cachematrix$getInverse());
-        ## print("Singular matrix: cacheSolve(my_cache matrix)");
-        ## cacheSolve(c(1,2));
-
+        steps4and2(my_memdata, FALSE);
+        print("Steps 4 & 2.- std & mean data selected & named");
+        print(my_memdata$expected_step2_ncol_tidydata_full() ==
+                  ncol(my_memdata$get_tidydata_full()));
+        print(my_memdata$expected_nrow_tidydata_full() ==
+                  nrow(my_memdata$get_tidydata_full()));
+        print(colnames(my_memdata$get_tidydata_full()));
 
     }, error=function(error_cond) {
         error_msg <- paste("Test error: <<", error_cond, ">>");

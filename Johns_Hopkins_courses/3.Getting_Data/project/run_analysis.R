@@ -189,15 +189,13 @@ require(data.table);
 
 ## -----------------------------------------------------------------------------
 
-run_analysis <- function()
+run_analysis <- function(DEBUG_MODE = FALSE)
 {
     the_memdata <- struct_memdata();
 
-    DEBUG_MODE <- FALSE;
-
     if(DEBUG_MODE)
     {
-        print(system.time(retval <- solve(the_memdata), DEBUG_MODE));
+        print(system.time(retval <- solve(the_memdata, DEBUG_MODE)));
     }
     else
     {
@@ -215,7 +213,7 @@ run_analysis <- function()
 solve <- function(my_memdata, DEBUG_MODE=FALSE)
 {
     get_source_data();
-    source2memory(my_memdata, DEBUG_MODE);
+    source2memory(my_memdata, FALSE);
     mem2tidy(my_memdata, DEBUG_MODE);
 
     return(my_memdata$get_tidydata_full());
@@ -261,166 +259,110 @@ solve <- function(my_memdata, DEBUG_MODE=FALSE)
 mem2tidy <- function(my_memdata, DEBUG_MODE=FALSE)
 {
     step1(my_memdata, FALSE);
-    step2(my_memdata, DEBUG_MODE);
+    steps4and2(my_memdata, DEBUG_MODE); #join 4 & 2: implementation decision
 }
 
 ##------------------------------------------------------------------------------
 
-## 2.  add the values from 'Features.txt' to 'X_test and X_train as column names
-## 3.  add column names to subject_train, subject_test, Y_test and Y_train
-## 4.  convert the values in Y_test and Y-train so that they correspond to
-##     those in 'activety_labels.txt'
-## 5.  Combine columns from subject_train, Y_train and X_train
-## 6.  Combine columns from subject_test, Y_test and X_test
-## 7.  Combine the rows from the previous two tables
-## 8.  tidy the table
 
+## \function steps4and2(my_memdata, DEBUG_MODE=FALSE)
+## \brief Execute step 4 & 2 (in this order) of the project instructions.
+## \info The combination of these two steps is an implementation decision.
+##
+## 4.- Appropriately labels the data set with descriptive variable names.
 ## my_memdata$tidydata_full =
 ## ("subject_id"    )(col names = data_features)("subject_activity")
 ## (data_subjecttrain)(data_xtrain              )(data_ytrain       )
 ## (data_subjecttest )(data_xtest               )(data_ytest        )
-
-## 2.- Extracts only the measurements on the mean and standard deviation
-##     (std) for each measurement.
 ##
-##     My Hint: column names = row values from "features.txt"
-##          extract only column names with the sub-string "mean" or "std" in it.
-step2 <- function(my_memdata, DEBUG_MODE=FALSE)
+## 2.- Extracts only the measurements on the mean and standard deviation
+##     (std) for each measurement. (see NOTICE bellow)
+##
+## %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+##
+## $ADD_TO_DOC
+##
+## NOTICE.- step 2
+##
+## According to point 2 at the instructions of the project, "Extracts only
+## the measurements on the mean and standard deviation for each
+## measurement.", and to the data-set's document features_info.txt,
+##    "These signals were used to estimate variables of the feature vector for
+##     each pattern:
+##     tBodyAcc-XYZ
+##     ...
+##     fBodyGyroJerkMag",
+## it has been considered that the measurements to include in the project are
+## only "mean()" and "std()" for these signals, that gives a total of 66
+## variables, 33 for each mean and std.
+##
+## %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+steps4and2 <- function(my_memdata, DEBUG_MODE=FALSE)
 {
-    ## setting my colnames
+    ## 4
     subject_names <- c("subject_id");
     features_names <- (as.data.frame(my_memdata$get_data_features())[, 2]);
     ## features_names <- my_memdata$get_data_features()$V2;  # valid too
     activity_names <- c("subject_activity");
     new_colnames <- c(subject_names, features_names, activity_names);
 
-    tidy_input_dataset <- my_memdata$get_tidydata_full();
+
+    ## WARNIGN class(tidy_input_dataset) must be data.frame  to
+    ## tidy_input_dataset[wantedvars] work remopving false columns.
+    ## That operation does not works over data.table().
+
+    tidy_input_dataset <- as.data.frame(my_memdata$get_tidydata_full());
     setnames(tidy_input_dataset, new_colnames);
-    my_memdata$set_tidydata_full(tidy_input_dataset);
-    ## print(tidy_input_dataset);
 
-    ##     colnames:
-    ##   [1] "subject_id"
-    ##   [2] "tBodyAcc-mean()-X"
-    ##       ...
-    ## [562] "angle(Z,gravityMean)"
-    ## [563] "subject_activity"
+    ## 2
+    MEAN_STD_PATTERN <- "mean\\()|std\\()"
+    ## MEAN_STD_PATTERN <- "mean\\(\\)|std\\(\\)"
+    wantedvars <- grepl(MEAN_STD_PATTERN,
+                        x=colnames(tidy_input_dataset),
+                        ignore.case=FALSE);
 
+    #preserve first & las colums
+    wantedvars[1] <- TRUE;
+    wantedvars[length(wantedvars)] <- TRUE;
 
+    ## finally: store the changes made
 
-    ## CONSOLE grep
+    if(DEBUG_MODE)
+    {
+        print(ncol(tidy_input_dataset));
+        print(nrow(tidy_input_dataset));
+        print(ncol(my_memdata$get_tidydata_full()));
+        print(nrow(my_memdata$get_tidydata_full()));
+    }
 
-    ## pattern <- "std"
+    stopifnot(my_memdata$expected_step1_ncol_tidydata_full() ==
+                  ncol(my_memdata$get_tidydata_full()));
+    stopifnot(my_memdata$expected_nrow_tidydata_full() ==
+                  nrow(my_memdata$get_tidydata_full()));
 
-    ## unix >>grep "std" features.txt |wc
-    ##       33      66     779               # ->   33 valores
-
-    ## unix >>grep "std" features.txt
-    ## 4 tBodyAcc-std()-X
-    ## 5 tBodyAcc-std()-Y
-    ## 6 tBodyAcc-std()-Z
-    ## 44 tGravityAcc-std()-X
-    ## 45 tGravityAcc-std()-Y
-    ## 46 tGravityAcc-std()-Z
-    ## 84 tBodyAccJerk-std()-X
-    ## 85 tBodyAccJerk-std()-Y
-    ## 86 tBodyAccJerk-std()-Z
-    ## 124 tBodyGyro-std()-X
-    ## 125 tBodyGyro-std()-Y
-    ## 126 tBodyGyro-std()-Z
-    ## 164 tBodyGyroJerk-std()-X
-    ## 165 tBodyGyroJerk-std()-Y
-    ## 166 tBodyGyroJerk-std()-Z
-    ## 202 tBodyAccMag-std()
-    ## 215 tGravityAccMag-std()
-    ## 228 tBodyAccJerkMag-std()
-    ## 241 tBodyGyroMag-std()
-    ## 254 tBodyGyroJerkMag-std()
-    ## 269 fBodyAcc-std()-X
-    ## 270 fBodyAcc-std()-Y
-    ## 271 fBodyAcc-std()-Z
-    ## 348 fBodyAccJerk-std()-X
-    ## 349 fBodyAccJerk-std()-Y
-    ## 350 fBodyAccJerk-std()-Z
-    ## 427 fBodyGyro-std()-X
-    ## 428 fBodyGyro-std()-Y
-    ## 429 fBodyGyro-std()-Z
-    ## 504 fBodyAccMag-std()
-    ## 517 fBodyBodyAccJerkMag-std()
-    ## 530 fBodyBodyGyroMag-std()
-    ## 543 fBodyBodyGyroJerkMag-std()
+    tidy_input_dataset <- tidy_input_dataset[wantedvars];
+    if(DEBUG_MODE)
+    {
+        print(ncol(tidy_input_dataset));
+        print(nrow(tidy_input_dataset));
+        print(colnames(tidy_input_dataset));
+    }
 
 
+    my_memdata$set_tidydata_full(as.data.table(tidy_input_dataset));
 
+    stopifnot(my_memdata$expected_step2_ncol_tidydata_full() ==
+              ncol(my_memdata$get_tidydata_full()));
+    stopifnot(my_memdata$expected_nrow_tidydata_full() ==
+                  nrow(my_memdata$get_tidydata_full()));
 
-    ## unix >>grep "mean" features.txt |wc
-    ## 46      92    1191                    # ->   46 valores
-    ## unix >>grep "mean()" features.txt |wc
-    ## 33      66     812
-    ## unix >>grep "meanFreq" features.txt |wc
-    ## 13      26     379
-
-    ## pattern <- "mean"
-    ## pattern <- "mean()"
-    ## pattern <- "meanFreq"
-
-    ## 1 tBodyAcc-mean()-X
-    ## 2 tBodyAcc-mean()-Y
-    ## 3 tBodyAcc-mean()-Z
-    ## 41 tGravityAcc-mean()-X
-    ## 42 tGravityAcc-mean()-Y
-    ## 43 tGravityAcc-mean()-Z
-    ## 81 tBodyAccJerk-mean()-X
-    ## 82 tBodyAccJerk-mean()-Y
-    ## 83 tBodyAccJerk-mean()-Z
-    ## 121 tBodyGyro-mean()-X
-    ## 122 tBodyGyro-mean()-Y
-    ## 123 tBodyGyro-mean()-Z
-    ## 161 tBodyGyroJerk-mean()-X
-    ## 162 tBodyGyroJerk-mean()-Y
-    ## 163 tBodyGyroJerk-mean()-Z
-    ## 201 tBodyAccMag-mean()
-    ## 214 tGravityAccMag-mean()
-    ## 227 tBodyAccJerkMag-mean()
-    ## 240 tBodyGyroMag-mean()
-    ## 253 tBodyGyroJerkMag-mean()
-    ## 266 fBodyAcc-mean()-X
-    ## 267 fBodyAcc-mean()-Y
-    ## 268 fBodyAcc-mean()-Z
-    ## 294 fBodyAcc-meanFreq()-X
-    ## 295 fBodyAcc-meanFreq()-Y
-    ## 296 fBodyAcc-meanFreq()-Z
-    ## 345 fBodyAccJerk-mean()-X
-    ## 346 fBodyAccJerk-mean()-Y
-    ## 347 fBodyAccJerk-mean()-Z
-    ## 373 fBodyAccJerk-meanFreq()-X
-    ## 374 fBodyAccJerk-meanFreq()-Y
-    ## 375 fBodyAccJerk-meanFreq()-Z
-    ## 424 fBodyGyro-mean()-X
-    ## 425 fBodyGyro-mean()-Y
-    ## 426 fBodyGyro-mean()-Z
-    ## 452 fBodyGyro-meanFreq()-X
-    ## 453 fBodyGyro-meanFreq()-Y
-    ## 454 fBodyGyro-meanFreq()-Z
-    ## 503 fBodyAccMag-mean()
-    ## 513 fBodyAccMag-meanFreq()
-    ## 516 fBodyBodyAccJerkMag-mean()
-    ## 526 fBodyBodyAccJerkMag-meanFreq()
-    ## 529 fBodyBodyGyroMag-mean()
-    ## 539 fBodyBodyGyroMag-meanFreq()
-    ## 542 fBodyBodyGyroJerkMag-mean()
-    ## 552 fBodyBodyGyroJerkMag-meanFreq()
-
-
-
-
-    ## R grep
-
-    ## pattern <- "mean"
-    ## > grepl(pattern=mypattern,ignore.case=TRUE,x=names(retval))
-    ## [1] FALSE  TRUE FALSE FALSE FALSE
-
-    ## ## grepl("[Mm]ean\\(\\)|std\\(\\)",column_names)
+    if(DEBUG_MODE)
+    {
+        print(ncol(my_memdata$get_tidydata_full()));
+        print(nrow(my_memdata$get_tidydata_full()));
+        print(colnames(my_memdata$get_tidydata_full()));
+    }
 }
 
 ##------------------------------------------------------------------------------
@@ -441,7 +383,7 @@ step1 <- function(my_memdata, DEBUG_MODE=FALSE)
     ## store tidy data
     my_memdata$set_tidydata_full(tidy_input_dataset);
 
-    stopifnot(my_memdata$expected_ncol_tidydata_full() ==
+    stopifnot(my_memdata$expected_step1_ncol_tidydata_full() ==
               ncol(my_memdata$get_tidydata_full()));
     stopifnot(my_memdata$expected_nrow_tidydata_full() ==
                   nrow(my_memdata$get_tidydata_full()));
@@ -739,8 +681,9 @@ struct_memdata<- function()
         tidydata_avg <<- new_value;
     }
 
-    expected_ncol_tidydata_full <- function() {return(563);}
+    expected_step1_ncol_tidydata_full <- function() {return(563);}
     expected_nrow_tidydata_full <- function() {return(10299);}
+    expected_step2_ncol_tidydata_full <- function() {return(68);}
 
 
     list(get_data_subjecttrain = get_data_subjecttrain,
@@ -754,8 +697,9 @@ struct_memdata<- function()
          get_tidydata_full = get_tidydata_full,
          get_tidydata_avg = get_tidydata_avg,
 
-         expected_ncol_tidydata_full = expected_ncol_tidydata_full,
+         expected_step1_ncol_tidydata_full = expected_step1_ncol_tidydata_full,
          expected_nrow_tidydata_full = expected_nrow_tidydata_full,
+         expected_step2_ncol_tidydata_full = expected_step2_ncol_tidydata_full,
 
          set_data_subjecttrain = set_data_subjecttrain,
          set_data_ytrain = set_data_ytrain,
