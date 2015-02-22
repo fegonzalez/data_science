@@ -60,7 +60,7 @@ test <- function()
     data_features <- data.table(c(1,2,3),
         c("tBodyAcc-mean()-Z", "fBodyBodyGyroJerkMag-meanFreq()", "tBodyAcc-std()-X"));
     tidy_input_dataset <- cbind(aux_dfsubject, dfx, dfy);
-    print(tidy_input_dataset);
+    #print(tidy_input_dataset);
     ##          V1          V2          V3 V1
     ## 1 0.2571778 -0.02328523 -0.01465376  5
     ## 2 0.2860267 -0.01316336 -0.11908252  5
@@ -79,7 +79,7 @@ test <- function()
     data_labels <- c("subject_activity");
     new_colnames <- c(subject_names, features_names, data_labels);
     setnames(tidy_input_dataset, new_colnames)
-    print(tidy_input_dataset);
+    #print(tidy_input_dataset);
     ## colnames(retval)
 
     ## [1] "subject_id" "tBodyAcc-mean()-Z" "fBodyBodyGyroJerkMag-meanFreq()"
@@ -96,12 +96,11 @@ test <- function()
                                  ignore.case=FALSE)
 
     wantedvars[1] <- TRUE; #preserve first & las colums
-    print(wantedvars);
+    ## print(wantedvars);
     wantedvars[length(wantedvars)] <- TRUE;
-    print(wantedvars);
+    ## print(wantedvars);
 
-    print(tidy_input_dataset);
-    ## print(tidy_input_dataset[wantedvars]);
+    ## print(tidy_input_dataset);
     tidy_input_dataset <- tidy_input_dataset[wantedvars];
     print(tidy_input_dataset);
     return(tidy_input_dataset);

@@ -10,9 +10,6 @@
 ## 2.- Extracts only the measurements on the mean and standard deviation
 ##     (std) for each measurement.
 ##
-##     My Hint: column names = row values from "features.txt"
-##          extract only column names with the sub-string "mean" or "std" in it.
-##
 ## 3.- Uses descriptive activity names to name the activities in the data set
 ##
 ## 4.- Appropriately labels the data set with descriptive variable names.
@@ -89,8 +86,8 @@
 ## ... to tidy data (data.frame)
 ##
 ## ("subject_id") ( feature_names ) ("subject_activity")
-##            (a1) (  ... a2 ...   ) (a3)
-##            (b1) (  ... b2 ...   ) (b3)
+##           (a1) (  ... a2 ...   ) (a3)
+##           (b1) (  ... b2 ...   ) (b3)
 ##
 ##
 ## 2.1) Tidy dataset from up to bottom (rows = observations)
@@ -138,50 +135,11 @@
 ## observations: "section a" observations are an ordered copy of the
 ## observations in "train/y_train.txt" file; "section b" observations are an
 ## ordered copy of the observations in "test/y_test.txt" file.
-##
-## Source files: "train/Y_train.txt", "test/Y_test.
+## Finally the values of theses obsertavions are changed from numbers (1-6), to
+## the descriptive labels following "activity_labels.txt"
+## Source files: "train/Y_train.txt", "test/Y_test., "activity_labels.txt"
 ##
 ## %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-##------------------------------------------------------------------------------
-## 1.- Merges the training and the test sets to create one data set.
-##
-##
-## 1.- List of source files used to create the tidy data.
-##
-## "train/subject_train.txt" : 7352 observations; 1 variables
-## "train/X_train.txt"       : 7352 observations; 561 variables
-## "train/y_train.txt"       : 7352 observations; 1 variables
-##
-## "test/subject_test.txt"   : 2947 observations; 1 variables
-## "test/X_test.txt"         : 2947 observations; 561 variables
-## "test/y_test.txt"         : 2947 observations; 1 variables
-##
-## "features.txt"            : 561 observations; 2 vars
-##
-## "activity_labels.txt"     : 6 observations; 2 vars
-##
-##
-## From source data files ...
-##
-##                           (  features.txt   )
-## (train/subject_train.txt) (train/X_train.txt) (train/y_train.txt)
-## (test/subject_test.txt  ) (test/X_test.txt  ) (test/y_test.txt)
-##
-##
-## ... to tidy data (data.frame)
-##
-## ("subject_id") ( feature_names ) ("subject_activity")
-##            (a1) (  ... a2 ...   ) (a3)
-##            (b1) (  ... b2 ...   ) (b3)
-##
-## EXPECTED_FULLDATA_ROWS <- 10299; #observations
-## EXPECTED_FULLDATA_COLS <- 563;   #variables
-## nrow(tidy.data) = 10299;
-## ncol(tidy.data) = 563;
-## -----------------------------------------------------------------------------
 
 
 
@@ -215,8 +173,9 @@ solve <- function(my_memdata, DEBUG_MODE=FALSE)
     get_source_data();
     source2memory(my_memdata, FALSE);
     mem2tidy(my_memdata, DEBUG_MODE);
+    step5(my_memdata, DEBUG_MODE);
 
-    return(my_memdata$get_tidydata_full());
+    ## return(my_memdata$get_tidydata_full());
 
     ## solution <- step5();
     ## return(solution);
@@ -436,7 +395,7 @@ steps4and2 <- function(my_memdata, DEBUG_MODE=FALSE)
 step3 <- function(my_memdata, DEBUG_MODE=FALSE)
 {
     dt <- my_memdata$get_tidydata_full();
-    for(loopi in 1:nrow(data_labels))
+    for(loopi in 1:nrow(my_memdata$get_data_labels()))
     {
         dt$subject_activity[dt$subject_activity ==
                                 my_memdata$get_data_labels()$V1[loopi]] <-
@@ -455,7 +414,15 @@ step3 <- function(my_memdata, DEBUG_MODE=FALSE)
 ## row.name=FALSE (do not cut and paste a dataset directly into the text box,
 ## as this may cause errors saving your submission).
 ################################################################################
-step5 <- function()
+
+##
+##      My Hint:                activity_1   ... activity_n
+##
+##                subject_1     avg(value)  ...
+##                     ...
+##                subject_30    avg(value)  ...
+
+step5 <- function(my_memdata, DEBUG_MODE=FALSE)
 {
     ## \todo IMPLEMENT ME
 }
