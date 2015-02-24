@@ -222,6 +222,7 @@ solve <- function(my_memdata, DEBUG_MODE=FALSE)
     mem2tidy(my_memdata, FALSE);
     step5(my_memdata, FALSE);
     write_solution(my_memdata, DEBUG_MODE);
+    write_codebook(my_memdata, DEBUG_MODE);
 }
 
 ## -----------------------------------------------------------------------------
@@ -747,6 +748,24 @@ get_source_data<- function()
     }
 }
 
+## -----------------------------------------------------------------------------
+##\class struct_memdata
+
+write_codebook <- function(my_memdata, DEBUG_MODE)
+{
+    outputfile <- "codebook.md";
+    write.table(colnames(my_memdata$get_tidydata_avg()),
+                outputfile,
+                sep="\n",
+                row.name=FALSE);
+
+    ## varnames <- colnames(my_memdata$get_tidydata_avg());
+    ## variable_name
+    ## var_description
+    ## data_type
+    ## range
+
+}
 
 ## -----------------------------------------------------------------------------
 ##\class struct_memdata

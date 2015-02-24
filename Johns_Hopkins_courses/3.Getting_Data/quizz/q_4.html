@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html class="supports-svg" xmlns:fb="http://ogp.me/ns/fb#" itemtype="http://schema.org"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE7"><meta name="fragment" content="!"><meta name="robots" content="NOODP"><meta charset="utf-8"><meta property="og:title" content="Coursera"><meta property="og:type" content="website"><meta property="og:image" content="http://s3.amazonaws.com/coursera/media/Coursera_Computer_Narrow.png"><meta property="og:url" content="https://www.coursera.org/quiz/attempt?quiz_id=69"><meta property="og:site_name" content="Coursera"><meta property="og:locale" content="en_US"><meta property="og:description" content="Take free online classes from 80+ top universities and organizations. Coursera is a social entrepreneurship company partnering with Stanford University, Yale University, Princeton University and others around the world to offer courses online for anyone to take, for free. We believe in connecting people to a great education so that anyone around the world can learn without limits."><meta property="fb:admins" content="727836538,4807654"><meta property="fb:app_id" content="274998519252278"><meta name="twitter:site" content="Coursera"><meta name="twitter:app:name:iphone" content="Coursera"><meta name="twitter:app:name:ipad" content="Coursera"><meta name="twitter:app:name:googleplay" content="Coursera"><meta name="twitter:app:id:iphone" content="id736535961"><meta name="twitter:app:id:ipad" content="id736535961"><meta name="twitter:app:id:googleplay" content="org.coursera.android"><meta name="description" content="Take free online classes from 80+ top universities and organizations. Coursera is a social entrepreneurship company partnering with Stanford University, Yale University, Princeton University and others around the world to offer courses online for anyone to take, for free. We believe in connecting people to a great education so that anyone around the world can learn without limits."><meta name="image" content="http://s3.amazonaws.com/coursera/media/Coursera_Computer_Narrow.png"><meta name="apple-itunes-app" content="app-id=736535961"><title>Coursera</title>    <link href="q_4_files/spark.css" rel="stylesheet" type="text/css">
+      <link href="q_4_files/course.txt" rel="stylesheet" type="text/css">
+    <link href="https://spark-public.s3.amazonaws.com/getdata/static/images/favicon.ico" rel="icon">
+<script src="q_4_files/ga.js" async="" type="text/javascript"></script><script src="q_4_files/MathJax.js" type="text/javascript"></script><style type="text/css">.clear { /* generic container (i.e. div) for floating buttons */
+	overflow: hidden !important;
+	width: 100% !important;
+}
+
+a.fantasybutton {
+	background: transparent url("chrome://aimersoft/content/img/button_normal.png") no-repeat !important;
+	color: #444 !important;
+	display: block !important;
+	float: left !important;
+	font: normal 12px arial, sans-serif !important;
+	height: 29px !important;
+	width: 112px !important;
+    
+}
+
+a.fantasybutton:active {
+	background: transparent url("chrome://aimersoft/content/img/button_down.png") no-repeat !important;
+	background-position: bottom right !important;
+	color: #000 !important;
+	outline: none !important; /* hide dotted outline in Firefox */
+}
+
+a.playlistbutton{
+    background: transparent url("chrome://aimersoft/content/img/down_all_normal.png") no-repeat !important;
+	color: #444 !important;
+	display: block !important;
+	float: left !important;
+	font: normal 12px arial, sans-serif !important;
+	height: 28px !important;
+	width: 124px !important;
+    margin-left:8px !important;
+    margin-top:2px !important;
+}
+
+a.playlistbutton:active{
+    background: transparent url("chrome://aimersoft/content/img/down_all_down.png") no-repeat !important;
+
+}
+
+button.wsplaylist {
+	background: transparent url("chrome://aimersoft/content/img/down_all_normal.png") no-repeat !important;
+	height: 28px !important;
+	width: 124px !important;
+    margin-left: 10px !important;
+    margin-top: 0px !important;
+    padding-left:1px !important;
+    padding-right:4px !important;
+    padding-top:6px !important;
+
+}
+
+button.wsplaylist:active {
+	background: transparent url("chrome://aimersoft/content/img/down_all_down.png") no-repeat !important;
+}
+
+#mytubem {
+	margin: 0 !important;
+	padding: 0 !important;
+	z-index: 30 !important;
+}
+
+#mytubem li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	float: left;
+	font: bold 11px arial
+}
+
+#mytubem div {
+	position: absolute;
+	top: 28px;
+	width: 110px;
+	visibility: hidden;
+	margin: 0;
+	padding: 0;
+	background: #9CC02B;
+	border: 1px solid #4C4C4C !important
+}
+
+#mytubem div a {
+	position: relative !important;
+	display: block !important;
+	margin: 0 !important;
+	padding: 5px 10px !important;
+	width: auto;
+	white-space: nowrap !important;
+	text-align: center !important;
+	text-decoration: none !important;
+	background: #000000 !important;
+	color: #FFFFFF !important;
+	font: 12px arial, sans-serif !important
+}
+
+#mytubem div a:hover {
+	background: rgb(135,10,10) !important;
+	color: #FFFFFF !important
+}</style><script src="q_4_files/routes.js" data-requiremodule="pages/spark/routes" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1px; bottom: 2px; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><script src="q_4_files/confirmNavigation.js" data-requiremodule="bundles/confirmNavigation/nls/es/confirmNavigation" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/moment.js" data-requiremodule="js/lib/nls/es/moment.lang" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/popup.js" data-requiremodule="bundles/helpwidget/nls/es/popup" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><meta content="summary" name="twitter:card"><meta content="Coursera" name="twitter:title"><meta content="Take free online classes from 80+ top universities and organizations. Coursera is a social entrepreneurship company partnering with Stanford University, Yale University, Princeton University and others around the world to offer courses online for anyone to take, for free. We believe in connecting people to a great education so that anyone around the world can learn without limits." name="twitter:description"><meta content="http://s3.amazonaws.com/coursera/media/Coursera_Computer_Narrow.png" name="twitter:image:src"><script src="q_4_files/204.js" data-requiremodule="js/lib/204" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/student-page_003.js" data-requiremodule="pages/spark/views/template/student-page" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/student-page_002.js" data-requiremodule="pages/spark/views/template/student-page.html" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/sparkSurveyQuestionsSessionModel.js" data-requiremodule="bundles/assess/assessmentTypes/sparkSurveyQuestions/sparkSurveyQuestionsSessionModel" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/sessionModel.js" data-requiremodule="bundles/assess/assessmentTypes/quickQuestions/sessionModel" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/student-page.js" data-requiremodule="pages/spark/views/template/nls/student-page" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/SessionModel.js" data-requiremodule="bundles/assess/assessmentTypes/SessionModel" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/QuestionCollection.js" data-requiremodule="bundles/assess/framework/QuestionCollection" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/QuestionModel.js" data-requiremodule="bundles/assess/framework/QuestionModel" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/backbone.js" data-requiremodule="bundles/assess/lib/backbone.hascollections" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/underscore.js" data-requiremodule="js/lib/underscore.extend" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/header_003.js" data-requiremodule="pages/spark/views/template/header" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/sidebar_003.js" data-requiremodule="pages/spark/views/template/sidebar" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/readme.js" data-requiremodule="js/lib/readme" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/header.js" data-requiremodule="pages/spark/views/template/header.html" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/LearnerStoriesCollection.js" data-requiremodule="pages/analytics/models/LearnerStoriesCollection" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/assessApi.js" data-requiremodule="pages/spark-survey/assessApi" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/sidebar.js" data-requiremodule="pages/spark/views/template/sidebar.html" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/signature_track.js" data-requiremodule="spark/app/signature/js/signature_track" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/HelpCenterLinks.js" data-requiremodule="pages/help-center/data/HelpCenterLinks" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/LearnerStoryModel.js" data-requiremodule="pages/analytics/models/LearnerStoryModel" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/header_002.js" data-requiremodule="pages/spark/views/template/nls/header" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/sidebar_002.js" data-requiremodule="pages/spark/views/template/nls/sidebar" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/header_004.js" data-requiremodule="pages/spark/views/template/nls/es/header" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/signatureTrackLastChanceModal.js" data-requiremodule="spark/app/signature/js/signatureTrackLastChanceModal.html" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/flexjoinLastChanceModal.js" data-requiremodule="spark/app/signature/js/flexjoinLastChanceModal.html" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/util.js" data-requiremodule="js/lib/util" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/path.js" data-requiremodule="js/lib/path" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="q_4_files/sidebar_004.js" data-requiremodule="pages/spark/views/template/nls/es/sidebar" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuTitle {background-color: #CCCCCC; margin: -5px 0 0 0; text-align: center; font-style: italic; font-size: 80%; color: #444444; padding: 2px 0; overflow: hidden}
+.MathJax_MenuArrow {position: absolute; right: .5em; color: #666666}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_Menu_Close {position: absolute; width: 31px; height: 31px; top: -15px; left: -15px}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style></head><body><div style="display: none;" id="MathJax_Message"></div><div id="fb-root"></div><div id="spark-help" class="hide"></div><a href="https://learner.coursera.help/hc/requests/new" target="_blank"><div style="z-index: 1" data-networkprioritysupportwidget="" role="button" class="helpwidget-tab hide">Premium Support</div></a><!-- - track IE8 and less browser for eventing purposes--><!--[if lte IE 8]><script>window._204 = window._204 || [];
+window._gaq = window._gaq || [];
+window._gaq.push(
+    ['_setAccount', 'UA-28377374-1'],
+    ['_setDomainName', window.location.hostname],
+    ['_setAllowLinker', true],
+    ['_trackPageview', window.location.pathname]);
+window._204.push(
+  ['client', 'home'],
+  {key:"pageview", value:window.location.pathname});</script><script src="https://dw0ugk4msqulk.cloudfront.net/634d859cc9dabec957a492ff280ca4c0f18f9f1a/js/lib/204.js"></script><script src="https://ssl.google-analytics.com/ga.js"></script><![endif]--><div id="fb-root"></div><div id="origami" data-js="origami"><div><div><div class="coursera-page"><div class="coursera-header" role="menubar"><div class="hidden">Esta página utiliza la tecnología Mathjax para desplegar fórmulas matemáticas.
+Si estás usando un lector de pantallas, por favor visita <a href="http://www.dessci.com/en/products/mathplayer/">MathPlayer</a>
+ para descargar la extensión (plugin) para tu navegador. Ten en cuenta, 
+por favor, que esta extensión es -por el momento- compatible únicamente 
+con Internet Explorer.</div><h1 class="hidden">Getting and Cleaning Data</h1><!-- UNTIL dashboard announcement expires 2014-12-01 (then delete this code)--><div class="helpcenter-announcement"><div style="visibility: visible; display: none;" class="readme" data-readme="helpcenter-announcement" data-readme-show-count="1" data-readme-show-until-closed="data-readme-show-until-closed" data-readme-expires="Mar 31, 2015"><div>Need technical help? Visit our new <a href="https://learner.coursera.help/" data-readme-close="data-readme-close">Learner Help Center!</a></div><div data-readme-close="data-readme-close" class="readme-close-icon"><span class="icon-remove"></span></div></div></div><div role="banner" class="course-topbar container-fluid"><div class="row-fluid"><div class="span3"><a href="https://www.coursera.org/" data-if-linkable="add-referrer" class="course-topbar-logo"></a></div><div style="float:right;" class="course-topbar-nav-container span9"><h2 class="hidden">Barra superior de navegación</h2><ul class="course-topbar-nav-list"><li class="course-topbar-nav-list-item"><a href="https://www.coursera.org/courses" data-if-linkable="add-referrer">Cursos</a></li><li tabindex="0" role="button" aria-haspopup="true" aria-expanded="false" aria-owns="course-topbar-my" data-popup="#course-topbar-my" data-popup-bind-open="mouseenter" data-popup-close="data-popup-close" style="cursor:pointer;" data-popup-direction="se" class="course-topbar-nav-list-item"><a data-user-id="8717605">Fernando Gonzalez Rodriguez<i class="icon-caret-down"></i></a></li></ul></div></div><div id="course-topbar-aboutus" class="course-topbar-sublist"><a href="https://www.coursera.org//about/" target="_new" data-if-linkable="add-referrer" class="internal-about course-topbar-sublist-item">Nosotros</a><a href="https://www.coursera.org//about/careers" target="_new" data-if-linkable="add-referrer" class="internal-about course-topbar-sublist-item">Empleo</a><a href="https://www.coursera.org//about/people" target="_new" data-if-linkable="add-referrer" class="internal-about course-topbar-sublist-item">Integrantes</a><a href="https://www.coursera.org//about/contact" target="_new" data-if-linkable="add-referrer" class="internal-about course-topbar-sublist-item">Página de contacto</a></div><div id="course-topbar-my" class="course-topbar-sublist"><a data-popup-close="data-popup-close" href="https://www.coursera.org/" target="_new" class="course-topbar-sublist-item">Mis cursos</a><a data-popup-close="data-popup-close" href="https://www.coursera.org/account/profile" target="_new" class="course-topbar-sublist-item">Perfil</a><a data-popup-close="data-popup-close" href="https://www.coursera.org/account/accomplishments" target="_new" class="course-topbar-sublist-item">Registros de Cursos</a><a href="https://www.coursera.org/account/settings" target="_new" class="course-topbar-sublist-item">Ajustes</a><a href="https://class.coursera.org/getdata-011/class/preferences" class="course-topbar-sublist-item">Preferencias del curso</a><a href="https://class.coursera.org/getdata-011/auth/logout" class="course-topbar-sublist-item">Cerrar sesión</a></div></div><div class="course-topbanner-wrapper"><div class="course-topbanner"><div class="course-topbanner-university-logo"><a href="https://www.coursera.org/jhu" target="_blank" data-if-linkable="add-referrer" title="https://www.coursera.org/jhu" class="coursera-university-color"><img src="q_4_files/university_logo.txt" alt="jhu"></a></div><h1 class="course-topbanner-header"><a href="https://class.coursera.org/getdata-011/" data-if-linkable="modal-lock" class="course-topbanner-name coursera-university-color">Getting and Cleaning Data</a><br><span style="" class="course-topbanner-instructor">por Jeff Leek, PhD, Roger D. Peng, PhD, Brian Caffo, PhD</span></h1></div></div></div><div style="position:relative;" class="container-fluid"><div class="row-fluid"><div id="course-page-sidebar" role="navigation"><div class="coursera-sidebar" role="menubar"><div id="course-page-sidebar" role="navigation"><div class="course-navbar-container"><a href="https://class.coursera.org/getdata-011" data-ab-user-convert-for="honorcode_to_welcome2" data-ab-user-convert="navclick_index"><img src="q_4_files/logo.jpg" style="width: 205px;height: 116px;margin: -15px 0px 8px 1px; box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);" alt="Course Home Page"></a><div data-coursera-course-search-nav-widget="data-coursera-course-search-nav-widget" class="input-append course-search-nav-box"><form method="get" action="/getdata-011/class/search" data-js-search-form="data-js-search-form" class="form-inline minimized-search"><label for="course-search-nav-input" class="accessible-text-for-reader">Explora este curso</label><input id="course-search-nav-input" name="q" data-js-search-input="data-js-search-input" type="text">&nbsp;<button type="submit" data-ab-user-convert-for="honorcode_to_welcome2" data-ab-user-convert="search" class="btn icon-search"><span class="accessible-text-for-reader">Busca</span></button></form></div><h2 class="hidden">Barra lateral de navegación</h2><ul class="course-navbar-list"><li class="course-navbar-item"></li><li class="course-navbar-item"><h3>Course</h3></li><li class="course-navbar-item"><a href="https://class.coursera.org/getdata-011/class/index" data-if-linkable="modal-lock,gray,lock-icon" data-ab-user-convert-for="honorcode_to_welcome2" data-ab-user-convert="navclick_Announcements" class="coursera-university-color"><span>Announcements </span><span></span></a></li><li class="course-navbar-item"><a href="https://class.coursera.org/getdata-011/lecture/index" data-if-linkable="modal-lock,gray,lock-icon" data-ab-user-convert-for="honorcode_to_welcome2" data-ab-user-convert="navclick_Video_Lectures" class="coursera-university-color"><span>Video Lectures </span><span></span></a></li><li class="course-navbar-item"><h3>Exercises</h3></li><li class="course-navbar-item"><a href="https://class.coursera.org/getdata-011/quiz/index" data-if-linkable="modal-lock,gray,lock-icon" data-ab-user-convert-for="honorcode_to_welcome2" data-ab-user-convert="navclick_Quizzes" class="coursera-university-color"><span>Quizzes </span><span></span></a></li><li class="course-navbar-item"><a href="https://class.coursera.org/getdata-011/assignment/index" data-if-linkable="modal-lock,gray,lock-icon" data-ab-user-convert-for="honorcode_to_welcome2" data-ab-user-convert="navclick_swirl_Programming_Assignment" class="coursera-university-color"><span>swirl Programming Assignment </span><span></span></a></li><li class="course-navbar-item"><a href="https://class.coursera.org/getdata-011/human_grading/index" data-if-linkable="modal-lock,gray,lock-icon" data-ab-user-convert-for="honorcode_to_welcome2" data-ab-user-convert="navclick_Course_Project" class="coursera-university-color"><span>Course Project </span><span></span></a></li><li class="course-navbar-item"></li><li class="course-navbar-item"><h3>About the course</h3></li><li class="course-navbar-item"><a href="https://class.coursera.org/getdata-011/wiki/syllabus" data-if-linkable="modal-lock,gray,lock-icon" data-ab-user-convert-for="honorcode_to_welcome2" data-ab-user-convert="navclick_Syllabus" class="coursera-university-color"><span>Syllabus </span><span></span></a></li><li class="course-navbar-item"><a href="https://class.coursera.org/getdata-011/wiki/About_the_Instructor" data-if-linkable="modal-lock,gray,lock-icon" data-ab-user-convert-for="honorcode_to_welcome2" data-ab-user-convert="navclick_About_the_instructor" class="coursera-university-color"><span>About the instructor </span><span></span></a></li><li class="course-navbar-item"></li><li class="course-navbar-item"><h3>Community</h3></li><li class="course-navbar-item"><a href="https://class.coursera.org/getdata-011/forum/index" data-if-linkable="modal-lock,gray,lock-icon" data-ab-user-convert-for="honorcode_to_welcome2" data-ab-user-convert="navclick_Discussion_Forums" class="coursera-university-color"><span>Discussion Forums </span><span></span></a></li><li class="course-navbar-item"><a href="http://datasciencespecialization.github.io/" target="_blank" data-if-linkable="modal-lock,gray,lock-icon" data-ab-user-convert-for="honorcode_to_welcome2" data-ab-user-convert="navclick_DSS_Community_Site" class="coursera-university-color"><span>DSS Community Site </span><span class="icon-share"></span><span class="accessible-text-for-reader">se abre en una nueva pestaña del navegador.</span></a></li><li class="course-navbar-item"><a href="https://share.coursera.org/wiki/index.php/getdata-011:Main" target="_blank" title="Open course wiki in new window" class="coursera-university-color">Wiki del curso<span class="icon-share"></span><span class="accessible-text-for-reader">se abre en una nueva pestaña del navegador.</span></a></li></ul><ul style="list-style-type:none;margin-left: 10px;"><li><a href="https://accounts.coursera.org/i/zendesk/courserahelp?return_to=https://learner.coursera.help/hc/" target="_blank" title="Open help articles in new window" class="coursera-university-color"><i class="icon-question-sign"></i>Help Center</a></li></ul><ul style="list-style-type:none;margin-left: 10px;"></ul></div></div></div></div><div id="course-page-content" role="main"><div style="display: block;" id="spark" class="hide">
+
+<h2 class="course-page-header">
+  <span>
+Week 4 Quiz **Please Note: No Grace Period**  </span>
+  
+  <a class="coursera-reporter-link" title="Click here if you're experiencing technical problems or found errors in the course materials." target="_blank" href="https://accounts.coursera.org/i/zendesk/courserahelp?return_to=https://learner.coursera.help/hc/articles/201523125-Quizzes">
+     Help Center
+  </a>
+</h2>
+
+
+<a data-coursera-admin-helpwidget-link="" rel="help" href="https://class.coursera.org/mooc/help/quiz" title="Quiz documentation" style="display:none;">Learn more</a>
+
+
+<p class="course-quiz-intro-message">The <strong>due date</strong> for this quiz is <strong>Mon  2 Mar 2015  1:30 AM CET</strong>.</p>
+
+
+
+
+
+
+
+            <form method="post" id="quiz_form" accept-charset="UTF-8">
+    
+    
+            
+<div class="course-quiz-honor-code">
+    <label class="checkbox">
+        <input type="checkbox">
+        In accordance with the Coursera Honor Code, I (Fernando Gonzalez
+ Rodriguez) certify that the answers here are my own work.        <span class="course-quiz-honor-code-thanks" style="display:none;">Thank you!</span>
+    </label>
+
+</div>
+    
+    <div class="course-quiz-question-body">
+<h3 class="course-quiz-question-number">Question 1</h3>
+<div dir="auto" class="course-quiz-question-text">The American Community
+ Survey distributes downloadable data about United States communities. 
+Download the 2006 microdata survey about housing for the state of Idaho 
+using download.file() from here: 
+
+<br><br><a href="https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06hid.csv">https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06hid.csv</a>
+
+<br><br>
+
+and load the data into R. The code book, describing the variable names is here:
+
+<br><br><a href="https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FPUMSDataDict06.pdf">https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FPUMSDataDict06.pdf </a>
+
+<br><br>
+
+Apply strsplit() to split all the names of the data frame on the 
+characters "wgtp". What is the value of the 123 element of the resulting
+ list?</div>
+<div dir="auto" class="course-quiz-options">
+<div class="course-quiz-option">
+<input dir="auto" class="course-quiz-input" name="answer[e677fe3c4b5d5fb8ac77aaefb703414d][]" id="gensym_54ecbab2547ce" value="986388f6a18d610a9f544a6ed67dffa4" type="radio"><label for="gensym_54ecbab2547ce" style="cursor:pointer;">"wgtp"</label>
+</div>
+<div class="course-quiz-option">
+<input dir="auto" class="course-quiz-input" name="answer[e677fe3c4b5d5fb8ac77aaefb703414d][]" id="gensym_54ecbab257e8d" value="a74891fdd8d66d2b83d0a38df4b93688" type="radio"><label for="gensym_54ecbab257e8d" style="cursor:pointer;">"w" "15"</label>
+</div>
+<div class="course-quiz-option">
+<input dir="auto" class="course-quiz-input" name="answer[e677fe3c4b5d5fb8ac77aaefb703414d][]" id="gensym_54ecbab25af78" value="2efadf757b99b3dec1016ddba853e413" type="radio"><label for="gensym_54ecbab25af78" style="cursor:pointer;">"" "15"</label>
+</div>
+<div class="course-quiz-option">
+<input dir="auto" class="course-quiz-input" name="answer[e677fe3c4b5d5fb8ac77aaefb703414d][]" id="gensym_54ecbab25de15" value="b16130bd264cd43195d1dc0643bce8ac" type="radio"><label for="gensym_54ecbab25de15" style="cursor:pointer;">"wgtp" "15"</label>
+</div>
+</div>
+</div><div class="course-quiz-question-body">
+<h3 class="course-quiz-question-number">Question 2</h3>
+<div dir="auto" class="course-quiz-question-text">Load the Gross Domestic Product data for the 190 ranked countries in this data set: 
+<br><br><a href="https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv"> https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv</a> 
+
+<br><br>
+
+Remove the commas from the GDP numbers in millions of dollars and average them. What is the average? 
+
+
+<br><br>
+Original data sources: 
+http://data.worldbank.org/data-catalog/GDP-ranking-table </div>
+<div dir="auto" class="course-quiz-options">
+<div class="course-quiz-option">
+<input dir="auto" class="course-quiz-input" name="answer[cc1ab65a859d79fc93dd545ed13a1990][]" id="gensym_54ecbab2678bf" value="197dbdf02ade230ea4a9e9d6ba2696fe" type="radio"><label for="gensym_54ecbab2678bf" style="cursor:pointer;">293700.3</label>
+</div>
+<div class="course-quiz-option">
+<input dir="auto" class="course-quiz-input" name="answer[cc1ab65a859d79fc93dd545ed13a1990][]" id="gensym_54ecbab26a5ca" value="32dbcc8b01f082a6d11a70e4cdd0aa4a" type="radio"><label for="gensym_54ecbab26a5ca" style="cursor:pointer;">387854.4</label>
+</div>
+<div class="course-quiz-option">
+<input dir="auto" class="course-quiz-input" name="answer[cc1ab65a859d79fc93dd545ed13a1990][]" id="gensym_54ecbab26d3a1" value="76887b804ef85fb2b49e56192d30e4d0" type="radio"><label for="gensym_54ecbab26d3a1" style="cursor:pointer;">377652.4
+</label>
+</div>
+<div class="course-quiz-option">
+<input dir="auto" class="course-quiz-input" name="answer[cc1ab65a859d79fc93dd545ed13a1990][]" id="gensym_54ecbab26ffad" value="ad379a5504808f6565c79bbe6c066c30" type="radio"><label for="gensym_54ecbab26ffad" style="cursor:pointer;">381615.4</label>
+</div>
+</div>
+</div><div class="course-quiz-question-body">
+<h3 class="course-quiz-question-number">Question 3</h3>
+<div dir="auto" class="course-quiz-question-text">In the data set from 
+Question 2 what is a regular expression that would allow you to count 
+the number of countries whose name begins with "United"? Assume that the
+ variable with the country names in it is named countryNames. How many 
+countries begin with United? </div>
+<div dir="auto" class="course-quiz-options">
+<div class="course-quiz-option">
+<input dir="auto" class="course-quiz-input" name="answer[633e94e954169c60e34a6deaab771f99][]" id="gensym_54ecbab27c332" value="5897b22f9fc32630dedb424cefca6ab5" type="radio"><label for="gensym_54ecbab27c332" style="cursor:pointer;">grep("United$",countryNames), 3</label>
+</div>
+<div class="course-quiz-option">
+<input dir="auto" class="course-quiz-input" name="answer[633e94e954169c60e34a6deaab771f99][]" id="gensym_54ecbab27fbf2" value="31d3d5d04f44a52be1c40ee1b0b7d132" type="radio"><label for="gensym_54ecbab27fbf2" style="cursor:pointer;">grep("^United",countryNames), 3</label>
+</div>
+<div class="course-quiz-option">
+<input dir="auto" class="course-quiz-input" name="answer[633e94e954169c60e34a6deaab771f99][]" id="gensym_54ecbab283536" value="b04dd6f4990c147af189fd3e98a664af" type="radio"><label for="gensym_54ecbab283536" style="cursor:pointer;">grep("*United",countryNames), 2</label>
+</div>
+<div class="course-quiz-option">
+<input dir="auto" class="course-quiz-input" name="answer[633e94e954169c60e34a6deaab771f99][]" id="gensym_54ecbab288720" value="1a8efa5fe6a9aac8b875830aed0dee61" type="radio"><label for="gensym_54ecbab288720" style="cursor:pointer;">grep("*United",countryNames), 5</label>
+</div>
+</div>
+</div><div class="course-quiz-question-body">
+<h3 class="course-quiz-question-number">Question 4</h3>
+<div dir="auto" class="course-quiz-question-text">Load the Gross Domestic Product data for the 190 ranked countries in this data set:
+
+<br><br><a href="https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv"> https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv</a> 
+
+<br><br> 
+
+Load the educational data from this data set:
+
+<br><br><a href="https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv">https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv</a>
+
+<br><br> 
+
+Match the data based on the country shortcode. Of the countries for 
+which the end of the fiscal year is available, how many end in June?
+
+
+
+<br><br>
+Original data sources: 
+<br><a href="http://data.worldbank.org/data-catalog/GDP-ranking-table">http://data.worldbank.org/data-catalog/GDP-ranking-table</a>
+<br><a href="http://data.worldbank.org/data-catalog/ed-stats">http://data.worldbank.org/data-catalog/ed-stats</a>
+</div>
+<div dir="auto" class="course-quiz-options">
+<div class="course-quiz-option">
+<input dir="auto" class="course-quiz-input" name="answer[2449cc38b6ec4e9d06d0d42aef347a4f][]" id="gensym_54ecbab299b41" value="7c8063627704b53932ee04e785844685" type="radio"><label for="gensym_54ecbab299b41" style="cursor:pointer;">7</label>
+</div>
+<div class="course-quiz-option">
+<input dir="auto" class="course-quiz-input" name="answer[2449cc38b6ec4e9d06d0d42aef347a4f][]" id="gensym_54ecbab29dbd4" value="2b7240a0607c7042c7ba964aac24aec4" type="radio"><label for="gensym_54ecbab29dbd4" style="cursor:pointer;">15</label>
+</div>
+<div class="course-quiz-option">
+<input dir="auto" class="course-quiz-input" name="answer[2449cc38b6ec4e9d06d0d42aef347a4f][]" id="gensym_54ecbab2a150f" value="ef0922dd48f4c4fc1ac07b5509678c18" type="radio"><label for="gensym_54ecbab2a150f" style="cursor:pointer;">13</label>
+</div>
+<div class="course-quiz-option">
+<input dir="auto" class="course-quiz-input" name="answer[2449cc38b6ec4e9d06d0d42aef347a4f][]" id="gensym_54ecbab2a5f9c" value="5a827a133bc1f36b93b68edc7967d951" type="radio"><label for="gensym_54ecbab2a5f9c" style="cursor:pointer;">31</label>
+</div>
+</div>
+</div><div class="course-quiz-question-body">
+<h3 class="course-quiz-question-number">Question 5</h3>
+<div dir="auto" class="course-quiz-question-text">You can use the quantmod (<a href="http://www.quantmod.com/">http://www.quantmod.com/</a>)
+ package to get historical stock prices for publicly traded companies on
+ the NASDAQ and NYSE. Use the following code to download data on 
+Amazon's stock price and get the times the data was sampled.
+
+<pre>library(quantmod)
+amzn = getSymbols("AMZN",auto.assign=FALSE)
+sampleTimes = index(amzn) </pre> 
+
+How many values were collected in 2012? How many values were collected on Mondays in 2012?</div>
+<div dir="auto" class="course-quiz-options">
+<div class="course-quiz-option">
+<input dir="auto" class="course-quiz-input" name="answer[4d277f0a6df3c5fa9c8bc7f08c1daf30][]" id="gensym_54ecbab2b2efd" value="d8959f806d21bb8dd94de0db4e441e49" type="radio"><label for="gensym_54ecbab2b2efd" style="cursor:pointer;">252, 47</label>
+</div>
+<div class="course-quiz-option">
+<input dir="auto" class="course-quiz-input" name="answer[4d277f0a6df3c5fa9c8bc7f08c1daf30][]" id="gensym_54ecbab2b81db" value="c4b1d26f254e438437480f3d2f2b6ea8" type="radio"><label for="gensym_54ecbab2b81db" style="cursor:pointer;">250, 47</label>
+</div>
+<div class="course-quiz-option">
+<input dir="auto" class="course-quiz-input" name="answer[4d277f0a6df3c5fa9c8bc7f08c1daf30][]" id="gensym_54ecbab2bcd88" value="276210cd79de7422c22f3eccc77a1a5f" type="radio"><label for="gensym_54ecbab2bcd88" style="cursor:pointer;">251,51</label>
+</div>
+<div class="course-quiz-option">
+<input dir="auto" class="course-quiz-input" name="answer[4d277f0a6df3c5fa9c8bc7f08c1daf30][]" id="gensym_54ecbab2c0c6d" value="6ff598f9c47097b6bc7efa9c04d58469" type="radio"><label for="gensym_54ecbab2c0c6d" style="cursor:pointer;">251, 47</label>
+</div>
+</div>
+</div>
+            
+<div class="course-quiz-honor-code">
+    <label class="checkbox">
+        <input type="checkbox">
+        In accordance with the Coursera Honor Code, I (Fernando Gonzalez
+ Rodriguez) certify that the answers here are my own work.        <span class="course-quiz-honor-code-thanks" style="display:none;">Thank you!</span>
+    </label>
+
+</div>
+    
+            <div class="course-quiz-submit-button-container">
+        <input name="__csrf-token" value="Sd6gFbsMqFemIorqeKKT" type="hidden">
+        <input disabled="disabled" class="btn btn-success" name="submit_answers" value="Submit Answers" type="submit">
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <input class="btn btn-primary" name="save_answers" value="Save Answers" type="submit">
+
+        <div class="course-quiz-honor-code-status" style="margin-top: 10px;">You cannot submit your work until you agree to the Honor Code. Thanks!</div>
+
+    </div>
+    
+
+
+    </form>
+
+<script type="text/x-mathjax-config;executed=true">
+MathJax.Hub.Config({
+  config: ["MMLorHTML.js"],
+  
+  styleSheets: [],
+  styles: {},
+
+  jax: ["input/TeX"],
+  
+  extensions: ["tex2jax.js"],
+
+  preJax: null,
+  postJax: null,
+
+  preRemoveClass: "MathJax_Preview",
+
+  showProcessingMessages: true,
+
+  messageStyle: "none",
+  
+  displayAlign: "center",
+  displayIndent: "0em",
+  
+  delayStartupUntil: "none",
+
+  skipStartupTypeset: false,
+  
+  elements: [],
+  
+  tex2jax: {
+	    inlineMath: [
+	                 ['$$','$$'],      // uncomment this for standard TeX math delimiters
+	                 ['\\(','\\)']
+	                 ],
+
+	                 displayMath: [
+	                 ['\\[','\\]']
+	                 ],
+
+    skipTags: ["script","noscript","style","textarea","pre","code"],
+    ignoreClass: "tex2jax_ignore",
+    processClass: "tex2jax_process",
+    processEscapes: false,
+    processEnvironments: true,
+    preview: "TeX"
+    
+  },
+  
+  mml2jax: {
+    preview: "alttext"
+    
+  },
+  
+  jsMath2jax: {
+    preview: "TeX"
+    
+  },
+
+  TeX: {
+    TagSide: "right",
+    TagIndent: ".8em",
+    MultLineWidth: "85%",
+    Macros: {},
+
+    extensions: ["AMSmath.js", "AMSsymbols.js"]
+    
+  },
+
+  //============================================================================
+  //
+  //  These parameters control the MathML inupt jax.
+  //
+  MathML: {
+    //
+    //  This specifies whether to use TeX spacing or MathML spacing when the
+    //  HTML-CSS output jax is used.
+    //
+    useMathMLspacing: false
+  },
+  
+  //============================================================================
+  //
+  //  These parameters control the HTML-CSS output jax.
+  //
+  "HTML-CSS": {
+    
+    scale: 100,
+    
+    availableFonts: ["STIX","TeX"],
+    
+    preferredFont: "TeX",
+    
+    webFont: "TeX",
+    
+    imageFont: "TeX",
+    
+    undefinedFamily: "STIXGeneral,'Arial Unicode MS',serif",
+      
+    showMathMenu: true,
+
+    styles: {},
+    
+    tooltip: {
+      delayPost: 600,          // milliseconds delay before tooltip is posted after mouseover
+      delayClear: 600,         // milliseconds delay before tooltip is cleared after mouseout
+      offsetX: 10, offsetY: 5  // pixels to offset tooltip from mouse position
+    }
+  },
+  
+  //============================================================================
+  //
+  //  These parameters control the NativeMML output jax.
+  //
+  NativeMML: {
+
+    scale: 100,
+
+    showMathMenu: true,
+    showMathMenuMSIE: true,
+
+    styles: {}
+  },
+  
+  MathMenu: {
+    delay: 400,
+    
+    helpURL: "http://www.mathjax.org/help/user/",
+
+    showRenderer: true,
+    showFontMenu: false,
+    showContext:  false,
+
+    windowSettings: {
+      status: "no", toolbar: "no", locationbar: "no", menubar: "no",
+      directories: "no", personalbar: "no", resizable: "yes", scrollbars: "yes",
+      width: 100, height: 50
+    },
+    
+    styles: {}
+    
+  },
+
+  MMLorHTML: {
+    prefer: {
+      MSIE:    "MML",
+      Firefox: "HTML",
+      Opera:   "HTML",
+      other:   "HTML"
+    }
+  }
+});
+</script>
+</div></div></div></div></div><div class="coursera-footer"></div></div></div></div><!--[if gte IE 9]><script>document.getElementById("coursera-loading-js").style.display = 'block';</script><![endif]-->
+<!--[if lte IE 8]><script>document.getElementById("coursera-loading-nojs").style.display = 'block';</script><![endif]-->
+<!--[if !IE]> --><script>document.getElementById("coursera-loading-js").style.display = 'block';</script><!-- <![endif]--><script>if (/zh/i.test(window.localStorage ? localStorage.getItem('locale') : '') || '{{ locale }}') {
+  document.getElementById('get-browser-zh').style.display = 'block';
+}</script><!--[if !IE]> --><script>document.getElementById('coursera-loading-js').style.display = 'block';</script><!-- <![endif]-->
+    <script src="q_4_files/jquery.js"></script>
+      <script src="q_4_files/underscore_002.js"></script>
+      <script src="q_4_files/quiz_timer.js"></script>
+      <script src="q_4_files/get_query_parameters.js"></script>
+      <script src="q_4_files/quiz_attempt.js"></script>
+      <script src="q_4_files/latex_preview.js"></script>
+      <script src="q_4_files/db_class.js"></script>
+      <script src="q_4_files/initRunQuery.js"></script>
+      <script src="q_4_files/loadOrRefreshMathJax.js"></script>
+      <script src="q_4_files/grid_questions.js"></script>
+      <script src="q_4_files/quiz_error_box_dummy.js"></script>
+  <script src="q_4_files/require.js"></script><script data-baseurl="https://dw0ugk4msqulk.cloudfront.net/634d859cc9dabec957a492ff280ca4c0f18f9f1a/" data-version="634d859cc9dabec957a492ff280ca4c0f18f9f1a" data-timestamp="1424707556889" data-debug="0" data-locale="es_ES" id="_require">if(document.getElementById('coursera-loading-js').style.display == 'block') {
+  (function(el) {
+     require.config({
+       //enforceDefine: true,
+       waitSeconds: 75,
+       baseUrl: el.getAttribute('data-baseurl'),
+       urlArgs: el.getAttribute('data-debug') == '1' ? 'v=' + el.getAttribute('data-timestamp') : '',
+       shim: {
+          'underscore': {
+             exports: '_'
+          },
+          'backbone': {
+             deps: ['underscore', 'jquery'],
+             exports: 'Backbone',
+             init: function(_, $) {
+               Backbone.$ = $;
+               return Backbone;
+             }
+          },
+          'pages/hg/thirdparty/js/backbone.marionette': {
+            deps: ['backbone']
+          },
+          'pages/hg/thirdparty/js/webshims/polyfiller': {
+            deps: ['jquery']
+          },
+          'pages/hg/thirdparty/js/webshims/extras/mousepress': {
+            deps: ['jquery', 'pages/hg/thirdparty/js/webshims/polyfiller']
+          },
+          'pages/hg/thirdparty/js/jquery.throttle': {
+            deps: ['jquery']
+          },
+          'js/lib/jquery.linkify': {
+            deps: ['jquery']
+          },
+          'pages/hg/thirdparty/js/js/bootstrap/alert': {
+            deps: ['jquery', 'pages/hg/thirdparty/js/bootstrap/transition']
+          },
+          'spark/core/js/jquery_ui': {
+            deps: ['jquery']
+          },
+          'spark/core/js/jquery.history': {
+            deps: ['jquery']
+          },
+          'js/lib/bootstrap.tooltip': {
+            deps: ['jquery']
+          },
+          'pages/hg/thirdparty/js/bootstrap/transition': {
+            deps: ['jquery']
+          },
+          'pages/hg/thirdparty/js/bootstrap/tab': {
+            deps: ['jquery']
+          },
+          'bundles/videojs/lib/video.4.3.0': {
+            exports: 'vjs'
+          }
+       },
+       paths: {
+          'q': 'js/vendor/q.v1-0-1',
+          'react-with-addons': 'js/vendor/react-with-addons.v0-12',
+          'jquery':                         'pages/spark/jquery',
+          'underscore':                     'js/vendor/underscore.v1-5-2',
+          'backbone':                       'js/vendor/backbone.v1-1-0',
+          'backbone.relational':            'js/lib/backbone.relational.0.8.6',
+          'i18n':                           'js/lib/i18n._t',
+          'css':                            'js/vendor/require.css.v0-1-2',
+          'memoize':                        'js/lib/require.memoize.v0-0-1',
+          'pages/spark/models/user.json':   'empty:',
+          'pages/spark/models/course.json': 'empty:',
+          'pages/spark/models/navbar.json': 'empty:'
+       },
+       callback: function() {
+                    require(['pages/spark/routes']);
+                },
+       config: {
+         i18n: {
+           locale: (window.localStorage ? localStorage.getItem('locale') : '') || el.getAttribute('data-locale')
+         }
+       }
+     });
+  })(document.getElementById('_require'));
+}
+</script><script>define('pages/spark/models/user.json', [], function(){
+      return JSON.parse("{\"id\":8717605,\"email_address\":\"fer.gonzalez.rodriguez@gmail.com\",\"full_name\":\"Fernando Gonzalez Rodriguez\",\"locale\":\"es_ES\",\"timezone\":\"Europe\\\/Madrid\",\"access_group_id\":\"4\",\"registration_time\":\"1422459689\",\"last_access_time\":\"1424799093\",\"last_access_ip\":\"93.156.74.248\",\"signature_track_register_time\":\"0\",\"email_announcement\":\"1\",\"email_forum\":\"1\",\"in_signature_track\":\"0\",\"wishes_proctored_exam\":\"0\",\"first_name\":\"Fernando\",\"permissions\":[\"default\",\"allow_site_access\"],\"group\":\"Student\",\"anonymous\":false,\"forum_title\":\"Student\",\"signature_track_state\":1,\"verified_quizzes\":[],\"submitted_quizzes\":[\"25\",\"43\",\"55\"],\"scheduled_proctored_exam\":null,\"last_chance_modal\":1,\"flexjoin_last_chance_modal\":null}");
+  });
+define('pages/spark/models/course.json', [], function(){
+      return JSON.parse("{\"id\":973498,\"isPrivate\":false,\"type\":\"public\",\"name\":\"Getting and Cleaning Data\",\"instructor\":\"Jeff Leek, PhD, Roger D. Peng, PhD, Brian Caffo, PhD\",\"sessionName\":\"getdata-011\",\"externalBaseURL\":\"https:\\\/\\\/www.coursera.org\\\/\",\"shortname\":\"getdata\",\"host\":\"https:\\\/\\\/www.coursera.org\\\/\",\"assetUnversionedLink\":\"https:\\\/\\\/dw0ugk4msqulk.cloudfront.net\\\/\",\"cheggID\":\"\",\"hasLTI\":true,\"badgevilleDomain\":\"\",\"linkable\":false,\"universityShortname\":\"jhu\",\"signatureTrackStatus\":{\"signature_track_enabled\":1},\"courseURLs\":{\"log_in_link\":\"https:\\\/\\\/www.coursera.org\\\/login?post_redirect=https%3A%2F%2Fwww.coursera.org%2Flogin%3Fuser_action%3Dclass%26course_id%3D973498%26post_redirect%3Dhttps%253A%252F%252Fclass.coursera.org%252Fgetdata-011%252Fauth%252Fauth_redirector%253Ftype%253Dlogin%2526subtype%253Dnormal%2526visiting%253D\",\"sign_up_link\":\"https:\\\/\\\/www.coursera.org\\\/signup?enroll_cid=973498&enroll_sn=getdata&enroll_n=Getting and Cleaning Data\",\"view_course_info_link\":\"https:\\\/\\\/www.coursera.org\\\/course\\\/getdata\",\"sign_up_link_cant_enroll\":\"https:\\\/\\\/www.coursera.org\\\/signup?post_redirect=https%3A%2F%2Fwww.coursera.org%2Fcourse%2Fgetdata\"},\"courseBase\":\"https:\\\/\\\/class.coursera.org\\\/getdata-011\\\/\",\"search\":true,\"hideWiki\":false,\"aceStartRegistrationDate\":\"Thu  1 Jan 1970  1:00 AM CET\",\"aceEndRegistrationDate\":\"Thu  1 Jan 1970  1:00 AM CET\",\"aceExamStartDate\":\"Thu  1 Jan 1970  1:00 AM CET\",\"aceExamEndDate\":\"Thu  1 Jan 1970  1:00 AM CET\",\"aceExamRules\":\"\",\"aceExamDuration\":\"\",\"aceBeforeExam\":false,\"aceAfterExam\":true,\"aceHours\":null,\"aceCreditType\":\"\",\"acePrice\":null,\"aceExamID\":null,\"aceEligible\":false,\"canRegisterForACE\":false,\"specialization\":{\"numCourse\":9,\"image\":\"https:\\\/\\\/s3.amazonaws.com\\\/coursera\\\/specializations\\\/jhudatascience\\\/logo_small.png\",\"id\":1,\"short_name\":\"jhudatascience\",\"name\":\"Data Science\"},\"supportForums\":true,\"textbooks\":\"\",\"inVideoQuizV2\":false,\"in_flexjoin\":0,\"honorCodeExtraText\":\"\",\"honorCodeCustomTitle\":\"\",\"honorCodeCustomButton\":\"\",\"studentAccessDisabled\":0,\"disableQQs\":false}");
+  });
+  define('pages/spark/models/navbar.json', [], function(){
+      return JSON.parse("{\"items\":[{\"name\":\"\",\"icon\":\"\",\"link_type\":\"circuit\",\"link_data\":\"\"},{\"name\":\"Course\",\"icon\":\"\",\"link_type\":\"heading\",\"link_data\":\"\"},{\"name\":\"Announcements\",\"icon\":\"home\",\"link_type\":\"circuit\",\"link_data\":\"class:index\"},{\"name\":\"Video Lectures\",\"icon\":\"lecture\",\"link_type\":\"circuit\",\"link_data\":\"lecture:index\"},{\"name\":\"Exercises\",\"icon\":\"\",\"link_type\":\"heading\",\"link_data\":\"\"},{\"name\":\"Quizzes\",\"icon\":\"quiz\",\"link_type\":\"circuit\",\"link_data\":\"quiz:index\"},{\"name\":\"swirl Programming Assignment\",\"icon\":\"\",\"link_type\":\"circuit\",\"link_data\":\"assignment:index\"},{\"name\":\"Course Project\",\"icon\":\"assignment\",\"link_type\":\"circuit\",\"link_data\":\"human_grading:index\"},{\"name\":\"\",\"icon\":\"\",\"link_type\":\"circuit\",\"link_data\":\"\"},{\"name\":\"About the course\",\"icon\":\"\",\"link_type\":\"heading\",\"link_data\":\"\"},{\"name\":\"Syllabus\",\"icon\":\"wiki\",\"link_type\":\"wiki\",\"link_data\":\"syllabus\"},{\"name\":\"About the instructor\",\"icon\":\"\",\"link_type\":\"wiki\",\"link_data\":\"About_the_Instructor\"},{\"name\":\"\",\"icon\":\"\",\"link_type\":\"circuit\",\"link_data\":\"\"},{\"name\":\"Community\",\"icon\":\"\",\"link_type\":\"heading\",\"link_data\":\"\"},{\"name\":\"Discussion Forums\",\"icon\":\"forum\",\"link_type\":\"circuit\",\"link_data\":\"forum:index\"},{\"name\":\"DSS Community Site\",\"icon\":\"\",\"link_type\":\"window_link\",\"link_data\":\"http:\\\/\\\/datasciencespecialization.github.io\\\/\"}]}");
+  });
+</script><script>var coursera_enable_new_help_center = true;
+</script><div class="hide confirm-navigation modal"><div class="modal-header"><h3>Confirmar navegación</h3></div><div class="modal-body"><div class="confirm-navigation-message"></div><div>¿Estás seguro/a de que quieres abandonar esta página?</div></div><div class="modal-footer"><button data-modal-close="data-modal-close" class="btn confirm-navigation-stay">Permanecer en esta página</button><button data-modal-close="data-modal-close" class="btn btn-danger confirm-navigation-leave">Abandonar esta página</button></div></div><div style="display: none;" class="coursera-async-message"></div></body></html>

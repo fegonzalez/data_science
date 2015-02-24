@@ -14,6 +14,8 @@
 ## 2
 ## 4
 
+require(data.table);
+require(reshape2);   ## melt & dcast
 
 
 ## \todo preserve the 'double' format upon loading the files:
@@ -23,7 +25,6 @@
 ## [1] FALSE
 test <- function()
 {
-    require(data.table); ## fread(dest_file_path, sep=" ");
 
     source_xtrain <- "./test/xtrain.txt";
     source_xtest <- "./test/xtest.txt";
@@ -181,11 +182,6 @@ step5 <- function()
 
 writeout <- function()
 {
-    x <- c("uno", "dos-().v");
-    newx <- gsub("^*", "avg(", x);
-    newx <- gsub("*$", ")", newx);
-    print(newx);
-
     new_colnames <- c("id", "x1", "x2", "x3", "activity");
     mydata <- data.table(sample(letters[23:26], 20, replace=TRUE),
                          rnorm(20, mean = 100, sd = 18),
@@ -205,3 +201,43 @@ writeout <- function()
     print(colnames(mydata));
 }
 
+
+codebook <- function()
+{
+    var_name <- c("id", "x1", "x2", "x3", "activity");
+    print(var_name);
+
+    var_description <-
+        c("
+
+    ##     variable_name
+    ##     var_description
+    ##     data_type
+    ##     range
+}
+
+
+ ## [1] "subject_id"                  "tBodyAcc-mean()-X"
+ ## [3] "tBodyAcc-mean()-Y"           "tBodyAcc-mean()-Z"
+ ## [5] "tBodyAcc-std()-X"            "tBodyAcc-std()-Y"
+ ## [7] "tBodyAcc-std()-Z"            "tGravityAcc-mean()-X"
+ ## [9] "tGravityAcc-mean()-Y"        "tGravityAcc-mean()-Z"
+
+
+## tBodyAcc-XYZ
+## tGravityAcc-XYZ
+## tBodyAccJerk-XYZ
+## tBodyGyro-XYZ
+## tBodyGyroJerk-XYZ
+## tBodyAccMag
+## tGravityAccMag
+## tBodyAccJerkMag
+## tBodyGyroMag
+## tBodyGyroJerkMag
+## fBodyAcc-XYZ
+## fBodyAccJerk-XYZ
+## fBodyGyro-XYZ
+## fBodyAccMag
+## fBodyAccJerkMag
+## fBodyGyroMag
+## fBodyGyroJerkMag
