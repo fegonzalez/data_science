@@ -1,12 +1,23 @@
-
 ############################################################################
 #
-# 04.exploratiry_analisys notes.-
+# Index
 #
 ############################################################################
-
-
 1) Principles of Analytic Graphics
+2) Exploratory graphs
+3) Plotting Systems in R
+4) The Process of Making a Plot
+5) Graphics Device ( ?Devices )
+6) The Base Plotting System in R
+Annex 1) Making up the data
+Annex 2) Glossary 2 Spanish
+Annex 3) References
+############################################################################
+
+
+##--------------------------------------------------------------------------
+## 1) Principles of Analytic Graphics
+##--------------------------------------------------------------------------
 
    Principle 1: Show comparisons (Always ask "Compared to What?")
 
@@ -24,10 +35,9 @@
    Principle 6: Content is king (presentation is the servant)
 
 
-############################################################################
-
-
-2) Exploratory graphs
+##--------------------------------------------------------------------------
+## 2) Exploratory graphs
+##--------------------------------------------------------------------------
 
    Goal: Development graphs (quick & dirty)
 
@@ -43,6 +53,7 @@ Density plot
 
 ## i.e.
 ## hist(pollution$pm25, col = "green")
+## rug(pollution$pm25)
 ## abline(v = median(pollution$pm25), col = "magenta", lwd = 4)
 ## abline(h = 12, lwd = 2, lty = 2)
 ## barplot(table(pollution$region), col = "wheat", main = "Counties per Region")
@@ -59,11 +70,12 @@ b) Two dimensions
 ## par(mfrow = c(2, 1), mar = c(4, 4, 2, 1))
 ## hist(subset(pollution, region == "east")$pm25, col = "green")
 ## hist(subset(pollution, region == "west")$pm25, col = "green")
+
 ## b.3)
 ## par(mfrow = c(1, 2), mar = c(5, 4, 2, 1))
 ## with(subset(pollution, region == "west"), plot(latitude, pm25, main ="West"))
 ## with(subset(pollution, region == "east"), plot(latitude, pm25, main ="East"))
-
+## with(pollution, plot(latitude, pm25, col = region))
 
 c) >2 dimensions
 
@@ -74,13 +86,14 @@ c) >2 dimensions
 
 
 *) Overlaying Features:
-abline() # Add Straight Lines to a Plot
+abline() # Add Straight Lines to a Plot (v=vertical, h=horizontal)
+rug()    # Add a rug to a plot
 
 
-############################################################################
 
-
-3) Plotting Systems in R
+##--------------------------------------------------------------------------
+## 3) Plotting Systems in R
+##--------------------------------------------------------------------------
 
 3.1) Base: "artist's palette" (graphic step by step) model.
      BAD) Can’t go back once plot has started
@@ -100,10 +113,9 @@ abline() # Add Straight Lines to a Plot
 WARNING   The systems can not be mixed !
 
 
-############################################################################
-
-
-4) The Process of Making a Plot
+##--------------------------------------------------------------------------
+## 4) The Process of Making a Plot
+##--------------------------------------------------------------------------
 
 a) Where will the plot be made? On the screen? In a file?
 
@@ -121,10 +133,9 @@ d) Do you need to be able to dynamically resize the graphic?
 e) What graphics system will you use: base, lattice, or ggplot2?
 
 
-############################################################################
-
-
-5) Graphics Device ( ?Devices )
+##--------------------------------------------------------------------------
+## 5) Graphics Device ( ?Devices )
+##--------------------------------------------------------------------------
 
 A graphics device is something where you can make a plot appear
 
@@ -146,7 +157,7 @@ When you make a plot in R, it has to be "sent" to a specific graphics device
     b2) Bitmap formats (png, jpeg, tiff, bmp)
 
         GOOD: large number of points, natural scenes or web-based plots
-        BAD: line-type graphics, resize well
+        BAD: line-type graphics, resize.
 
 
 5.2) How Does a Plot Get Created?  (screen devices)
@@ -183,26 +194,13 @@ When you make a plot in R, it has to be "sent" to a specific graphics device
 
 * Plotting can only occur on one graphics device at a time
 
-* ?dev
+* ?dev.cur
 * dev.cur() : currently active graphics device =  2, 3, ...
 * dev.set(<integer>) : change the active graphics device
 * dev.off() : close current device
-## Init state:
-## > dev.cur()
-## quartz
-## 2
-## > dev.set(3) # Setting a new device
-## quartz       # Error because does not exists yet ->
-##      2
-## > quartz()   # -> EXPLICITLY launch a graphics device
-## > dev.cur()
-## quartz
-## 3
-## > dev.off()
-## quartz
-##      2
 
-5.4) Copying plots
+
+5.5) Copying plots
 
 * dev.copy: copy a plot from one device to another
 * dev.copy2pdf
@@ -221,10 +219,10 @@ When you make a plot in R, it has to be "sent" to a specific graphics device
 ##     dev.cur()
 ## }
 
-############################################################################
 
-
-6) The Base Plotting System in R
+##--------------------------------------------------------------------------
+## 6) The Base Plotting System in R
+##--------------------------------------------------------------------------
 
 * library(graphics): plotting functions (plot, hist, ...)
 
@@ -274,7 +272,7 @@ specific plotting functions.
     mfcol: number of plots per row, column (plots are filled column-wise)
 
 
-Use par("param_name") ti see the param value (par("lty"))
+Use par("param_name") to see the parameter value (par("lty"))
 
 ## Example:
 ##
@@ -339,7 +337,7 @@ Use par("param_name") ti see the param value (par("lty"))
 
 ############################################################################
 #
-# Glossary
+# Glossary 2 Spanish
 #
 ############################################################################
 
@@ -347,6 +345,7 @@ tidy: ordenado
 
 thorough: minucioso
 
+Scatter: dispersión
 
 
 ############################################################################
@@ -356,20 +355,20 @@ thorough: minucioso
 ############################################################################
 
 
-1) Principles of Analytic Graphics
+[1] Principles of Analytic Graphics
 
-Edward Tufte (2006). Beautiful Evidence, Graphics Press LLC.
-                     www.edwardtufte.com
-
-2) Exploratory graphs
-
-R Graph Gallery      http://gallery.r-enthusiasts.com/
-
-R Bloggers           http://www.r-bloggers.com/
+[1.1] Edward Tufte (2006). Beautiful Evidence, Graphics Press LLC. - www.edwardtufte.com
 
 
-3) Plotting Systems in R
+[2] Exploratory graphs
 
-Paul Murrell (2011). R Graphics, CRC Press.
+[2.1] R Graph Gallery - http://gallery.r-enthusiasts.com/
 
-Hadley Wickham (2009). ggplot2, Springer.
+[2.2] R Bloggers - http://www.r-bloggers.com/
+
+
+[3] Plotting Systems in R
+
+[3.1] Paul Murrell (2011). R Graphics, CRC Press.
+
+[3.2] Hadley Wickham (2009). ggplot2, Springer.
