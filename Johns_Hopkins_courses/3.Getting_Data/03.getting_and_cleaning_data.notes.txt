@@ -1,8 +1,10 @@
 
 ############################################################################
 #
-# Notes.-
+# Index
 #
+############################################################################
+
 1) The goal of this course
 2) Definition of data
 3) The four things you should have
@@ -29,9 +31,9 @@
 24) Manipulating Data with dplyr
 25) Tidying Data with tidyr
 26) Dates and Times with lubridate
-
-
-Anexo) Beauty data
+Annex 1) Making up the data
+Annex 2) Glossary 2 Spanish
+Annex 3) References
 
 ############################################################################
 
@@ -1516,7 +1518,7 @@ Sys.setlocale("LC_TIME", "en_US.UTF-8")
 
 
 ##--------------------------------------------------------------------------
-## Anexo) Beauty data
+## Making up the data
 ##--------------------------------------------------------------------------
 
 make.names()   # Make Syntactically Valid Names
@@ -1528,7 +1530,7 @@ make.names()   # Make Syntactically Valid Names
 
 ############################################################################
 #
-# Glossary:
+# Glossary 2 Spanish
 #
 ############################################################################
 
