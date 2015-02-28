@@ -23,7 +23,7 @@ baseplot_test <- function()
               type = "n"))
     ## ANNOTATION
     with(subset(airquality, Month == 5),
-         points(Wind, Ozone, pch=1, col = "blue"))
+         points(x=Wind, y=Ozone, pch=1, col = "blue"))
     with(subset(airquality, Month != 5),
          points(Wind, Ozone, pch=20, col = "red"))
     legend("topright",
@@ -32,7 +32,7 @@ baseplot_test <- function()
            legend = c("May", "Other Months"));
     ## REGRESSION LINE
     model <- lm(Ozone ~ Wind, airquality)
-    abline(model, lwd = 2, col="cyan")
+    abline(model, lwd = 2, col="purple")
 }
 
 ##----------------------------------------------------------
@@ -53,11 +53,12 @@ multiplebase_plot_test <- function()
 #   })
 
 ##to see the result step by step
-plot(airquality$Wind, airquality$Ozone, main = "Ozone and Wind");
-plot(airquality$Solar.R, airquality$Ozone,
-     main = "Ozone and Solar Radiation");
-plot(airquality$Temp, airquality$Ozone, main = "Ozone and Temperature")
-mtext("Ozone and Weather in New York City", outer = TRUE)
+  plot(airquality$Wind, airquality$Ozone, main = "Ozone and Wind",
+       las=1, bg="white");
+  plot(airquality$Solar.R, airquality$Ozone,
+       main = "Ozone and Solar Radiation");
+  plot(airquality$Temp, airquality$Ozone, main = "Ozone and Temperature")
+  mtext("Ozone and Weather in New York City", outer = TRUE)
 }##EOFUNC
 
 ##----------------------------------------------------------
