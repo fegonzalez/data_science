@@ -23,7 +23,6 @@
 18) Creating new variables
 19) Reshaping data
 20) Merging data Description (SQL join)
-## week 4
 21) Editing text variables
 22) Regular Expressions
 23) Working with dates & Times
