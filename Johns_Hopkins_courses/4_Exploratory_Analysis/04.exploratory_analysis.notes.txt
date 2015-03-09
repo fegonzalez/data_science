@@ -67,6 +67,13 @@ b) Two dimensions
     b.2) Scatterplots
     b.3) Smooth scatterplots
 
+INFO Scatterplots:
+
+     The scatterplot is useful for displaying the relationship between two
+continuous variables, although it can also be used with one continuous and one
+categorical variable, or two categorical variables.
+
+
 ## b.1)
 ## boxplot(pm25 ~ region, data = pollution, col = "red")
 ## b.2)
@@ -458,8 +465,6 @@ currently active device only.
 
 
 
-
-
 ##--------------------------------------------------------------------------
 ## 8) ggplot2 Plotting System (library(ggplot2)
 ##--------------------------------------------------------------------------
@@ -516,33 +521,187 @@ d) Facets (conditional plots: layout of rows & cols)
 
 8.2) The Advanced: ggplot()
 
-* Plots are built up in layers (simimar to 'The Base Plotting System')
-
-    1) Plot the data
-    2) Overlay a summary
-    3) Metadata and annotation
-
 * New components:
 
   - stats: statistical transformations like binning, quantiles, smoothing.
 
   - scales: what scale an aesthetic map uses (example: male=red, female=blue).
-    coordinate system
+
+  - coordinate system.
+
+* Plots are built up in layers (similar to 'The Base Plotting System')
+
+    1) Plot the data
+    2) Overlay a summary
+    3) Metadata and annotation
+
+* Functions:
+
+   - aes: generate aesthetic mappings that describe how variables in the data
+          are mapped to visual properties (aesthetics) of geoms.
+
+   - geom_point: used to create scatterplots.
+
+   - geom_smooth: add a smoothed conditional mean.
+
+   - facet_grid: lay out panels in a grid.
 
 
-8.1.1) ggplot() example
-
+8.2.1) ggplot() example
 
 ## MAACS data
-## load("./data/maacs.Rda")
-## ls()
-## [1] "maacs"
-## head(maacs)
+##
+   load("./data/maacs.Rda")
+##
 ## str(maacs)
+## 'data.frame':	750 obs. of  5 variables:
+##  $ id       : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ eno      : num  141 124 126 164 99 68 41 50 12 30 ...
+##  $ duBedMusM: num  2423 2793 3055 775 1634 ...
+##  $ pm25     : num  15.6 34.4 39 33.2 27.1 ...
+##  $ mopos    : Factor w/ 2 levels "no","yes": 2 2 2 2 2 2 2 2 2 2 ...
 
 a) Basic plot
-qplot(x=log(pm25), y=NocturnalSympt, data = maacs, facets = . ~ bmicat, geom = c("point", "smooth"), method = "lm")
 
+   qplot(x=log(pm25), y=duBedMusM, data=maacs, facets=.~mopos, geom=c("point", "smooth"), method="lm")
+
+b) Building Up in Layers
+
+## head(maacs, 2); tail(maacs,2)
+##
+##      id  eno  duBedMusM   pm25    mopos
+## 1     1  141       2423   15.560   yes
+## 2     2  124       2793   34.370   yes
+## ...
+## 749 749  17.0       113   23.145    no
+## 750 750  13.5        96   26.732    no
+
+   g <- ggplot(maacs, aes(log(pm25), duBedMusM))
+   summary(g)
+   print(g)   # Error: No layers in plot yet
+
+c) First Plot with Point Layer
+
+   g + geom_point()
+   g <- ggplot(maacs, aes(log(pm25), duBedMusM, color=mopos))
+   g + geom_point()
+
+d) Adding More Layers: Smooth
+
+   g + geom_point() + geom_smooth()
+   g + geom_point() + geom_smooth(method = "lm")
+
+e) Adding More Layers: Facets
+
+   g + geom_point() + facet_grid(.~mopos) + geom_smooth(method="lm")
+
+
+8.2.2) Annotation
+
+* Labels: xlab(), ylab(), labs(), ggtitle()
+
+* Each of the “geom” functions has options to modify
+
+* theme(): for things that only make sense globally.
+           ## o Example: theme(legend.position = "none")
+
+* Two standard appearance themes are included
+  o theme_gray(): The default theme (gray background)
+  o theme_bw(): More stark/plain
+
+f) Modifying Aesthetics
+
+   g + geom_point(color="steelblue", size=4, alpha=1/2)
+   g + geom_point(aes(color=mopos), size=4, alpha=1/2)
+
+g) Modifying Labels
+
+   val <- g + geom_point(aes(color=mopos));   print(val);
+   val <- val + labs(title = "MAACS Cohort"); print(val);
+   val <- val + labs(x= expression("log " * PM[2.5]), y="duBedMusM"); print(val)
+
+h) Customizing the Smooth
+
+val<-g + geom_point(aes(color=mopos), size=2, alpha=1/2); print(val);
+val<-val + geom_smooth(size=4, linetype=3, method="lm", se=FALSE, color="blue");
+print(val);
+
+i) Changing the Theme
+
+   g + geom_point(aes(color = mopos))
+   g + geom_point(aes(color = mopos)) + theme_bw(base_family = "Times")
+
+j) Axis Limits
+
+j.1) A Note about Axis Limits (e.g. Outliers)
+
+   testdat <- data.frame(x = 1:100, y = rnorm(100))
+   testdat[50,2] <- 100  ## Outlier!
+   plot(testdat$x, testdat$y, type = "l", ylim = c(-3,3))
+   g <- ggplot(testdat, aes(x = x, y = y))
+   g + geom_line()
+
+j.2) Axis Limits
+
+   g + geom_line() + ylim(-3, 3)
+   ## g + geom_line()
+   g + geom_line() + coord_cartesian(ylim=c(-3,3))
+
+
+8.2.3) More Complex Example
+
+PROBLEM: How to show the relation between two variables in function of a third
+variable that is not categorical but continuous?
+
+   i.e. " duBedMusM ~ log(pm25) | eno & mopos , data = maacs "
+   when 'eno' is continuous
+
+SOLUTION: cut() function
+
+
+## We were here:  aes(log(pm25), duBedMusM
+   g + geom_point(aes(color = mopos)) + theme_bw(base_family = "Times")
+
+## str(maacs)
+## $ eno      : num  141 124 126 164 99 68 41 50 12 30 ...
+## $ duBedMusM: num  2423 2793 3055 775 1634 ...
+## $ pm25     : num  15.6 34.4 39 33.2 27.1 ...
+## $ mopos    : Factor w/ 2 levels "no","yes": 2 2 2 2 2 2 2 2 2 2 ...
+
+
+k) Making 'eno' Tertiles
+
+   ## Calculate the tertiles of the data
+   cutpoints <- quantile(maacs$eno, seq(0, 1, length=4), na.rm=TRUE);
+   ## 0%   33.33333%    66.66667%   100%
+
+   ## Cut the data at the tertiles and create a new factor variable
+   maacs$eno2tert <- cut(maacs$eno, cutpoints)
+
+   ## See the levels of the newly created factor variable
+   levels(maacs$eno2tert)
+   ## [1] "(5,20]"     "(20,51.3]"  "(51.3,276]"
+
+l) Code for Final Plot
+
+   ## Setup ggplot with data frame
+   g <- ggplot(maacs, aes(log(pm25), duBedMusM));
+
+   ## Add layers
+   g <- g + geom_point(alpha = 1/3);                             print(g);
+   g <- g + facet_wrap(mopos ~ eno2tert, nrow = 2, ncol = 4);    print(g);
+   g <- g + geom_smooth(method="lm", se=FALSE, col="steelblue"); print(g);
+   g <- g + theme_bw(base_family = "Avenir", base_size = 10);    print(g);
+   g <- g + labs(x = expression("log " * PM[2.5]));              print(g);
+   g <- g + labs(y = "duBedMusM");                               print(g);
+   g <- g + labs(title = "MAACS Cohort");                        print(g);
+
+
+## str(maacs)
+## $ eno      : num  141 124 126 164 99 68 41 50 12 30 ...
+## $ duBedMusM: num  2423 2793 3055 775 1634 ...
+## $ pm25     : num  15.6 34.4 39 33.2 27.1 ...
+## $ mopos    : Factor w/ 2 levels "no","yes": 2 2 2 2 2 2 2 2 2 2 ...
 
 
 ############################################################################
