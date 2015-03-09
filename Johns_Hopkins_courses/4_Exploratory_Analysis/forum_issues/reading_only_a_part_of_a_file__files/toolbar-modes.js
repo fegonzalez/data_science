@@ -1,0 +1,1 @@
+define({Edit:"Editar","Edit:":"Editar:",Preview:"Vista previa"});

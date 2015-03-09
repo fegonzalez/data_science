@@ -1,4 +1,45 @@
-air_pollution_usa<- function()
+
+##==========================================================
+## WEEK 2
+##==========================================================
+
+
+##----------------------------------------------------------
+
+qplot_example <- function()
+{
+    library(ggplot2);
+    str(mpg);
+    qplot(displ, hwy, data = mpg);
+}
+
+##----------------------------------------------------------
+
+## Custom panel function: Median
+customize_panel <- function(x, y, ...)
+{
+    ## browser();
+    panel.xyplot(x, y, ...)                # 1) call default panel function
+    panel.abline(h = median(x), lty = 2);  # 2) overlay
+}
+
+## Custom panel function: Regression line
+regression_panel <- function(x, y, ...)
+{
+    ## browser();
+    panel.xyplot(x, y, ...);      ## First call default panel function
+    panel.lmline(x, y, col = 2);  ## Overlay a simple linear regression line
+}
+
+##----------------------------------------------------------
+
+
+
+##==========================================================
+## WEEK 1
+##==========================================================
+
+w1_air_pollution_usa<- function()
 {
     pollution <- read.csv("data/avgpm25.csv",
                           colClasses = c("numeric", "character", "factor",
@@ -10,7 +51,7 @@ air_pollution_usa<- function()
 
 ##----------------------------------------------------------
 
-baseplot_test <- function()
+w1_baseplot_test <- function()
 {
     library(datasets);
 
@@ -37,7 +78,7 @@ baseplot_test <- function()
 
 ##----------------------------------------------------------
 
-multiplebase_plot_test <- function()
+w1_multiplebase_plot_test <- function()
 {
   Library(datasets);
   par(mfrow = c(1, 3),
@@ -74,7 +115,7 @@ lattice_test <- function()
 
 ##----------------------------------------------------------
 
-ggplot2_test <- function()
+w1_ggplot2_test <- function()
 {
   library(ggplot2);
   data(mpg);
@@ -84,7 +125,7 @@ ggplot2_test <- function()
 ##----------------------------------------------------------
 
 ## 5.2) How Does a Plot Get Created?  (file devices)
-plotfile_test<- function()
+w1_plotfile_test<- function()
 {
     ## a) EXPLICITLY launch a graphics device
     pdf(file = "myplot.pdf") # file created in my working directory
@@ -105,7 +146,7 @@ plotfile_test<- function()
 
 ##----------------------------------------------------------
 
-copy_plot_test <- function()
+w1_copy_plot_test <- function()
 {
     dev.cur();
     with(faithful, plot(eruptions, waiting))  ## Create plot on screen device
@@ -117,3 +158,5 @@ copy_plot_test <- function()
     dev.off()  ## Don't forget to close the PNG device!
     dev.cur()
 }
+
+##----------------------------------------------------------
