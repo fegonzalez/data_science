@@ -493,30 +493,36 @@ currently active device only.
 
 8.1.1) qplot() example
 
-## library(ggplot2)
-## str(mpg)
-## qplot(x=displ, y=hwy, data=mpg)
+library(ggplot2)
+str(mpg)
+qplot(x=displ, y=hwy, data=mpg)
 
 ## Note.- levels(mpg$drv) =  "4" "f" "r"
 
 a) Modifying aesthetics (size, shape, color)
-## qplot(displ, hwy, data = mpg, color = drv) # color = mpg$drv
-## qplot(displ, hwy, data = mpg, shape = drv) # shape = mpg$drv
-## qplot(displ, hwy, data = mpg, size=drv, color=drv)
+
+qplot(displ, hwy, data = mpg, color = drv) # color = mpg$drv
+qplot(displ, hwy, data = mpg, shape = drv) # shape = mpg$drv
+qplot(displ, hwy, data = mpg, size=drv, color=drv)
 
 b) Adding a geom (points, lines)
-## qplot(log(hwy), data = mpg, geom="density")
-## qplot(displ, hwy, data = mpg, geom = c("point", "smooth"), method="lm")
+
+qplot(log(hwy), data = mpg, geom="density")
+qplot(displ, hwy, data = mpg, geom = c("point", "smooth"), method="lm")
+##\warning using the advanced function geom_smooth (see later)
+qplot(votes, rating, data = movies) + geom_smooth()
 
 c) Histograms
-## qplot(x=log(hwy), data = mpg)
-## qplot(x=log(hwy), data = mpg, fill = drv) # Histograms by group
+
+qplot(x=log(hwy), data = mpg)
+qplot(x=log(hwy), data = mpg, fill = drv) # Histograms by group
 
 d) Facets (conditional plots: layout of rows & cols)
-## qplot(displ, hwy, data = mpg, facets = . ~ drv)      # 3 cols (. ~ drv)
-## qplot(hwy, data = mpg, facets = drv ~ ., binwidth=2) # 3 rows (drv ~ .)
-## qplot(displ, hwy, data = mpg, geom = c("point", "smooth"), method="lm",
-##       facets = . ~ drv)
+
+qplot(displ, hwy, data = mpg, facets = . ~ drv)      # 3 cols (. ~ drv)
+qplot(hwy, data = mpg, facets = drv ~ ., binwidth=2) # 3 rows (drv ~ .)
+qplot(displ, hwy, data = mpg, geom = c("point", "smooth"), method="lm",
+      facets = . ~ drv)
 
 
 8.2) The Advanced: ggplot()
@@ -553,7 +559,7 @@ d) Facets (conditional plots: layout of rows & cols)
 ##
    load("./data/maacs.Rda")
 ##
-## str(maacs)
+   str(maacs)
 ## 'data.frame':	750 obs. of  5 variables:
 ##  $ id       : int  1 2 3 4 5 6 7 8 9 10 ...
 ##  $ eno      : num  141 124 126 164 99 68 41 50 12 30 ...
@@ -567,7 +573,7 @@ a) Basic plot
 
 b) Building Up in Layers
 
-## head(maacs, 2); tail(maacs,2)
+head(maacs, 2); tail(maacs,2)
 ##
 ##      id  eno  duBedMusM   pm25    mopos
 ## 1     1  141       2423   15.560   yes
@@ -578,22 +584,26 @@ b) Building Up in Layers
 
    g <- ggplot(maacs, aes(log(pm25), duBedMusM))
    summary(g)
+   ## data: id, eno, duBedMusM, pm25, mopos [750x5]
+   ## mapping:  x = log(pm25), y = duBedMusM
+   ## faceting: facet_null()
    print(g)   # Error: No layers in plot yet
 
 c) First Plot with Point Layer
 
-   g + geom_point()
-   g <- ggplot(maacs, aes(log(pm25), duBedMusM, color=mopos))
-   g + geom_point()
+   g <- g + geom_point(); print(g)
+   g <- ggplot(maacs, aes(log(pm25), duBedMusM, color=mopos));
+   print(g)
+   g <- g + geom_point(); print(g)
 
 d) Adding More Layers: Smooth
 
-   g + geom_point() + geom_smooth()
-   g + geom_point() + geom_smooth(method = "lm")
+   ## g <- g + geom_point() + geom_smooth(); print(g)
+   g <- g + geom_point() + geom_smooth(method = "lm"); print(g)
 
 e) Adding More Layers: Facets
 
-   g + geom_point() + facet_grid(.~mopos) + geom_smooth(method="lm")
+   g<-g + geom_point() + facet_grid(.~mopos) + geom_smooth(method="lm");print(g)
 
 
 8.2.2) Annotation
@@ -611,25 +621,27 @@ e) Adding More Layers: Facets
 
 f) Modifying Aesthetics
 
-   g + geom_point(color="steelblue", size=4, alpha=1/2)
-   g + geom_point(aes(color=mopos), size=4, alpha=1/2)
+   g <- g + geom_point(color="steelblue", size=4, alpha=1/2); print(g);
+   g <- g + geom_point(aes(color=mopos), size=4, alpha=1/2); print(g);
 
 g) Modifying Labels
 
-   val <- g + geom_point(aes(color=mopos));   print(val);
-   val <- val + labs(title = "MAACS Cohort"); print(val);
-   val <- val + labs(x= expression("log " * PM[2.5]), y="duBedMusM"); print(val)
+   g <- g + labs(title = "MAACS Cohort"); print(g);
+   g <- g + labs(x= expression("log " * PM[2.5]), y="the duBedMusM"); print(g);
 
 h) Customizing the Smooth
 
-val<-g + geom_point(aes(color=mopos), size=2, alpha=1/2); print(val);
-val<-val + geom_smooth(size=4, linetype=3, method="lm", se=FALSE, color="blue");
-print(val);
+   ## g <- g + geom_point(aes(color=mopos), size=2, alpha=1/2); print(g);
+   g <- g + geom_smooth(size=4, linetype=3, method="lm", se=FALSE, color="blue")
+   print(g);
 
 i) Changing the Theme
 
-   g + geom_point(aes(color = mopos))
-   g + geom_point(aes(color = mopos)) + theme_bw(base_family = "Times")
+   g <- g + geom_point(aes(color = mopos)); print(g)
+   g <- g + geom_point(aes(color = mopos)) + theme_bw(base_family = "Times");
+   print(g)
+   g <- g + geom_point(aes(color = mopos)) + theme_gray(base_family = "Times");
+   print(g);
 
 j) Axis Limits
 
@@ -638,14 +650,14 @@ j.1) A Note about Axis Limits (e.g. Outliers)
    testdat <- data.frame(x = 1:100, y = rnorm(100))
    testdat[50,2] <- 100  ## Outlier!
    plot(testdat$x, testdat$y, type = "l", ylim = c(-3,3))
-   g <- ggplot(testdat, aes(x = x, y = y))
-   g + geom_line()
+   g <- ggplot(testdat, aes(x = x, y = y)); print(g)
+   g <- g + geom_line(); print(g)
 
 j.2) Axis Limits
 
-   g + geom_line() + ylim(-3, 3)
-   ## g + geom_line()
-   g + geom_line() + coord_cartesian(ylim=c(-3,3))
+   g <- g + geom_line() + ylim(-3, 3); print(g);
+   g <- ggplot(testdat, aes(x = x, y = y)) +geom_line();
+   g <- g + geom_line() + coord_cartesian(ylim=c(-3,3)); print(g);
 
 
 8.2.3) More Complex Example
@@ -658,17 +670,6 @@ variable that is not categorical but continuous?
 
 SOLUTION: cut() function
 
-
-## We were here:  aes(log(pm25), duBedMusM
-   g + geom_point(aes(color = mopos)) + theme_bw(base_family = "Times")
-
-## str(maacs)
-## $ eno      : num  141 124 126 164 99 68 41 50 12 30 ...
-## $ duBedMusM: num  2423 2793 3055 775 1634 ...
-## $ pm25     : num  15.6 34.4 39 33.2 27.1 ...
-## $ mopos    : Factor w/ 2 levels "no","yes": 2 2 2 2 2 2 2 2 2 2 ...
-
-
 k) Making 'eno' Tertiles
 
    ## Calculate the tertiles of the data
@@ -677,6 +678,7 @@ k) Making 'eno' Tertiles
 
    ## Cut the data at the tertiles and create a new factor variable
    maacs$eno2tert <- cut(maacs$eno, cutpoints)
+   str(maacs);
 
    ## See the levels of the newly created factor variable
    levels(maacs$eno2tert)
@@ -685,7 +687,8 @@ k) Making 'eno' Tertiles
 l) Code for Final Plot
 
    ## Setup ggplot with data frame
-   g <- ggplot(maacs, aes(log(pm25), duBedMusM));
+   rm(g);
+   g <- ggplot(maacs, aes(log(pm25), duBedMusM)); print(g);
 
    ## Add layers
    g <- g + geom_point(alpha = 1/3);                             print(g);
