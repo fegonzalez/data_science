@@ -1,0 +1,41 @@
+
+require(data.table);
+require(dplyr);
+require(lubridate);
+
+
+## -----------------------------------------------------------------------------
+
+##\function get_source_data()
+## Given "RWW" as the current R working directory, this function download,
+## unzip and stores the source data ready to be used.
+get_source_data<- function()
+{
+    SOURCE_DATA1_NEI <- "./data/summarySCC_PM25.rds";
+    SOURCE_DATA_SCC <- "./data/Source_Classification_Code.rds";
+    if((file.exists(SOURCE_DATA1_NEI))&&(file.exists(SOURCE_DATA_SCC)))
+        return(0);
+    if(!file.exists("./data")){dir.create("./data")}
+    dest_file_name <- "exdata_data_NEI_data.zip";
+    dest_file_path <- paste("./data/", dest_file_name, sep="");
+    file_url <-
+        "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip"
+    dest_method <- "curl";
+
+    ## download
+    if(!file.exists(dest_file_path))
+    {
+        download.file(file_url, destfile=dest_file_path, method=dest_method);
+    }
+
+    ## unzip
+    if((!file.exists(SOURCE_DATA1_NEI))||(!file.exists(SOURCE_DATA_SCC)))
+    {
+        require(utils);
+        unzip(dest_file_path, exdir="./data/");
+    }
+    stopifnot(file.exists(SOURCE_DATA1_NEI));
+    stopifnot(file.exists(SOURCE_DATA_SCC));
+}
+
+## -----------------------------------------------------------------------------
