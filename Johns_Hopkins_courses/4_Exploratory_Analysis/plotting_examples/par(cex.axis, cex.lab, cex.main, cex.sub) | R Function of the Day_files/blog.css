@@ -1,0 +1,52 @@
+/***** Main Items *****/
+.function {
+  font-family: Courier;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+.description {
+  margin: 10px 0;
+}
+.args {
+
+}
+span.args {
+  font-weight: bold;
+}
+.pStart {
+  margin: 10px 0;
+}
+.example {
+
+}
+pre.example {
+  
+}
+.blueCode {
+  color: rgb(40, 90, 150);
+}
+.redCode {
+  color: rgb(150, 90, 40);
+}
+.codeComment {
+  color: rgb(140, 140, 140);
+}
+.exampleLead {
+  font-weight: bold;
+}
+
+
+
+
+/***** Special Text *****/
+.code {
+  font-family: Courier;
+  display: inline-block;
+  background: rgb(235,235,235);
+  padding: 0 4px;
+  font-size: 0.9em;
+}
+.arg {
+  font-weight: bold;
+  display: inline-block;
+}

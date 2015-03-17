@@ -28,6 +28,9 @@ test_all <- function()
     if (file.exists("./data/plot2.png")) file.remove("plot2.png");
     if (file.exists("./data/plot3.png")) file.remove("plot3.png");
     if (file.exists("./data/plot4.png")) file.remove("plot4.png");
+    if (file.exists("./data/plot5.png")) file.remove("plot5.png");
+    if (file.exists("./data/plot6.png")) file.remove("plot6.png");
+
 
     if (file.exists("./data"))
         unlink("./data", recursive = TRUE, force = TRUE);

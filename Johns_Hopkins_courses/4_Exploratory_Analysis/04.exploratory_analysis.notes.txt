@@ -310,6 +310,8 @@ Use par("param_name") to see the parameter value (par("lty"))
 
     axis: adding axis ticks/labels
 
+
+
 ## Example:
 ##
 ## plot_test <- function()
@@ -344,7 +346,21 @@ Use par("param_name") to see the parameter value (par("lty"))
 ##   mtext("Ozone and Weather in New York City", outer = TRUE)
 ## }
 
-6.3) Complex plotting
+
+6.3) stripchart function
+
+## warning: plot() "plots" a boxplot instead of a point for factor variable
+op <- par(mfrow = c(1, 1),
+          bg="white",
+          las=0);
+
+stripchart(Wind ~ as.factor(Ozone),
+           main = "Ozone and Solar Radiation";
+           vertical = TRUE,
+           pch = 20, lwd = 1, col = "black",
+           data = airquality);
+
+6.4) Complex plotting
 
 a) layout()
 
