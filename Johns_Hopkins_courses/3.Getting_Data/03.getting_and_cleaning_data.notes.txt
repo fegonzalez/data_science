@@ -908,8 +908,8 @@ colnames(mydata) <- c("id", "time", "x1", "x2")
 ## 2  1    2  3  5
 ## 3  2    1  6  1
 ## 4  2    2  2  4
+
 mydata <- melt(mydata, id=c("id","time"))
-               measure.vars=c("x2", "x1"))#optional select a subset of vars
 ##   id time variable value
 ## 1  1    1       x2     6
 ## 2  1    2       x2     5
@@ -1136,6 +1136,13 @@ advantage to using a tbl_df over a regular data frame | is the (info) printing.
     - View(mydata):  print all the rows
 
 
+* Two table verbs (SQL like)
+
+- inner_join(), left_join(), right_join(), full_join()
+- semi_join(), anti_join()
+- intersect(), union(), setdiff()
+
+
 * Work example:
 
 ## data example: log history from Rstudio
@@ -1144,7 +1151,7 @@ mydf <- read.csv(file=path2csv, stringsAsFactors = FALSE); #data.frame
 
 ## step 1) The first step of working with data in dplyr is to load the data
 ## into a 'data frame tbl' or 'tbl_df'. Use the
-cran <- tbl_df(mydf).
+cran <- tbl_df(mydf)
 
 ## step 2) remove the source data frame)
 rm(mydf);
@@ -1242,7 +1249,7 @@ summarize(by_package, avg_bytes=mean(size)) #returns a value per each variable
 pack_sum <- summarize(by_package,
                       count = n(),
                       unique = n_distinct(ip_id),
-                      countries = n_distinct(countries),
+                      countries = n_distinct(country),
                       avg_bytes = mean(size))
 ##        package count unique countries  avg_bytes
 ## 1           A3    25     24        10   62194.96
