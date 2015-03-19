@@ -286,8 +286,11 @@ Use par("param_name") to see the parameter value (par("lty"))
 
 ## Example:
 ##
-## par(mfrow = c(1, 2), mar = c(5, 4, 2, 1))
-## with(subset(pollution, region == "west"), plot(latitude, pm25, main ="West"))
+pollution <- read.csv("data/avgpm25.csv",
+                      colClasses = c("numeric", "character", "factor",
+                          "numeric", "numeric"));
+par(mfrow = c(1, 2), mar = c(5, 4, 2, 1))
+with(subset(pollution, region == "west"), plot(latitude, pm25, main ="West"))
 
 
 6.2) Base Plotting Functions
@@ -336,14 +339,14 @@ Use par("param_name") to see the parameter value (par("lty"))
 ## Example:
 ## multiplebase_plot_test <- function()
 ## {
-##   library(datasets);
-##   par(mfrow = c(1, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 2, 0));
-##   ##to see the result step by step
-##   plot(airquality$Wind, airquality$Ozone, main = "Ozone and Wind");
-##   plot(airquality$Solar, airquality$Ozone,
-##        main = "Ozone and Solar Radiation");
-##   plot(airquality$Temp, airquality$Ozone, main = "Ozone and Temperature")
-##   mtext("Ozone and Weather in New York City", outer = TRUE)
+  ## library(datasets);
+  ## par(mfrow = c(1, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 2, 0));
+  ## ##to see the result step by step
+  ## plot(airquality$Wind, airquality$Ozone, main = "Ozone and Wind");
+  ## plot(airquality$Solar, airquality$Ozone,
+  ##      main = "Ozone and Solar Radiation");
+  ## plot(airquality$Temp, airquality$Ozone, main = "Ozone and Temperature")
+  ## mtext("Ozone and Weather in New York City", outer = TRUE)
 ## }
 
 
@@ -355,10 +358,11 @@ op <- par(mfrow = c(1, 1),
           las=0);
 
 stripchart(Wind ~ as.factor(Ozone),
-           main = "Ozone and Solar Radiation";
+           main = "Ozone and Solar Radiation",
            vertical = TRUE,
            pch = 20, lwd = 1, col = "black",
            data = airquality);
+par <- op;
 
 6.4) Complex plotting
 
@@ -568,6 +572,15 @@ qplot(displ, hwy, data = mpg, geom = c("point", "smooth"), method="lm",
 
    - facet_grid: lay out panels in a grid.
 
+   - geom_bar: histogrmas
+
+* Axes:
+
+    http://www.cookbook-r.com/Graphs/Axes_%28ggplot2%29/
+
+    - scale_x_continuous
+
+
 
 8.2.1) ggplot() example
 
@@ -766,6 +779,8 @@ Scatter: dispersión
 
 [8.1] The ggplot2 book - Hadley  Wickham
 
-[8.2] The R Graphics Cookbook - Winston Chang
+[8.2] The R Graphics Cookbook - Winston Chang - http://www.cookbook-r.com/Graphs
 
-[8.2] ggplot2 web site - http://ggplot2.org
+[8.3] ggplot2 web site - http://ggplot2.org
+
+
