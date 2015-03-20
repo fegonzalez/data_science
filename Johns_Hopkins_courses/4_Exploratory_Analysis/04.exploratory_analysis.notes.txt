@@ -494,6 +494,16 @@ currently active device only.
 * Automatically deals with spacings, text, titles but also allows you to
   annotate by “adding”
 
+\NOTICE: www.cookbook-r.com/Graphs/Bar_and_line_graphs_(ggplot2).html
+  "To make graphs with ggplot2, the data must be in a data frame, and in "long"
+   (as opposed to wide) format."
+
+## (e.g. project02/plot3.R: paint emissions ~ year + type)
+##
+##  baltimore_emissions_by_type_and_year <-
+##    xtabs(Emissions ~ year + type , data = group_by(baltimore, year));
+##  baltimore_totals_df <- as.data.frame(baltimore_emissions_by_type_and_year)
+
 
 8.1) The Basics: qplot()
 

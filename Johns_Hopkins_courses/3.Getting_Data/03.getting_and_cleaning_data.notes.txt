@@ -893,6 +893,9 @@ mydata$zcf <- factor(mydata$zipCode)
      (e.g. people/hospitals).
 
 
+\NOTICE: www.cookbook-r.com/Manipulating_data/Converting_data_between_wide_and_long_format.html
+
+
 a) "melt" data so that each row is a unique id-variable combination.
 
 b) Then you "cast" the melted data into any shape you would like.

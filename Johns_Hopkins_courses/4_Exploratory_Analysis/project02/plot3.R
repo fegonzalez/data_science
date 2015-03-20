@@ -121,16 +121,19 @@ do_ggplot <- function(baltimore_totals_df, DEBUG_MODE)
     SHAPEVALUE=20;
     g <- ggplot(data = baltimore_totals_df,
                 aes(year, Freq, group = type)) +
-                    geom_line() +
-                        geom_point(colour=PTCOLOR, shape=SHAPEVALUE) +
-                            facet_grid(.~type);
-    g <- g + theme_bw();
+                    geom_point(colour=PTCOLOR, shape=SHAPEVALUE) +
+                        geom_line();
     print(g);
+    ## facets
+    g <- g + facet_grid(.~type, labeller = facets_source_labeller);
+    if(DEBUG_MODE) print(g);
+
+    ## layout theme
+    g <- g + theme_bw();
+    if(DEBUG_MODE) print(g);
+
 
     ## Complete the title
-    MAINTITLE = "Baltimore City emissions from  PM2.5";
-    MAINSUB = "\n(per source of emission)";
-    MAINTEXT = paste(MAINTITLE, MAINSUB, sep="");
     g <- g + ggtitle(MAINTEXT); if(DEBUG_MODE) print(g);
 
     ## ## Complete the x axis
@@ -145,6 +148,7 @@ do_ggplot <- function(baltimore_totals_df, DEBUG_MODE)
     g <- g + scale_y_continuous(limits=c(0.0, yceiling));
     if(DEBUG_MODE) print(g);
     g <- g + scale_y_continuous(breaks=aty, labels=aty/YAXIS_ROUNDFACTOR);
+
     print(g);
 }
 
@@ -166,23 +170,30 @@ do_qplot <- function(baltimore_totals_df, DEBUG_MODE)
                geom = c("point", "line"),
                main = "",
                xlab = "",
-               ylab = "",
-               facets = . ~ type);
-    #only necessary if color & shape are desired
+               ylab = "");
+               ## facets = . ~ type);
+
+    ## only necessary if color & shape are desired
     g <- g + geom_point(colour=PTCOLOR, shape=SHAPEVALUE);
+
+    ## facets
+    g <- g + facet_grid(.~type, labeller = facets_source_labeller);
+
+    ## layout theme
     g <- g + theme_bw();
+
     print(g);
 
     ## Complete the title
-    MAINTITLE = "Baltimore City emissions from  PM2.5";
-    MAINSUB = "\n(per source of emission)";
-    MAINTEXT = paste(MAINTITLE, MAINSUB, sep="");
+    ## MAINTITLE = "Baltimore City emissions from  PM2.5";
+    ## MAINSUB = "\n(per source of emission)";
+    ## MAINTEXT = paste(MAINTITLE, MAINSUB, sep="");
     g <- g + ggtitle(MAINTEXT); if(DEBUG_MODE) print(g);
 
-    ## ## Complete the x axis
+    ## Complete the x axis
     g <- g + xlab(XLABTEXT); if(DEBUG_MODE) print(g);
 
-    ## ## Complete the y axis
+    ## Complete the y axis
     g <- g + ylab(YLABTEXT); if(DEBUG_MODE) print(g);
     YAXIS_ROUNDFACTOR <- 1000; #thousands
     yceiling <- ceiling(max(baltimore_totals_df$Freq)/YAXIS_ROUNDFACTOR) *
@@ -191,7 +202,23 @@ do_qplot <- function(baltimore_totals_df, DEBUG_MODE)
     g <- g + scale_y_continuous(limits=c(0.0, yceiling));
     if(DEBUG_MODE) print(g);
     g <- g + scale_y_continuous(breaks=aty, labels=aty/YAXIS_ROUNDFACTOR);
+
     print(g);
+}
+
+
+## -----------------------------------------------------------------------------
+
+##\info: "mf_labeller" at http://www.cookbook-r.com/Graphs/Facets_%28ggplot2%29/
+facets_source_labeller <- function(var, value){
+    value <- as.character(value)
+    if (var=="type") {
+        value[value=="NON-ROAD"] <- "non-road source";
+        value[value=="ON-ROAD"] <- "on-road source"
+        value[value=="NONPOINT"] <- "non-point source";
+        value[value=="POINT"] <- "point source"
+    }
+    return(value)
 }
 
 ## -----------------------------------------------------------------------------
