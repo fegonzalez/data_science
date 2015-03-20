@@ -33,9 +33,7 @@
 ## do_ggplot(baltimore_totals_df, DEBUG_MODE); # (see code bellow)
 
 
-## require(graphics);
-## require(grDevices);
-## require(dplyr)
+require(dplyr)
 require(ggplot2);
 
 ## -----------------------------------------------------------------------------
@@ -119,17 +117,15 @@ do_ggplot <- function(baltimore_totals_df, DEBUG_MODE)
     MAINTEXT=expression("Baltimore City emissions from "* PM[2.5]);
 
     ## Plot
-    XVALUE <- baltimore_totals_df$year;
-    YVALUE <- baltimore_totals_df$Freq;
-    GROUPVALUE <- baltimore_totals_df$type;
     PTCOLOR="red";
     SHAPEVALUE=20;
     g <- ggplot(data = baltimore_totals_df,
-                aes(XVALUE, YVALUE, group = GROUPVALUE)) +
+                aes(year, Freq, group = type)) +
                     geom_line() +
                         geom_point(colour=PTCOLOR, shape=SHAPEVALUE) +
                             facet_grid(.~type);
-    if(DEBUG_MODE) print(g);
+    g <- g + theme_bw();
+    print(g);
 
     ## Complete the title
     MAINTITLE = "Baltimore City emissions from  PM2.5";
@@ -161,15 +157,12 @@ do_qplot <- function(baltimore_totals_df, DEBUG_MODE)
     MAINTEXT=expression("Baltimore City emissions from "* PM[2.5]);
 
     ## Plot
-    XVALUE <- baltimore_totals_df$year;
-    YVALUE <- baltimore_totals_df$Freq;
-    GROUPVALUE <- baltimore_totals_df$type;
     PTCOLOR="red";
     SHAPEVALUE=20;
 
-    g <- qplot(XVALUE, YVALUE, data = baltimore_totals_df,
+    g <- qplot(year, Freq, data = baltimore_totals_df,
                margins = FALSE,
-               group = GROUPVALUE,
+               group = type,
                geom = c("point", "line"),
                main = "",
                xlab = "",
@@ -177,7 +170,8 @@ do_qplot <- function(baltimore_totals_df, DEBUG_MODE)
                facets = . ~ type);
     #only necessary if color & shape are desired
     g <- g + geom_point(colour=PTCOLOR, shape=SHAPEVALUE);
-    if(DEBUG_MODE) print(g);
+    g <- g + theme_bw();
+    print(g);
 
     ## Complete the title
     MAINTITLE = "Baltimore City emissions from  PM2.5";
