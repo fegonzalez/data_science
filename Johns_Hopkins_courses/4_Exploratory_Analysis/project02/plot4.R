@@ -54,6 +54,20 @@
 ##     summarize(group_by(usa_coal_emissions, year, EI.Sector),
 ##               Emissions=sum(Emissions));
 ##
+## usa_coal_ratio_emissions <-
+##     summarize(group_by(usa_coal_emissions, year, EI.Sector),
+##               total_missions=sum(Emissions), count_emissions=n(),
+##               ratio=total_missions);
+## usa_coal_ratio_emissions <- data.frame(usa_coal_ratio_emissions);
+##
+##
+## WARNING: it has been detected a different number of measures per sector each
+## year. We either can consider to use the total amount of emissions or the ratio
+## (sum(emissions)/count(emissions)). With my knowledge of the data, I have
+## consider that each observation must be took into account, so we will use TOTAL
+## EMISSIONS.
+##
+##
 ## 3) Plot the filtered data:(total missions ~ coal source & year)
 ##
 
@@ -100,6 +114,13 @@ plot4 <- function(DEBUG_MODE=FALSE)
     usa_coal_total_emissions <-
         summarize(group_by(usa_coal_emissions, year, EI.Sector),
                   Emissions=sum(Emissions));
+
+    ## usa_coal_ratio_emissions <-
+    ##     summarize(group_by(usa_coal_emissions, year, EI.Sector),
+    ##               total_missions=sum(Emissions), count_emissions=n(),
+    ##               ratio=total_missions);
+    ## usa_coal_ratio_emissions <- data.frame(usa_coal_ratio_emissions);
+
     ## Source: local data frame [12 x 3]
     ## Groups: year
     ##    year                                   EI.Sector  Emissions
