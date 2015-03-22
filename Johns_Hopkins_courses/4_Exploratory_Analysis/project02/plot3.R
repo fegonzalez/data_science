@@ -78,10 +78,6 @@ plot3 <- function(DEBUG_MODE=FALSE)
     {
         png(file = outputname, width = 480, height = 480);
     }
-    ## Setup the plot area
-    op <- par(mfrow = c(1, 1),
-              bg="white",
-              las=0);
 
 
     ## Plot
@@ -97,13 +93,11 @@ plot3 <- function(DEBUG_MODE=FALSE)
         dev.copy(png, file = outputname,    ## Copy plot to a PNG file
              width = 480, height = 480);
         dev.off();                          ## close the PNG device
-        par(op); ## At end of plotting, reset to previous settings:
     }
     else
     {
-        dev.off();                          ## close the PNG device
-        par(op); ## At end of plotting, reset to previous settings:
-        dev.off();                          ## close screen device
+        while(dev.cur()>initial_dev)
+            dev.off();                      ## close PNG & screen devices
         stopifnot(initial_dev==dev.cur());
     }
 }

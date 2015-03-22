@@ -134,11 +134,6 @@ plot4 <- function(DEBUG_MODE=FALSE)
     if(!DEBUG_MODE)
         png(file = outputname, width = PNGWIDTH, height = PNGHEIGHT);
 
-    ## Setup the plot area
-    ## op <- par(mfrow = c(2, 1),
-    ##           bg="white",
-    ##           las=0);
-
     ## Plot
     p1 <- plot_total(usa_coal_total_emissions, DEBUG_MODE);
     p2 <- plot_relativefreq(usa_coal_relativefreq_emissions, DEBUG_MODE);
@@ -152,13 +147,11 @@ plot4 <- function(DEBUG_MODE=FALSE)
             dev.copy(png, file = outputname,    ## Copy plot to a PNG file
                      width = PNGWIDTH, height = PNGHEIGHT);
             dev.off();                          ## close the PNG device
-            ## par(op); ## At end of plotting, reset to previous settings:
         }
     else
         {
-            dev.off();                          ## close the PNG device
-            ## par(op); ## At end of plotting, reset to previous settings:
-            ## dev.off();                          ## close screen device
+            while(dev.cur()>initial_dev)
+                dev.off();                          ## close the PNG device
             stopifnot(initial_dev==dev.cur());
         }
 }
