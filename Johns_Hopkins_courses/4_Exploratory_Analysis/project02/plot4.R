@@ -34,18 +34,24 @@
 ##
 ## 2) Select & prepare the data to plot
 ##
+## WARNING: it has been detected a different number of measures per sector each
+## year. We could consider to use either the total amount of emissions, or the
+## relative frequency (sum(emissions)/count(emissions)). I have decide to plot
+## both measures to give all the information to the viewer.
+## The code to plot each data is inside a separate function "plot_total" and
+## "plot_relativefreq".
+##
 ## a) Select only "coal combustion-related sources" data
 ##
 ## coalsources <-
 ##     grep("coal",levels(SCC$EI.Sector), ignore.case=TRUE, value=TRUE);
 ##
-## b) filter the data related to coal in SCC (only SCC codes needed)
+## b) filter the data related to coal in SCC
 ##
 ## coalSCC <- SCC %>% filter(EI.Sector %in% coalsources) %>%
 ##     select(SCC, EI.Sector);
 ##
-## c) From NEI, filter the data related to total Emissions due to coal for the
-##    USA.
+## c) From NEI, filter the data related to Emissions due to coal for the USA.
 ##
 ## usa_coal_emissions <- factoredNEI  %>% filter(SCC %in% coalSCC$SCC) %>%
 ##         select(SCC, Emissions, year);
@@ -54,23 +60,19 @@
 ##     summarize(group_by(usa_coal_emissions, year, EI.Sector),
 ##               Emissions=sum(Emissions));
 ##
-## usa_coal_ratio_emissions <-
+## usa_coal_relativefreq_emissions <-
 ##     summarize(group_by(usa_coal_emissions, year, EI.Sector),
-##               total_missions=sum(Emissions), count_emissions=n(),
-##               ratio=total_missions);
-## usa_coal_ratio_emissions <- data.frame(usa_coal_ratio_emissions);
+##               total_emissions=sum(Emissions), count_emissions=n(),
+##               relativefreq=total_emissions/count_emissions);
 ##
 ##
-## WARNING: it has been detected a different number of measures per sector each
-## year. We either can consider to use the total amount of emissions or the ratio
-## (sum(emissions)/count(emissions)). With my knowledge of the data, I have
-## consider that each observation must be took into account, so we will use TOTAL
-## EMISSIONS.
+## 3) Plot the filtered data:(data ~ coal source & year)
 ##
-##
-## 3) Plot the filtered data:(total missions ~ coal source & year)
-##
+## p1 <- plot_total(usa_coal_total_emissions, DEBUG_MODE);
+## p2 <- plot_relativefreq(usa_coal_relativefreq_emissions, DEBUG_MODE);
 
+
+## -----------------------------------------------------------------------------
 
 require(dplyr)
 require(ggplot2);
@@ -101,7 +103,7 @@ plot4 <- function(DEBUG_MODE=FALSE)
     coalsources <-
         grep("coal",levels(SCC$EI.Sector), ignore.case=TRUE, value=TRUE);
 
-    ## b) filter the data related to coal in SCC (only SCC codes needed)
+    ## b) filter the data related to coal in SCC
     coalSCC <- SCC %>% filter(EI.Sector %in% coalsources) %>%
         select(SCC, EI.Sector);
 
@@ -110,44 +112,68 @@ plot4 <- function(DEBUG_MODE=FALSE)
         filter(SCC %in% coalSCC$SCC) %>%
             select(SCC, Emissions, year);
     usa_coal_emissions <- merge(usa_coal_emissions, coalSCC);
+
     ## group by EI.Sector (coal source) & year
+    ## absolute frequency
     usa_coal_total_emissions <-
         summarize(group_by(usa_coal_emissions, year, EI.Sector),
                   Emissions=sum(Emissions));
-
-    ## usa_coal_ratio_emissions <-
-    ##     summarize(group_by(usa_coal_emissions, year, EI.Sector),
-    ##               total_missions=sum(Emissions), count_emissions=n(),
-    ##               ratio=total_missions);
-    ## usa_coal_ratio_emissions <- data.frame(usa_coal_ratio_emissions);
-
-    ## Source: local data frame [12 x 3]
-    ## Groups: year
-    ##    year                                   EI.Sector  Emissions
-    ## 1  1999       Fuel Comb - Comm/Institutional - Coal  10617.830
-    ## ...
-    ## 12 2008 Fuel Comb - Industrial Boilers, ICEs - Coal  24053.602
-
+    ## relative frequency
+    usa_coal_relativefreq_emissions <-
+        summarize(group_by(usa_coal_emissions, year, EI.Sector),
+                  total_emissions=sum(Emissions), count_emissions=n(),
+                  relativefreq=total_emissions/count_emissions);
+    usa_coal_relativefreq_emissions <-
+        data.frame(usa_coal_relativefreq_emissions);
 
     ## 4) plot (emissions ~ coal source & year)
+    PNGWIDTH = 480;
+    PNGHEIGHT = 480;
     initial_dev <- dev.cur();
     outputname <- "./data/plot4.png";
     if(!DEBUG_MODE)
-        png(file = outputname, width = 480, height = 480);
+        png(file = outputname, width = PNGWIDTH, height = PNGHEIGHT);
+
     ## Setup the plot area
-    op <- par(mfrow = c(1, 1),
-              bg="white",
-              las=0);
+    ## op <- par(mfrow = c(2, 1),
+    ##           bg="white",
+    ##           las=0);
 
     ## Plot
+    p1 <- plot_total(usa_coal_total_emissions, DEBUG_MODE);
+    p2 <- plot_relativefreq(usa_coal_relativefreq_emissions, DEBUG_MODE);
+    multiplot(p1, p2, cols=1);
+
+
+    ## 5) create the png file
+    if(DEBUG_MODE)
+        {
+            print("dev.copy png");
+            dev.copy(png, file = outputname,    ## Copy plot to a PNG file
+                     width = PNGWIDTH, height = PNGHEIGHT);
+            dev.off();                          ## close the PNG device
+            ## par(op); ## At end of plotting, reset to previous settings:
+        }
+    else
+        {
+            dev.off();                          ## close the PNG device
+            ## par(op); ## At end of plotting, reset to previous settings:
+            ## dev.off();                          ## close screen device
+            stopifnot(initial_dev==dev.cur());
+        }
+}
+
+## -----------------------------------------------------------------------------
+
+plot_total <- function(usa_coal_total_emissions, DEBUG_MODE)
+{
     PLOTDATA=usa_coal_total_emissions;
     YVALUE=PLOTDATA$Emissions;
     XVALUE=PLOTDATA$year;
     FACETVALUE=PLOTDATA$EI.Sector;
     YLABTEXT="tons (thousands)";
     XLABTEXT="year";
-    MAINTEXT=
-        expression("U.S.A. coal combustion-related emissions from "* PM[2.5]);
+    MAINTEXT=expression("U.S.A. coal-related emissions (totals) from "*PM[2.5]);
     PTCOLOR="red";
     SHAPEVALUE=20;
 
@@ -178,24 +204,59 @@ plot4 <- function(DEBUG_MODE=FALSE)
         theme(axis.title.y=element_text(size=rel(0.85), angle=90, vjust=1.5)) +
         theme(strip.text.x = element_text(angle=0, size=rel(0.9),
               hjust = 0.5, vjust = 0.5))
-    print(g);
+    if(DEBUG_MODE) print(g);
+    ## print(g);
+    return(g);
+}
 
-    ## 5) create the png file
-    if(DEBUG_MODE)
-        {
-            print("dev.copy png");
-            dev.copy(png, file = outputname,    ## Copy plot to a PNG file
-                     width = 480, height = 480);
-            dev.off();                          ## close the PNG device
-            par(op); ## At end of plotting, reset to previous settings:
-        }
-    else
-        {
-            dev.off();                          ## close the PNG device
-            par(op); ## At end of plotting, reset to previous settings:
-            dev.off();                          ## close screen device
-            stopifnot(initial_dev==dev.cur());
-        }
+## -----------------------------------------------------------------------------
+
+plot_relativefreq <- function(usa_coal_relativefreq_emissions, DEBUG_MODE)
+{
+    PLOTDATA=usa_coal_relativefreq_emissions;
+    YVALUE=PLOTDATA$relativefreq;
+    XVALUE=PLOTDATA$year;
+    FACETVALUE=PLOTDATA$EI.Sector;
+    YLABTEXT="tons";
+    XLABTEXT="year";
+    MAINTEXT=expression("U.S.A. coal-related emissions (relative frequency) from "* PM[2.5]);
+    PTCOLOR="red";
+    SHAPEVALUE=20;
+
+    g <- ggplot(data = usa_coal_relativefreq_emissions,
+                aes(year, relativefreq, group = EI.Sector,
+                    label=round(relativefreq, 2)))+
+        geom_point(colour=PTCOLOR, shape=SHAPEVALUE) +
+        geom_line() +
+        facet_grid(.~EI.Sector, labeller = facets_source_labeller) +
+        ggtitle(MAINTEXT) +
+        xlab(XLABTEXT) +
+        ylab(YLABTEXT) +
+            theme_bw();
+    if(DEBUG_MODE) print(g);
+    g <- g + geom_text(size = rel(3.0), angle=45, hjust=-0.25, vjust=-0.25);
+    if(DEBUG_MODE) print(g);
+
+    ## Complete the y axis
+    YAXIS_ROUNDFACTOR <- 1; #default range
+    yceiling <- ceiling(max(YVALUE)/YAXIS_ROUNDFACTOR) * YAXIS_ROUNDFACTOR;
+    yfloor <- floor(min(YVALUE)/YAXIS_ROUNDFACTOR) * YAXIS_ROUNDFACTOR;
+    aty <- c(seq(yfloor, yceiling+YAXIS_ROUNDFACTOR, yceiling/10.0));
+    aty <- c(aty, yceiling);
+    g <- g + scale_y_continuous(limits=range(YVALUE),
+                                breaks=aty, labels=aty/YAXIS_ROUNDFACTOR);
+    if(DEBUG_MODE) print(g);
+    ## Complete plot sizes (http://docs.ggplot2.org/0.9.2.1/theme.html)
+    g <- g + theme(plot.title = element_text(size = rel(1.05))) +
+        theme(axis.text.x = element_text(size = rel(0.85))) +
+        theme(axis.text.y = element_text(size = rel(0.85))) +
+        theme(axis.title.x=element_text(size=rel(0.85), angle=0, vjust = 0.5)) +
+        theme(axis.title.y=element_text(size=rel(0.85), angle=90, vjust=1.5)) +
+        theme(strip.text.x = element_text(angle=0, size=rel(0.9),
+              hjust = 0.5, vjust = 0.5))
+    if(DEBUG_MODE) print(g);
+    ## print(g);
+    return(g);
 }
 
 ## -----------------------------------------------------------------------------
@@ -262,6 +323,58 @@ search_coal <- function(data)
         if(length(result))
             print(label);
     }
+}
+
+## -----------------------------------------------------------------------------
+
+## Multiple plot function
+##
+## ggplot objects can be passed in ..., or to plotlist (as a list of ggplot
+## objects) - cols: Number of columns in layout - layout: A matrix specifying
+## the layout. If present, 'cols' is ignored.
+##
+## If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE), then
+## plot 1 will go in the upper left, 2 will go in the upper right, and 3 will
+## go all the way across the bottom.
+##
+## www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_%28ggplot2%29.html
+##
+
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL){
+
+  require(grid)
+
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+
+  numPlots = length(plots)
+
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                    ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+
+ if (numPlots==1) {
+    print(plots[[1]])
+
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
 }
 
 ## -----------------------------------------------------------------------------
