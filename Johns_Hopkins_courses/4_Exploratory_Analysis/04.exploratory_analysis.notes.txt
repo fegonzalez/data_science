@@ -791,6 +791,5 @@ Scatter: dispersión
 
 [8.2] The R Graphics Cookbook - Winston Chang - http://www.cookbook-r.com/Graphs
 
-[8.3] ggplot2 web site - http://ggplot2.org
-
+[8.3] ggplot2 web site - http://ggplot2.org - http://docs.ggplot2.org
 
