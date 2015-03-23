@@ -1,1 +1,0 @@
-define({Cancel:"Cancelar",Create:"Crear"});

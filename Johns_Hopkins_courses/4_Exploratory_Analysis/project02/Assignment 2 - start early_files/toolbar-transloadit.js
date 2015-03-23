@@ -1,1 +1,0 @@
-define({Pic:"Foto"});

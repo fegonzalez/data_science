@@ -1,1 +1,0 @@
-define({Cancel:"Cancelar",Create:"Crear","Make a textbook link!":"¡Haz un enlace a un libro de texto!","Select page number (optional)":"Seleccionar número de página (opcional)"});
