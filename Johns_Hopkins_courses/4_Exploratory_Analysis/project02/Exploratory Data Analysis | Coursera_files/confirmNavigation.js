@@ -1,1 +1,0 @@
-define({"Are you sure you want to leave this page?":"¿Estás seguro/a de que quieres abandonar esta página?","Confirm Navigation":"Confirmar navegación","Leave this Page":"Abandonar esta página","Stay on this Page":"Permanecer en esta página"});
