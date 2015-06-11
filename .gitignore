@@ -21,6 +21,11 @@ link2doc
 *.Rhistory
 *.RData
 
+# python stuff
+*.pyc
+*.pyo
+*/__pycache__/*
+
 
 ################################################################################
 # Johns_Hopkins_courses
