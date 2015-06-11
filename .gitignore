@@ -1,3 +1,13 @@
+# when not working try this to update the ignored files
+# git rm -r --cached .
+# git add .
+# git commit -m "fixed untracked files"
+
+
+################################################################################
+# general stuff
+################################################################################
+
 *~
 *.*~
 *.zip
@@ -6,12 +16,16 @@ link2data
 link2doc
 *.mp4
 *.srt
-#R files
-.Rhistory
-.RData
+
+# R files
+*.Rhistory
+*.RData
 
 
-# courses
+################################################################################
+# Johns_Hopkins_courses
+################################################################################
+
 Johns_Hopkins_courses/jh_all_courses/*
 Johns_Hopkins_courses/repos/*
 
@@ -42,4 +56,10 @@ Johns_Hopkins_courses/4_Exploratory_Analysis/project02/*
 !Johns_Hopkins_courses/4_Exploratory_Analysis/project02/*.R
 !Johns_Hopkins_courses/4_Exploratory_Analysis/project02/instructions.html
 
+################################################################################
+# Big Data
+################################################################################
 
+# Apache Spark
+
+# big_data/apache_spark/Intro_BigData_Apache_Spark.BerkeleyX_CS1001x/environment/*

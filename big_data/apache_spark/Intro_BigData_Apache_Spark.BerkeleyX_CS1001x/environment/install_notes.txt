@@ -1,0 +1,72 @@
+
+#vagrant directory
+
+/Users/fer_gonzalez_rodriguez/myvagrant
+
+
+#vagrant install
+
+i) Download this file
+(https://github.com/spark-mooc/mooc-setup/archive/master.zip) to the custom
+directory and unzip it.
+
+ii) From the unzipped file, copy Vagrantfile to the custom directory you
+created in step #1 (NOTE: It must be named exactly "Vagrantfile" with no
+extension)
+
+iii) Open a DOS prompt (Windows) or Terminal (Mac/Linux), change to the custom
+directory, and issue the command "vagrant up"
+
+
+# vagrant commands
+
+# During the course
+
+> vagrant up    # start "sparkvm" virtual machine in VirtualBox
+
+> vagrant halt  # stop  "sparkvm" virtual machine in VirtualBox
+
+# Access to the notebook in the VM (while "sparkvm" is running)
+> "http://localhost:8001/" # on a web browser (on Windows and Mac)
+  "http://127.0.0.1:8001/" (on Linux).
+
+
+# At the end of the course
+
+> vagrant destroy # delete "sparkvm" virtual machine from VirtualBox
+
+# Warning: If you erase or delete the VM, you will lose any work you have done
+# and data you have saved, and you will have download it again when you use the
+# "vagrant up" command.
+
+
+
+
+Running Your First Notebook
+
+Running your first notebook will test your software setup and environment.
+
+1. If it is not already running, start the Virtual Machine by issuing issue the
+command "vagrant up" from a DOS prompt (Windows) or Terminal (Mac/Linux).
+
+2. You should have already downloaded and unzipped the master.zip file in the
+module "Downloading and installing the virtual machine".  The zip file contains
+the file "lab0_student.ipynb" that you will need in step #4.  You can view a
+#read-only online version of the Spark iPython notebook here.
+
+
+3. Once the Virtual Machine is running, access the Jupyter web UI for running
+IPython notebooks by navigating your web browser to "http://localhost:8001" (or
+"http://127.0.0.1:8001/").
+
+4. On the Jupyter web page, use the Upload button to upload the
+"lab0_student.ipynb" Spark iPython notebook file that was mentioned in step #2.
+
+5. Select the file and run each cell - verify that you do not encounter any
+errors.
+
+6. At the end of the notebook, instructions are included on how to export the
+notebook as a Python (.py) file and to submit that file to the autograder.
+
+
+

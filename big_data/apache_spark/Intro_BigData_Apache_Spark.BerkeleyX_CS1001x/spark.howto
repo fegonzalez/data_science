@@ -1,0 +1,243 @@
+#\file bgnotes: Big Data - Data Science notes and facts.
+
+#===============================================================================
+#===============================================================================
+
+
+INDEX
+
+
+1&2) Lecture 1&2: Introduction.- What are Big Data and Data science
+2) Lecture 3: Big Data, hardware, Map-Reduce vs Apache Spark
+3) Lecture 3: Big Data & Cluster Computing: Map-Reduce vs Apache Spark
+4) Lecture 4: Spark Essentials
+
+#===============================================================================
+#===============================================================================
+
+
+CONTENT
+
+
+#===============================================================================
+# 1&2) Lecture 1&2: Introduction.- What are Big Data and Data science
+#===============================================================================
+
+def) Big Data: data sets with sizes beyond the ability of commonly used
+     software tools to properly handle it within a tolerable elapsed time =>
+     data science to manage big data.
+
+     - Big Data vs Data analytic: Volume, Velocity, Variety.
+
+
+def) Data Science aims to derive knowledge from big data, efficiently and
+     intelligently"
+
+
+def) Data science encompasses the set of activities, tools, and methods that
+     enable data-driven activities in science, business, medicine, ...
+
+def) Data science = mix (hacking skills, domain expertise, math & stats know.)
+
+
+1.1) Data Science vs Other systems/techniques
+
+-  Data Science vs Databases
+
+   Timing:       Querying the future  / Querying the past
+   Data      :   massive & cheap      / modest volume & "precious" value
+   Priorities:   Speed, availability  / consistency, error recovery, auditable
+   Structured:   weak or none (test)  / strongly (schema)
+   Realizations:      no SQL          / SQL 
+   Properties:   CAP*, eventual cons. / Transactions, ACID+
+
+   * CAP:  Consistency, Availability, Partition Tolerance
+   + ACID: Atomicity, Consistency, Isolation, Durability
+
+
+- Scientific Computing (Modeling) vs Data Science (Data-Driven Approach)
+
+  Physics-based MODELS         / General INFERENCE ENGINE replaces model
+  Problem-Structured           / Structure not related to problem
+  Mostly DETERMINISTIC precise / Statistical models handle TRUE RANDOMNESS,
+  	 	       	         and unmodeled complexity
+  Run on SUPERCOMPUTER or      / Run on CHEAPER computer Clusters (EC2)
+  Computing Cluster"
+
+
+- Traditional Machine Learning vs Data Science
+
+  Develop new (individual) models  / Explore many models, build and tune hybrids
+  Prove math. properties of models / Understand empirical properties of models
+  Improve/validate on a few,       / Develop/use tools that can handle MASSIVE
+  relatively CLEAN, SMALL DATASETS   datasets
+  Publish a paper                  / TAKE ACTION!
+
+
+1.2) Data Science Topics
+
+• Data Acquisition (where is the data?)
+• Data Preparation (get the proper input data format)
+• Analysis
+• Data Presentation
+• Data Products
+• Observation and Experimentation
+
+
+1.3) Data Acquisition & Data Preparation
+
+1.3.1 Overview
+
+• ETL: Extract, Transform, Load
+  » We need to extract data from the source(s)
+  » We need to load data into the sink
+  » We need to transform data at the source, sink, or in a staging area
+
+- Sources: files (csv, excel, logs), databases, web site, ...
+- Sinks: code files (Python, R, ...), DB manage systems, ...
+
+1.3.2) Process Model
+
+• The construction of a new data preparation process is done in many phases:
+  » Data characterization
+  » Data cleaning
+  » Data integration
+
+• We must efficiently move data around in space and time
+  » Data transfer
+  » Data serialization and deserialization (for files or network)
+
+WARNING Impediments to Collaboration:
+  » DIVERSITY of tools (sources & sinks)
+  » No/bad documentation and version controlling.
+
+
+
+
+#===============================================================================
+# 3) Lecture 3: Big Data & Cluster Computing: Map-Reduce vs Apache Spark
+#===============================================================================
+
+- The Big Data Problem
+  • A single machine can no longer process or even store all the data!
+  • Only solution is to DISTRIBUTE DATA over large clusters
+
+
+2.1) Map Reduce: disk => MAP => disk => REDUCE => disk
+
+     PROBLEM: disk I/O is very slow!
+
+
+2.2) Spark (Distributed execution engine)
+
+    SOLUTION: In-Memory Data sharing (use memory instead of disk)
+
+
+2.2.1) Spark Core and Resilient Distributed Datasets (RDDs)
+
+- Spark Core: provides distributed task dispatching, scheduling, and basic I/O.
+
+  • Provides PROGRAMMING ABSTRACTION and PARALLEL RUNTIME to hide complexities
+    of fault-tolerance and slow machines.
+
+  • “Here’s an operation, run it on all of the data”
+    » I don’t care where it runs (you schedule that)
+    » In fact, feel free to run it twice on different nodes
+
+
+- Resilient (*1) Distributed Datasets (RDDs):
+
+  • It is the fundamental programming abstraction, A LOGICAL COLLECTION OF DATA
+    PARTITIONED ACROSS MACHINES, stored in memory or in disk.
+  
+  • RDDs can be created by referencing datasets in external storage systems, or
+    by applying a diverse set of parallel transformations (map, filter, join)
+    and actions (count, collect, save).
+
+  • The RDD abstraction is exposed through a language-integrated API ->
+    -> manipulate RDDs is similar to manipulating local collections of data.
+
+  • RDDs automatically rebuilt on machine failure"
+
+WARNING RDDs CAN NOT be changed after they are constructed
+
+
+  (*1) resilient = elástico
+
+
+- Spark Tools
+  • Spark SQL
+  • Spark Streaming
+  • MLlib (machine learning)
+  • GraphX (graph)
+  
+
+- Spark and Map Reduce Differences 
+
+  	    	Hadoop			Spark
+	    	Map Reduce
+________________________________________________________________________
+             |                    |
+Storage      |	Disk only	  |	In-memory or on disk
+             |                    |
+Operations   |	Map and Reduce	  |	Map, Reduce, Join, Sample, etc…
+             |                    |
+Execution    |	Batch   	  |	Batch, interactive, streaming
+model	     |                    |
+             |                    |
+Programming  |	Java		  |	Scala, Java, R, and Python
+environments |                    |
+
+
+- Other Spark advantages
+
+  • Generalized patterns -> unified engine for many use cases
+
+  • Lazy evaluation of the lineage graph -> reduces wait states, best pipelining
+
+  • Lower overhead for starting jobs
+
+  • Less expensive shuffles
+
+
+
+
+#===============================================================================
+# 4) Lecture 4: Spark Essentials
+#===============================================================================
+
+
+todo:	driver vs worker ???
+
+Spark program = 2 programs = 1 driver progrma + n worker programs
+- driver program (SparkContext) unique Host
+- worker program (Spark executor): cluster nodes / locla thread
+	
+
+WARNING Transformations specify how to perform parallel computation in a lazily
+evaluated manner. Actions cause the transformations to be executed. If you plan
+to reuse an RDD, you should cache it.
+
+
+
+shsred vars:
+
+INFO Accumulators can only be written by workers and read by the driver program.
+
+
+################################################################################
+# References
+################################################################################
+
+
+[1] Spark Documentation - https://spark.apache.org/documentation.html
+
+[2] Spark Programming Guide -
+    https://spark.apache.org/docs/latest/programming-guide.html
+
+[3] Spark Python API Docs -
+    https://spark.apache.org/docs/latest/api/python/index.html
+
+
+
+#\file spark.howto: Apache Spark manual
