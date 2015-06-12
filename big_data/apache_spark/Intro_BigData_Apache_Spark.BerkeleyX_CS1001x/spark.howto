@@ -245,17 +245,17 @@ environments |                    |
   • RDDs are distributed across workers
 
 
-- lass pyspark.SparkContext()
+- class pyspark.SparkContext()
 
-• A spark program first creates a "SparkContext object"
+  • A spark program first creates a "SparkContext object"
 
-• Represents the connection to a Spark cluster: tells Spark how and where to
-  access a cluster.
+  • Represents the connection to a Spark cluster: tells Spark how and where to
+    access a cluster.
 
-• Can be used to create RDDs and broadcast variables on that cluster.
+  • Can be used to create RDDs and broadcast variables on that cluster.
 
-• The "Master" parameter determines which type and size of cluster to use:
-  local, local[k], spark cluster, mesos cluster.
+  • The "Master" parameter determines which type and size of cluster to use:
+    local, local[k], spark cluster, mesos cluster.
 
 
 INFO pySpark shell and Databricks Cloud automatically create the "sc" variable
@@ -265,7 +265,9 @@ INFO iPython and programs must use a constructor to create a new SparkContext
 
 4.1)  RDDs
 
-  » IMMUTABLE once constructed
+  A logical collection of data partitioned across machines.
+
+  » Immutable once constructed
 
   » Track lineage information to efficiently recompute lost data
 
@@ -298,7 +300,7 @@ WARNING What code is executed in what program. Summary:
 
  • Actions are executed (in parallel) in the workers
 
- • Actions results combination is executed in the driver.
+ • Actions result-combination is executed in the driver.
 
 
 4.2.1) Creating an RDD
@@ -307,7 +309,7 @@ WARNING lazy evaluation -> Spark only records what to create.
  
 a) From Python collections(lists)
 
-  parallelize(c, numSlices=None) [3].pyspark
+  parallelize(collection, numSlices=None) [3].pyspark
 
 INFO Using xrange is recommended if the input represents a range for performance
 
@@ -322,7 +324,7 @@ b) From files (text, HDFS, ...)
 • Read a text file from HDFS, a local file system (available on all nodes), or
   any Hadoop-supported file system URI, and return it as an RDD of Strings.
 
-• Elements are lines of input
+• Elements are lines of input.
 
 >>> distFile = sc.textFile("README.md", 4) 
 
@@ -371,16 +373,16 @@ INFO Spark recovers from failures and slow workers
   RDD: [1, 2, 3] -> [1, 6, 2, 7, 3, 8]
 
 
-WARNING Function literals (lambda) are closures. Spark automatically (?) pushes
+WARNING Function literals (lambda) are closures. Spark automatically pushes
 	closures to workers.
   
 
-4.2.3) Caching RDDs
+4.2.3) Caching RDDs: 
 
-• If you plan to reuse an RDD, you should cache it.
+- cache(): Persist this RDD with the default storage level (MEMORY_ONLY_SER).
 
   >>> lines = sc.textfile("...", 4)
-  >>> lines.cache() # save, don't recompute in the print()
+  >>> lines.cache() # save, don't recompute inside the print()
   >>> comments = lines.filter(iscomment)
   >>> print (lines.count(), comments.count())
 
@@ -412,16 +414,15 @@ WARNING Function literals (lambda) are closures. Spark automatically (?) pushes
   Value: [1, 2]
 
 
-- collect(): return a list that contains all of the elements in this RDD.
+- collect(): return a list that contains ALL of the elements in this RDD.
 
   >>> rdd.collect()
   Value: [1,2,3]
 
-
-WARNING make sure will fit in driver program
-• Forum note.- https://piazza.com/class/i9esrcg0gpf8k?cid=799
-• Forum note (Anthony D. Joseph).- You can see the sizes of RDDs and worker
-  memory in the Spark UI under the Executors tab.
+  WARNING make sure will fit in driver program
+  • Forum note.- https://piazza.com/class/i9esrcg0gpf8k?cid=799
+  • Forum note (Anthony D. Joseph).- You can see the sizes of RDDs and worker
+    memory in the Spark UI under the Executors tab.
 
 
 - count(): Return the number of elements in this RDD
@@ -441,6 +442,8 @@ WARNING make sure will fit in driver program
 
 
 4.3) Spark Key-Value RDDs
+
+• Similar to Map Reduce, Spark supports Key-Value pairs
 
 • Each element of a Pair RDD is a pair tuple
 
@@ -493,26 +496,62 @@ Problems:
   » Inefficient to send large data to each worker
   » Closures are one way: driver -> worker
 
-Solutions: pySpark Shared Variables
+Solution: pySpark Shared Variables
 
 
 4.5) pySpark Shared Variables
 
 4.5.1) Broadcast Variables (driver -> worker)
 
-  » Efficiently send large, READ-ONLY value to all workers
+  » SHIP to each worker ONLY ONCE instead of with each task
+  » On workers: read-only, cached.
 
-  » Saved at workers for use in one or more Spark operations
+  - Creation (driver)   variable = sc.broadcast()
+  - Access (workers)    variable.value
+
+  >>> broadvar = sc.broadcast([1,2,3])  # driver
+  >>> broadvar.value  # At the worker (in code passed via closure)
+  [1, 2, 3]
 
 
 4.5.2) Accumulators  (worker -> driver)
 
-  » Aggregate values from workers back to driver
+       - accumulator(value, accum_param=None): create & init an accumulator
 
-  » Use to count errors seen in RDD across workers
+       - value: get the accumulator value (driver)
 
-  » Accumulators can only be written by workers and read by the driver program
+       - add(term): commutative and associative “add” operation (worker)
 
+
+• Tasks at workers cannot access accumulator’s values (write-only)
+
+• Used to: Aggregate values from workers back to driver (e.g. PARALLEL counters
+       	   and sums)
+
+• Accumulators can be used in actions or transformations:  
+  » Actions: each task’s update to accumulator is applied only once
+  WARNING Transformations: no guarantees (use only for debugging)
+
+• Types
+  » SparkContext: integers, double, long, float
+  » User defined: via AccumulatorParam object (See lab for example of custom
+    type)
+
+
+• (e.g. counting empty lines)
+
+  file = sc.textFile(input_file)   # Create RDD
+  blank_lines = sc.accumulator(0)  # Create & init Accumulator[Int]
+  
+  # def a function that use the accumulator inside
+  def extract_call_signs(line)
+      global blank_lines  # make accessible the global accumulator variable 
+      if (line==""):
+      	 blank_lines+=1   # or 'add(blank_lines)'
+      return line.split(" ")
+
+  call_signs = file.flatMap(extract_call_signs)
+  print ("blank lines: %d" % blank_lines.value)  # (driver) get value
 
 
 
