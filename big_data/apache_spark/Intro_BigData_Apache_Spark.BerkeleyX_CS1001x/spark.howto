@@ -1,16 +1,38 @@
-#\file bgnotes: Big Data - Data Science notes and facts.
+#\file spark.howto: Big Data - Data Science notes and facts.
+       		    	       Apache Spark tutorial.
+
+
+
 
 #===============================================================================
+# INDEX
 #===============================================================================
-
-
-INDEX
-
 
 1&2) Lecture 1&2: Introduction.- What are Big Data and Data science
+
 2) Lecture 3: Big Data, hardware, Map-Reduce vs Apache Spark
+
 3) Lecture 3: Big Data & Cluster Computing: Map-Reduce vs Apache Spark
+
 4) Lecture 4: Spark Essentials
+   4.1)  RDDs
+   4.2) Spark Program Lifecycle
+   	4.2.1) Creating an RDD
+	4.2.2) Spark Transformations
+	4.2.3) Caching RDDs
+	4.2.4) Spark Actions
+   4.3) Spark Key-Value RDDs
+   	4.3.1) Key-Value Transformations
+   4.4) pySpark Closures
+   4.5) pySpark Shared Variables
+   	4.5.1) Broadcast Variables
+   	4.5.2) Accumulators
+
+
+Annex) To do section
+
+References)
+
 
 #===============================================================================
 #===============================================================================
@@ -123,17 +145,17 @@ WARNING Impediments to Collaboration:
   • Only solution is to DISTRIBUTE DATA over large clusters
 
 
-2.1) Map Reduce: disk => MAP => disk => REDUCE => disk
+3.1) Map Reduce: disk => MAP => disk => REDUCE => disk
 
      PROBLEM: disk I/O is very slow!
 
 
-2.2) Spark (Distributed execution engine)
+3.2) Spark (Distributed execution engine)
 
     SOLUTION: In-Memory Data sharing (use memory instead of disk)
 
 
-2.2.1) Spark Core and Resilient Distributed Datasets (RDDs)
+3.2.1) Spark Core and Resilient Distributed Datasets (RDDs)
 
 - Spark Core: provides distributed task dispatching, scheduling, and basic I/O.
 
@@ -158,8 +180,6 @@ WARNING Impediments to Collaboration:
     -> manipulate RDDs is similar to manipulating local collections of data.
 
   • RDDs automatically rebuilt on machine failure"
-
-WARNING RDDs CAN NOT be changed after they are constructed
 
 
   (*1) resilient = elástico
@@ -206,38 +226,312 @@ environments |                    |
 # 4) Lecture 4: Spark Essentials
 #===============================================================================
 
+- pySpark: python spark API
 
-todo:	driver vs worker ???
-
-Spark program = 2 programs = 1 driver progrma + n worker programs
-- driver program (SparkContext) unique Host
-- worker program (Spark executor): cluster nodes / locla thread
-	
-
-WARNING Transformations specify how to perform parallel computation in a lazily
-evaluated manner. Actions cause the transformations to be executed. If you plan
-to reuse an RDD, you should cache it.
+- Spark program = 2 programs = 1 driver program + n worker programs
 
 
+- Spark driver program (Spark Context Object)
 
-shsred vars:
+  • Runs the user’s main function and executes various parallel operations
 
-INFO Accumulators can only be written by workers and read by the driver program.
+  • Runs on a (UNIQUE) CLUSTER.
+
+
+- Worker programs (Spark executor Object): 
+
+  • Run in cluster nodes or in local threads.
+
+  • RDDs are distributed across workers
+
+
+- lass pyspark.SparkContext()
+
+• A spark program first creates a "SparkContext object"
+
+• Represents the connection to a Spark cluster: tells Spark how and where to
+  access a cluster.
+
+• Can be used to create RDDs and broadcast variables on that cluster.
+
+• The "Master" parameter determines which type and size of cluster to use:
+  local, local[k], spark cluster, mesos cluster.
+
+
+INFO pySpark shell and Databricks Cloud automatically create the "sc" variable
+
+INFO iPython and programs must use a constructor to create a new SparkContext
+
+
+4.1)  RDDs
+
+  » IMMUTABLE once constructed
+
+  » Track lineage information to efficiently recompute lost data
+
+  » Enable OPERATIONS on collection of elements IN PARALLEL
+
+- How to create an RDD:
+  i)   by PARALLELIZING existing Python collections (lists)
+  ii)  by TRANSFORMING an existing RDDs
+  iii) FROM FILES in HDFS or any other storage system
+
+- The programmer specifies number of partitions for an RDD: more partitions =
+  more parallelism.
+
+  WARNING  #partitions !=  #workers  (e.g. 5 partitions can run in 3 workers)
+
+
+4.2) Spark Program Lifecycle
+
+  i)   Create an RDD
+  ii)  Apply transformations to an RDD (lazy eval.)
+  iii) cache() some RDDs for reuse
+  iv)  Apply actions to an RDD
+
+
+WARNING What code is executed in what program. Summary:
+
+ • RDDs creation are executed (in parallel) in the workers.
+
+ • Transformations are executed (in parallel) in the workers.
+
+ • Actions are executed (in parallel) in the workers
+
+ • Actions results combination is executed in the driver.
+
+
+4.2.1) Creating an RDD
+
+WARNING lazy evaluation -> Spark only records what to create.
+ 
+a) From Python collections(lists)
+
+  parallelize(c, numSlices=None) [3].pyspark
+
+INFO Using xrange is recommended if the input represents a range for performance
+
+>>> data = [1,2,3,4,5]
+>>> rdd = sc.parallelize(data, 4) # RDD distributed in 4 partitions
+
+
+b) From files (text, HDFS, ...)
+
+  textFile(name, minPartitions=None, use_unicode=True) [3].pyspark
+
+• Read a text file from HDFS, a local file system (available on all nodes), or
+  any Hadoop-supported file system URI, and return it as an RDD of Strings.
+
+• Elements are lines of input
+
+>>> distFile = sc.textFile("README.md", 4) 
+
+
+4.2.2) Spark Transformations
+
+• Create new datasets from an existing one
+
+• Transformations specify how to perform parallel computation in a LAZILY
+  EVALUATED manner.
+
+INFO Spark optimizes the required calculations
+
+INFO Spark recovers from failures and slow workers
+
+
+- map(func): func(input) | dataset
+
+  >>> rdd = sc.parallelize([1, 2, 3, 4])
+  >>> rdd.map(lambda x: x * 2)
+  RDD: [1, 2, 3, 4] -> [2, 4, 6, 8]
+
+
+- filter(func):  func(input)==true | dataset
+
+  >>> rdd = sc.parallelize([1, 2, 3, 4])
+  >>> rdd.filter(lambda x: x % 2 == 0)
+  RDD: [1, 2, 3, 4] -> [2, 4]
+
+
+- distinct([numTasks]): distinct(input) | dataset
+
+  >>> rdd = sc.parallelize([1, 4, 2, 2, 3, 4])
+  >>> rdd.distinct()
+  RDD: [1, 4, 2, 2, 3, 4] -> [1, 4, 2, 3]
+
+
+- flatMap(func): func(input) | dataset
+
+  >>> rdd = sc.parallelize([1, 2, 3])
+
+  >>> rdd.map(lambda x: [x, x+5])
+  RDD: [1, 2, 3] -> [[1,6], [2,7], [3,8]]
+
+  >>> rdd.flatmap(lambda x: [x, x+5])
+  RDD: [1, 2, 3] -> [1, 6, 2, 7, 3, 8]
+
+
+WARNING Function literals (lambda) are closures. Spark automatically (?) pushes
+	closures to workers.
+  
+
+4.2.3) Caching RDDs
+
+• If you plan to reuse an RDD, you should cache it.
+
+  >>> lines = sc.textfile("...", 4)
+  >>> lines.cache() # save, don't recompute in the print()
+  >>> comments = lines.filter(iscomment)
+  >>> print (lines.count(), comments.count())
+
+
+4.2.4) Spark Actions
+
+• Actions cause the transformations to be executed.  
+
+• Mechanism for getting results out of Spark.
+
+
+- reduce(func)
+
+  • aggregate dataset’s elements using function func.
+
+  • func takes two arguments and returns one.
+
+  • func is commutative and associative so that it can be computed correctly in
+    parallel.
+
+  >>> rdd = sc.parallelize([1, 2, 3])
+  >>> rdd.reduce(lambda a,b: a * b)    # causes parallelize to be executed
+  Value: 6  # (1*2*3)
+
+
+- take(n): return an array with the first n elements of the RDD
+
+  >>> rdd.take(2)
+  Value: [1, 2]
+
+
+- collect(): return a list that contains all of the elements in this RDD.
+
+  >>> rdd.collect()
+  Value: [1,2,3]
+
+
+WARNING make sure will fit in driver program
+• Forum note.- https://piazza.com/class/i9esrcg0gpf8k?cid=799
+• Forum note (Anthony D. Joseph).- You can see the sizes of RDDs and worker
+  memory in the Spark UI under the Executors tab.
+
+
+- count(): Return the number of elements in this RDD
+
+  >>> rdd.count()
+  Value: 3
+
+
+- takeOrdered(n, key=None): return n elements ordered in ascending order or as
+  		 	    specified by the optional key function.
+
+  >>> rdd = sc.parallelize([5, 3, 1, 2])
+  >>> rdd.takeOrdered(3)
+  Value: [1,2,3]  
+  >>> rdd.takeOrdered(3, lambda s: -1 * s)
+  Value: [5,3,2]
+
+
+4.3) Spark Key-Value RDDs
+
+• Each element of a Pair RDD is a pair tuple
+
+  >>> rdd = sc.parallelize([(1,2),(3,4)])
+  RDD:[(1,2),(3,4)]
+
+
+4.3.1) Key-Value Transformations
+
+- reduceByKey(func, numPartitions=None): func(input) | dataset of (K,V) pairs
+  • func must be of type (V,V) -> V
+  • Output will be hash-partitioned with numPartitions partitions
+
+  >>> rdd = sc.parallelize([(1, 2), (3, 4), (3,6)])
+  >>> rdd.map(lambda a,b: a+b)
+  RDD: [(1, 2), (3, 4), (3,6)] -> [(1, 2), (3, 10)]
+  
+
+- sortByKey(): return a new dataset (K, V) pairs sorted by keys in ascending
+  	       order.
+
+  >>> rdd = sc.parallelize([(1, 'a'), (2, 'c'), (1, 'b')])
+  >>> rdd.sortByKey()
+  RDD: [(1, 'a'), (2, 'c'), (1, 'b')] -> [(1, 'a'), (1, 'b'), (2, 'c')]
+  
+
+- groupByKey(): return a new dataset of (K, iterable<V>) pairs.
+
+  >>> rdd = sc.parallelize([(1, 'a'), (2, 'c'), (1, 'b')])
+  >>> rdd.groupByKey()
+  RDD: [(1, 'a'), (2, 'c'), (1, 'b')] -> [(1, ['a', 'b']), (2, ['c'])]
+
+  WARNING groupByKey() as it can cause a lot of data movement across the
+  	  network and create large Iterables at workers.
+
+
+4.4) pySpark Closures  (driver -> worker)
+
+• Spark automatically creates closures for:
+  » Functions that run on RDDs at workers
+  » Any global variables used by those workers
+
+• One closure per worker
+  » Sent for every task
+  » No communication between workers
+  » Changes to global variables at workers are not sent to driver
+
+Problems:
+  » Closures are (re-)sent with every job
+  » Inefficient to send large data to each worker
+  » Closures are one way: driver -> worker
+
+Solutions: pySpark Shared Variables
+
+
+4.5) pySpark Shared Variables
+
+4.5.1) Broadcast Variables (driver -> worker)
+
+  » Efficiently send large, READ-ONLY value to all workers
+
+  » Saved at workers for use in one or more Spark operations
+
+
+4.5.2) Accumulators  (worker -> driver)
+
+  » Aggregate values from workers back to driver
+
+  » Use to count errors seen in RDD across workers
+
+  » Accumulators can only be written by workers and read by the driver program
+
+
+
+
+################################################################################
+# Annex) To do section
+################################################################################
+
+
 
 
 ################################################################################
 # References
 ################################################################################
 
+[1] Spark Documentation - spark.apache.org/documentation.html
 
-[1] Spark Documentation - https://spark.apache.org/documentation.html
+[2] Spark Programming Guide -spark.apache.org/docs/latest/programming-guide.html
 
-[2] Spark Programming Guide -
-    https://spark.apache.org/docs/latest/programming-guide.html
+[3] Spark Python API Docs - spark.apache.org/docs/latest/api/python/
 
-[3] Spark Python API Docs -
-    https://spark.apache.org/docs/latest/api/python/index.html
+[4] How-to: Tune Your Apache Spark Jobs - http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-1/
 
-
-
-#\file spark.howto: Apache Spark manual
