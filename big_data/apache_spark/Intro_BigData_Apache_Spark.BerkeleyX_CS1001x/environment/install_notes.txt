@@ -1,10 +1,59 @@
 
+
 #vagrant directory
 
 /Users/fer_gonzalez_rodriguez/myvagrant
 
 
-#vagrant install
+################################################################################
+# vagrant commands
+################################################################################
+
+# During the course
+
+> vagrant up    # start "sparkvm" virtual machine in VirtualBox
+
+> vagrant status
+
+> vagrant halt  # stop  "sparkvm" virtual machine in VirtualBox
+
+# Access to the notebook in the VM (while "sparkvm" is running)
+ "http://localhost:8001/" # on a web browser (on Windows and Mac)
+ "http://127.0.0.1:8001/" (on Linux).
+
+# Spark web UI  
+  localhost:4040
+
+# At the end of the course
+
+> vagrant destroy # delete "sparkvm" virtual machine from VirtualBox
+
+# Warning: If you erase or delete the VM, you will lose any work you have done
+# and data you have saved, and you will have download it again when you use the
+# "vagrant up" command.
+
+
+
+
+################################################################################
+# Spark web UI
+################################################################################
+
+You can view the details of your Spark application in the Spark web UI. The web
+UI is accessible in Databricks cloud by going to "Clusters" and then clicking
+on the "View Spark UI" link for your cluster.
+
+When running locally you'll find it at localhost:4040. In the web UI, under the
+"Jobs" tab, you can see a list of jobs that have been scheduled or run. It's
+likely there isn't any thing interesting here yet because we haven't run any
+jobs, but we'll return to this page later
+
+
+
+
+################################################################################
+# vagrant install
+################################################################################
 
 i) Download this file
 (https://github.com/spark-mooc/mooc-setup/archive/master.zip) to the custom
@@ -18,31 +67,9 @@ iii) Open a DOS prompt (Windows) or Terminal (Mac/Linux), change to the custom
 directory, and issue the command "vagrant up"
 
 
-# vagrant commands
-
-# During the course
-
-> vagrant up    # start "sparkvm" virtual machine in VirtualBox
-
-> vagrant halt  # stop  "sparkvm" virtual machine in VirtualBox
-
-# Access to the notebook in the VM (while "sparkvm" is running)
-> "http://localhost:8001/" # on a web browser (on Windows and Mac)
-  "http://127.0.0.1:8001/" (on Linux).
-
-
-# At the end of the course
-
-> vagrant destroy # delete "sparkvm" virtual machine from VirtualBox
-
-# Warning: If you erase or delete the VM, you will lose any work you have done
-# and data you have saved, and you will have download it again when you use the
-# "vagrant up" command.
-
-
-
-
-Running Your First Notebook
+################################################################################
+# System Test - Running Your First Notebook
+################################################################################
 
 Running your first notebook will test your software setup and environment.
 

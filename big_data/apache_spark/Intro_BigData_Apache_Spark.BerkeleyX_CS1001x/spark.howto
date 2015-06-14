@@ -15,11 +15,13 @@
 3) Lecture 3: Big Data & Cluster Computing: Map-Reduce vs Apache Spark
 
 4) Lecture 4: Spark Essentials
-   4.1)  RDDs
+   4.1) RDDs
    4.2) Spark Program Lifecycle
    	4.2.1) Creating an RDD
 	4.2.2) Spark Transformations
-	4.2.3) Caching RDDs
+	4.2.3) Caching RDDs and storage options
+	       4.2.3.1) Caching RDDs
+	       4.2.3.2) Unpersist and storage options
 	4.2.4) Spark Actions
    4.3) Spark Key-Value RDDs
    	4.3.1) Key-Value Transformations
@@ -28,6 +30,8 @@
    	4.5.1) Broadcast Variables
    	4.5.2) Accumulators
 
+
+Annex) spark_tutorial_student
 
 Annex) To do section
 
@@ -228,17 +232,40 @@ environments |                    |
 
 - pySpark: python spark API
 
+
 - Spark program = 2 programs = 1 driver program + n worker programs
 
+  The driver has Spark jobs that it needs to run and these jobs are split into
+  tasks that are submitted to the executors for completion. The results from
+  these tasks are delivered back to the driver.
 
-- Spark driver program (Spark Context Object)
+  i) Assigning a job (driver)
+
+     job (stage): a stage is a group of tasks that all perform the same
+     	 	  computation, but on different input data
+
+     1 job (stage) -> n tasks
+     1 task -> executed in 1 partition within an executor (worker)
+
+  ii) Resolving tasks in parallel (workers)
+
+  iii) Resolving the job
+
+      n tasks results delivered back to the driver
+      driver combine the results
+
+      WARNING the data returned to the driver must fit into the driver's
+      	      available memory. If not, the driver will crash.
+
+
+- Spark driver program (SparkContext Object)
 
   • Runs the user’s main function and executes various parallel operations
 
   • Runs on a (UNIQUE) CLUSTER.
 
 
-- Worker programs (Spark executor Object): 
+- Worker programs (executor Object): 
 
   • Run in cluster nodes or in local threads.
 
@@ -263,9 +290,20 @@ INFO pySpark shell and Databricks Cloud automatically create the "sc" variable
 INFO iPython and programs must use a constructor to create a new SparkContext
 
 
-4.1)  RDDs
+4.1) RDDS  [3]#pyspark.RDD
 
-  A logical collection of data partitioned across machines.
+     RDD = logical collection of data partitioned across machines:
+
+    - In Spark, datasets are represented as a list of entries
+
+    - the list is broken up into many different partitions-
+
+    - Each partition stored on a different machine.
+
+    - Each partition holds a UNIQUE subset of the entries in the list.
+
+    - Partitions are each stored in a worker's memory
+
 
   » Immutable once constructed
 
@@ -314,7 +352,9 @@ a) From Python collections(lists)
 INFO Using xrange is recommended if the input represents a range for performance
 
 >>> data = [1,2,3,4,5]
->>> rdd = sc.parallelize(data, 4) # RDD distributed in 4 partitions
+>>> rdd = sc.parallelize(xra, 4) # RDD distributed in 4 partitions
+
+>>> rdd.id() # each RDD gets a unique ID [1, 2, ...]
 
 
 b) From files (text, HDFS, ...)
@@ -331,6 +371,8 @@ b) From files (text, HDFS, ...)
 
 4.2.2) Spark Transformations
 
+WARNING RDDs inmutables => each transformation actually creates a new RDD.
+
 • Create new datasets from an existing one
 
 • Transformations specify how to perform parallel computation in a LAZILY
@@ -340,6 +382,13 @@ INFO Spark optimizes the required calculations
 
 INFO Spark recovers from failures and slow workers
 
+
+WARNING Function literals (lambda) are closures. Spark automatically pushes
+	closures to workers.
+
+INFO You can see the set of transformations that were applied to create an RDD
+     by using the toDebugString() method: print myrdd.toDebugString()
+  
 
 - map(func): func(input) | dataset
 
@@ -364,20 +413,54 @@ INFO Spark recovers from failures and slow workers
 
 - flatMap(func): func(input) | dataset
 
-  >>> rdd = sc.parallelize([1, 2, 3])
+  >>> rdd = sc.parallelize([1, 2, 3, 2])
 
   >>> rdd.map(lambda x: [x, x+5])
-  RDD: [1, 2, 3] -> [[1,6], [2,7], [3,8]]
+  RDD: [1, 2, 3, 2] -> [[1,6], [2,7], [3,8], [2,7]]
 
   >>> rdd.flatmap(lambda x: [x, x+5])
-  RDD: [1, 2, 3] -> [1, 6, 2, 7, 3, 8]
+  RDD: [1, 2, 3, 2] -> [1, 6, 2, 7, 3, 8, 2, 7]
 
 
-WARNING Function literals (lambda) are closures. Spark automatically pushes
-	closures to workers.
-  
+- mapPartitions(f, preservesPartitioning=False): 
 
-4.2.3) Caching RDDs: 
+  Return a new RDD by applying a function to each partition of this RDD.
+
+    >>> rdd = sc.parallelize([1, 2, 3, 4], 2)
+    >>> def f(iterator): yield sum(iterator)
+    >>> rdd.mapPartitions(f).collect()
+    [3, 7] # partition 1, sum[1,2]; partition 2, sum [3,4] 
+
+
+- mapPartitionsWithIndex(f, preservesPartitioning=False): 
+
+  Return a new RDD by applying a function to each partition of this RDD, while
+  tracking the index of the original partition. For every partition (index,
+  iterator) pair, the function returns a tuple of the same partition index
+  number and an iterator of the transformed items in that partition.
+
+    >>> rdd = sc.parallelize([1, 2, 3, 4], 4)
+    >>> def f(splitIndex, iterator): yield splitIndex
+    >>> rdd.mapPartitionsWithIndex(f).sum()
+    6
+
+
+4.2.3) Caching RDDs and storage options 
+
+4.2.3.1) Caching RDDs
+
+INFO For efficiency Spark keeps your RDDs in memory. By keeping the contents in
+     memory, Spark can quickly access the data. However, memory is limited, so
+     if you try to keep too many RDDs in memory, Spark will automatically
+     delete RDDs from memory to make space for new RDDs. If you later refer to
+     one of the RDDs, Spark will automatically recreate the RDD for you, but
+     that takes time.  So, if you plan to use an RDD more than once, then you
+     should tell Spark to cache that RDD.  
+
+     However, if you cache too many RDDs and Spark runs out of memory, it will
+     delete the least recently used (LRU) RDD first. Again, the RDD will be
+     automatically recreated when accessed.
+
 
 - cache(): Persist this RDD with the default storage level (MEMORY_ONLY_SER).
 
@@ -385,6 +468,42 @@ WARNING Function literals (lambda) are closures. Spark automatically pushes
   >>> lines.cache() # save, don't recompute inside the print()
   >>> comments = lines.filter(iscomment)
   >>> print (lines.count(), comments.count())
+
+- is_cached(): check if an RDD is cached 
+
+  >>> print(lines.is_cached()
+  True
+
+
+4.2.3.2) Unpersist and storage options
+
+INFO Spark automatically manages the RDDs cached in memory and will save them
+     to disk if it runs out of memory. For efficiency, once you are finished
+     using an RDD, you can optionally tell Spark to stop caching it in memory
+     by using the RDD's unpersist() method to inform Spark that you no longer
+     need the RDD in memory.
+
+- unpersist(): Mark the RDD as non-persistent, and remove all blocks for it
+  	       from memory AND DISK.
+
+
+INFO you can directly query the current storage information for an RDD using
+     the getStorageLevel() operation.
+
+  filteredRDD.unpersist()
+  print "Storage level for a non cached RDD: ", filteredRDD.getStorageLevel()
+  filteredRDD.cache()
+  print "Storage level for a cached RDD:     ", filteredRDD.getStorageLevel()
+  #
+  # Result:
+  # Storage level for a non cached RDD:  Serialized 1x Replicated
+  # Storage level for a cached RDD:      MEMORY Serialized 1x Replicated
+
+
+- persist(storageLevel=StorageLevel(False, True, False, False, 1))
+
+  Set this RDD’s storage level to persist its values across operations after
+  the first time it is computed.
 
 
 4.2.4) Spark Actions
@@ -400,8 +519,9 @@ WARNING Function literals (lambda) are closures. Spark automatically pushes
 
   • func takes two arguments and returns one.
 
-  • func is commutative and associative so that it can be computed correctly in
-    parallel.
+  • func MUST BE commutative and associative so that it can be computed
+    correctly in paralle. Otherwise, the results from reduce() will be
+    inconsistent.
 
   >>> rdd = sc.parallelize([1, 2, 3])
   >>> rdd.reduce(lambda a,b: a * b)    # causes parallelize to be executed
@@ -412,6 +532,9 @@ WARNING Function literals (lambda) are closures. Spark automatically pushes
 
   >>> rdd.take(2)
   Value: [1, 2]
+
+
+- first(): return firsst element == take(1)
 
 
 - collect(): return a list that contains ALL of the elements in this RDD.
@@ -439,6 +562,28 @@ WARNING Function literals (lambda) are closures. Spark automatically pushes
   Value: [1,2,3]  
   >>> rdd.takeOrdered(3, lambda s: -1 * s)
   Value: [5,3,2]
+
+- top(num, key=None): Get the top N elements from a RDD.
+
+  Note: It returns the list sorted in descending order. (inverse to takeOrdered)
+
+  >>> sc.parallelize([10, 4, 2, 12, 3]).top(1)
+  [12]
+  >>> sc.parallelize([2, 3, 4, 5, 6], 2).top(2)
+  [6, 5]
+  >>> sc.parallelize([10, 4, 2, 12, 3]).top(3, key=str)
+  [4, 3, 2]
+
+
+- takeSample(withReplacement, num, seed=None): return a fixed-size sampled
+   subset of this RDD.
+
+
+- countByValue(): Return the count of each unique value in this RDD as a
+  dictionary of (value, count) pairs.
+
+  >>> sorted(sc.parallelize([1, 2, 1, 2, 2], 2).countByValue().items())
+  [(1, 2), (2, 3)] # value 1: twice; value 2: three times
 
 
 4.3) Spark Key-Value RDDs
@@ -476,8 +621,27 @@ WARNING Function literals (lambda) are closures. Spark automatically pushes
   >>> rdd.groupByKey()
   RDD: [(1, 'a'), (2, 'c'), (1, 'b')] -> [(1, ['a', 'b']), (2, ['c'])]
 
-  WARNING groupByKey() as it can cause a lot of data movement across the
-  	  network and create large Iterables at workers.
+
+WARNING groupByKey() can cause a lot of data movement across the network and
+  	create large Iterables at workers.
+
+WARNING While both the groupByKey() and reduceByKey() transformations can often
+	be used to solve the same problem and will produce the same answer, THE
+	reducebykey() TRANSFORMATION WORKS MUCH BETTER FOR LARGE DISTRIBUTED
+	DATASETS. This is BECAUSE Spark knows it can COMBINE OUTPUT with a
+	common key on each partition before shuffling (redistributing) the data
+	across nodes. Only use groupByKey() if the operation would not benefit
+	from reducing the data before the shuffle occurs.
+
+
+
+INFO	Here are more transformations to prefer over groupByKey():
+
+- combineByKey() can be used when you are combining elements but your return
+  type differs from your input value type.
+
+- foldByKey() merges the values for each key using an associative function and
+  a neutral "zero value".
 
 
 4.4) pySpark Closures  (driver -> worker)
@@ -552,6 +716,86 @@ Solution: pySpark Shared Variables
 
   call_signs = file.flatMap(extract_call_signs)
   print ("blank lines: %d" % blank_lines.value)  # (driver) get value
+
+
+
+################################################################################
+Annex) spark_tutorial_student
+################################################################################
+
+Web: http://localhost:8001/notebooks/spark_tutorial/spark_tutorial_student.ipynb
+
+Local: ../labs/spark_tutorial_student.read-only.html 
+
+
+- Result(read-only) Watch the saved web 
+
+# Part 1-7) Context , transformations, actions
+
+>>> type(sc)
+>>> dir(sc)
+>>> help(sc)
+>>> sc.version
+
+xrangeRDD = sc.parallelize(data, 8)
+
+xrangeRDD.setName("Extra xrange RDD")
+
+print "info: id ({0}), name ({1})".format(xrangeRDD.id(), xrangeRDD.name())
+
+# View the lineage (set of transformations) of the RDD
+print xrangeRDD.toDebugString()
+
+xrangeRDD.getNumPartitions() # 8
+
+# transformation
+subRDD = xrangeRDD.map(sub)
+
+# action: tasks will now be launched to perform the parallelize, map, and
+# collect operations.
+sub_rdd2 = xrangeRDD.map(lambda x: x-1)
+collect_rdd2_list = sub_rdd2.collect()  # type list
+
+
+# Part 8: Debugging Spark applications and lazy evaluation 
+
+
+  INFO How Python is Executed in Spark
+
+  Internally, Spark executes using a Java Virtual Machine (JVM). pySpark runs
+  Python code in a JVM using Py4J. Py4J enables Python programs running in a
+  Python interpreter to dynamically access Java objects in a Java Virtual
+  Machine. Methods are called as if the Java objects resided in the Python
+  interpreter and Java collections can be accessed through standard Python
+  collection methods. Py4J also enables Java programs to call back Python
+  objects.
+
+  Because pySpark uses Py4J, coding errors often result in a complicated,
+  confusing stack trace that can be difficult to understand. In the following
+  section, we'll explore how to understand stack traces.
+
+
+# (8c) Moving toward expert style
+
+  (Recommended) Beginner code form:
+
+  		RDD.transformation1()
+		RDD.action1()
+		RDD.transformation2()
+		RDD.action2()
+
+   Advanced code form:
+
+   	    	RDD.transformation1().transformation2().action()
+
+
+# (8d) Readability and code style: " ( one command per line ) "
+
+       		(sc
+		.parallelize(data)
+		.map(lambda y: y - 1)
+		.filter(lambda x: x < 10)
+		.collect())
 
 
 
