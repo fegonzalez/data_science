@@ -469,9 +469,9 @@ INFO For efficiency Spark keeps your RDDs in memory. By keeping the contents in
   >>> comments = lines.filter(iscomment)
   >>> print (lines.count(), comments.count())
 
-- is_cached(): check if an RDD is cached 
+- is_cached: check if an RDD is cached 
 
-  >>> print(lines.is_cached()
+  >>> print(lines.is_cached)
   True
 
 
@@ -534,7 +534,7 @@ INFO you can directly query the current storage information for an RDD using
   Value: [1, 2]
 
 
-- first(): return firsst element == take(1)
+- first(): return first element == take(1)
 
 
 - collect(): return a list that contains ALL of the elements in this RDD.
@@ -562,6 +562,13 @@ INFO you can directly query the current storage information for an RDD using
   Value: [1,2,3]  
   >>> rdd.takeOrdered(3, lambda s: -1 * s)
   Value: [5,3,2]
+
+  # VERY USEFUL: order a MAP pairs(key,value) by value.
+  >>>rdd.parallelize([('rat', 2), ('elephant', 1), ('cat', 43)], )
+  >>>rdd.takeOrdered(2, lambda x: -x[1]) # -x == descending order
+  cat: 43
+  rat: 2
+
 
 - top(num, key=None): Get the top N elements from a RDD.
 
@@ -599,12 +606,17 @@ INFO you can directly query the current storage information for an RDD using
 4.3.1) Key-Value Transformations
 
 - reduceByKey(func, numPartitions=None): func(input) | dataset of (K,V) pairs
+
   • func must be of type (V,V) -> V
   • Output will be hash-partitioned with numPartitions partitions
 
-  >>> rdd = sc.parallelize([(1, 2), (3, 4), (3,6)])
-  >>> rdd.map(lambda a,b: a+b)
-  RDD: [(1, 2), (3, 4), (3,6)] -> [(1, 2), (3, 10)]
+  >>> from operator import add
+  >>> rdd = sc.parallelize([("a", 1), ("b", 1), ("a", 1)])
+
+  >>> sorted(rdd.reduceByKey(add).collect())
+# OR
+  >>> sorted(rdd.reduceByKey(lambda a,b: a+b)).collect())
+  RDD: [("a", 1), ("b", 1), ("a", 1)] -> [('a', 2), ('b', 1)]
   
 
 - sortByKey(): return a new dataset (K, V) pairs sorted by keys in ascending
