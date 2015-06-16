@@ -30,6 +30,12 @@
    	4.5.1) Broadcast Variables
    	4.5.2) Accumulators
 
+5) Lecture 5: Data and Structure Spectrum
+   5.1) The Structure Spectrum
+   5.2) Files: Formats and Performance
+   5.3) Tabular Data: pySpark DataFrames
+   5.4) Log Files
+
 
 Annex) spark_tutorial_student
 
@@ -811,9 +817,109 @@ collect_rdd2_list = sub_rdd2.collect()  # type list
 
 
 
+#===============================================================================
+# 5) Lecture 5: Data and Structure Spectrum
+#===============================================================================
+
+5.1) The Structure Spectrum
+
+- data model: collection of concepts for describing data
+
+- schema: description of a particular collection of data, using a given data
+  	  model.
+
+5.2) Semi-Structural Tabular Data
+
+- Table: collection of rows and columns
+
+- Problems: 
+  • format not well defined => data missing, data inconsistency, ...
+  • Multiple source of data (csv files, text files, sensors ...)
+
+
+5.3) Pandas: Python Data Analysis Library 
+
+     INFO An alternative to R
+
+5.3.1) Pandas DataFrame
+
+  - A table with named columns
+    
+  - Represented as a Python dict (column_name -> Series object)
+
+  - R has a similar data frame type
+
+
+5.4) pySpark DataFrames: Semi-Structured Data in pySpark
+
+     class pyspark.sql.DataFrame(jdf, sql_ctx)  [3.1]
+
+     INFO Equivalent to Pandas and R DataFrame, BUT DISTRIBUTED
+
+
+- Introduced in Spark 1.3 as extension to RDDs
+
+- DISTRIBUTED collection of data organized into named columns
+  
+- Types of columns inferred from values
+
+- Spark Python DataFrame performance = 5x RDD performance
+
+- Easy to convert pySpark Dataframe <-> Pandas Dataframe
+    
+  WARNING pandas Dataframe must fit in Driver memory.#
+
+  # Convert Spark DataFrame to Pandas 
+  pandas_df = spark_df.toPandas()
+
+  # Create a Spark DataFrame from Pandas
+  spark_df = context.createDataFrame(pandas_df)
+
+
+5.5) Semi-Structured Log Files
+
+5.5.1) Apache Web Server Log Format
+
+• Apache Common Log Format specifies log file format
+
+• Example line from log file:
+
+» 127.0.0.1 - - [01/Aug/1995:00:00:01 -0400] "GET /images/launch-logo.gif
+  HTTP/1.0" 200 1839
+
+• Components:
+  » 127.0.0.1                    => User identity from remote/local machine
+  » [01/Aug/1995:00:00:01 -0400] => Request time
+  » "GET ...                     => Client request
+  » 200                          => Status code (2xx = OK); 3xx, 4xx, 5xx
+  » 1839                         => Size returned (0 if none)  
+
+- Some log analysis questions: overall (sizes, statuses), temporal (xxx/per day)
+
+
+5.6) Splunk: Data Mining ("Splunking")
+
+- Collect & Analyze log files from many machines
+- Check for unusual events
+- Monitor resources
+- Visualize with a dashboard.
+
+
+5.7) File Performance - Summary
+
+• Uncompressed read and write times are comparable
+• Binary I/O is much faster than text I/O
+• Compressed reads much faster than compressed writes
+  » LZ4 is better than gzip
+  » LZ4 compression times approach raw I/O times
+• types of compression: lossy and lossless.
+
+
+
 ################################################################################
 # Annex) To do section
 ################################################################################
+
 
 
 
@@ -827,6 +933,8 @@ collect_rdd2_list = sub_rdd2.collect()  # type list
 [2] Spark Programming Guide -spark.apache.org/docs/latest/programming-guide.html
 
 [3] Spark Python API Docs - spark.apache.org/docs/latest/api/python/
+
+    [3.1] pyspark DataFrame - https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame
 
 [4] How-to: Tune Your Apache Spark Jobs - http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-1/
 
