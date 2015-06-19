@@ -1,0 +1,26 @@
+Alternative to vagrant 6/15/15 3:25 PM
+
+Guide to build an environment and use it instead of using vagrant and vbox
+
+
+Install jupyter
+Github repo: https://github.com/jupyter/notebook
+Detailed Installation instructions: http://ipython.org/ipython-doc/stable/install/install.html
+
+Install pyspark and configuring ipython to use it
+http://ramhiser.com/2015/02/01/configuring-ipython-notebook-support-for-pyspark/
+
+Now you're done
+the next thing to do is to get the data we use in labs
+unfortunately I couldn't upload it.
+
+Getting the data shipped with the vm
+
+vagrant up
+
+ssh -p 2222 vagrant@127.0.0.1 tar -czf data.tar.gz data
+scp -P 2222 vagrant@127.0.0.1:data.tar.gz .
+
+the password is "vagrant"
+
+and then upload it

@@ -29,6 +29,7 @@
    4.5) pySpark Shared Variables
    	4.5.1) Broadcast Variables
    	4.5.2) Accumulators
+   4.6) Operation's Tips & Tricks
 
 5) Lecture 5: Semi-Structured Data
    5.1) The Structure Spectrum
@@ -43,12 +44,12 @@
 6) Lecture 6: Structured data - Relational Database
    6.1) Definitions
    6.2) The Structured Query Language (SQL)
-   6.3) SQL and pySpark Joins
+   6.3) pyspark.sql and pySpark Joins
    	6.3.1) Pair RDD Joins
 
-Annex) spark_tutorial_student
+Annex A) spark_tutorial_student
 
-Annex) To do section
+Annex B) Course labs.
 
 References)
 
@@ -433,8 +434,25 @@ INFO You can see the set of transformations that were applied to create an RDD
   >>> rdd.map(lambda x: [x, x+5])
   RDD: [1, 2, 3, 2] -> [[1,6], [2,7], [3,8], [2,7]]
 
-  >>> rdd.flatmap(lambda x: [x, x+5])
+  >>> rdd.flatMap(lambda x: [x, x+5])
   RDD: [1, 2, 3, 2] -> [1, 6, 2, 7, 3, 8, 2, 7]
+
+
+-  mapValues(f)
+   
+   Pass each value in the key-value pair RDD through a map function without
+   changing the keys; this also retains the original RDD’s partitioning.
+
+    >>> x = sc.parallelize([("a", ["apple", "banana", "lemon"]), 
+                           ("b", ["grapes"])])
+    >>> x.mapValues(len).collect()
+    [('a', 3), ('b', 1)]
+
+
+    WARNING usefull to count (group) different values.
+
+
+-  flatMapValues(f)
 
 
 - mapPartitions(f, preservesPartitioning=False): 
@@ -521,6 +539,19 @@ INFO you can directly query the current storage information for an RDD using
   the first time it is computed.
 
 
+
+- join(other, numPartitions=None)
+
+  Return an RDD containing all pairs of elements with matching keys in self and
+  other. Performs a hash join across the cluster.
+
+    >>> x = sc.parallelize([("a", 1), ("b", 4)])
+    >>> y = sc.parallelize([("a", 2), ("a", 3)])
+    >>> sorted(x.join(y).collect())
+    [('a', (1, 2)), ('a', (1, 3))]
+
+
+
 4.2.4) Spark Actions
 
 • Actions cause the transformations to be executed.  
@@ -578,11 +609,6 @@ INFO you can directly query the current storage information for an RDD using
   >>> rdd.takeOrdered(3, lambda s: -1 * s)
   Value: [5,3,2]
 
-  # VERY USEFUL: order a MAP pairs(key,value) by value.
-  >>>rdd.parallelize([('rat', 2), ('elephant', 1), ('cat', 43)], )
-  >>>rdd.takeOrdered(2, lambda x: -x[1]) # -x == descending order
-  cat: 43
-  rat: 2
 
 
 - top(num, key=None): Get the top N elements from a RDD.
@@ -599,6 +625,17 @@ INFO you can directly query the current storage information for an RDD using
 
 - takeSample(withReplacement, num, seed=None): return a fixed-size sampled
    subset of this RDD.
+
+
+
+- countByKey(): Count the number of elements for each key, and return the
+  result to the master as a dictionary. Value can be any data type (not only
+  numbers)
+
+    >>> rdd = sc.parallelize([("a", "hola"), ("b", 222.5), ("a", "que hase")])
+    >>> sorted(rdd.countByKey().items())
+    [('a', 2), ('b', 1)]
+
 
 
 - countByValue(): Return the count of each unique value in this RDD as a
@@ -629,7 +666,7 @@ INFO you can directly query the current storage information for an RDD using
   >>> rdd = sc.parallelize([("a", 1), ("b", 1), ("a", 1)])
 
   >>> sorted(rdd.reduceByKey(add).collect())
-# OR
+  # OR
   >>> sorted(rdd.reduceByKey(lambda a,b: a+b)).collect())
   RDD: [("a", 1), ("b", 1), ("a", 1)] -> [('a', 2), ('b', 1)]
   
@@ -642,33 +679,56 @@ INFO you can directly query the current storage information for an RDD using
   RDD: [(1, 'a'), (2, 'c'), (1, 'b')] -> [(1, 'a'), (1, 'b'), (2, 'c')]
   
 
-- groupByKey(): return a new dataset of (K, iterable<V>) pairs.
 
-  >>> rdd = sc.parallelize([(1, 'a'), (2, 'c'), (1, 'b')])
-  >>> rdd.groupByKey()
-  RDD: [(1, 'a'), (2, 'c'), (1, 'b')] -> [(1, ['a', 'b']), (2, ['c'])]
+- groupByKey(numPartitions=None)
 
+    Group the values for each key in the RDD into a single
+    sequence. Hash-partitions the resulting RDD with numPartitions partitions.
 
+    
+    # list(values)
+    >>> rdd = sc.parallelize([("a", 1), ("b", 1), ("a", 1)])
+    >>> sorted(rdd.groupByKey().mapValues(len).collect())
+    [('a', 2), ('b', 1)]
+
+    # len(values)
+    >>> sorted(rdd.groupByKey().mapValues(list).collect())
+    [('a', [1, 1]), ('b', [1])]
+
+ 
 WARNING groupByKey() can cause a lot of data movement across the network and
   	create large Iterables at workers.
 
-WARNING While both the groupByKey() and reduceByKey() transformations can often
-	be used to solve the same problem and will produce the same answer, THE
-	reducebykey() TRANSFORMATION WORKS MUCH BETTER FOR LARGE DISTRIBUTED
-	DATASETS. This is BECAUSE Spark knows it can COMBINE OUTPUT with a
-	common key on each partition before shuffling (redistributing) the data
-	across nodes. Only use groupByKey() if the operation would not benefit
-	from reducing the data before the shuffle occurs.
+WARNING If you are grouping in order to perform an aggregation (such as a sum
+    	or average) over each key, using reduceByKey or aggregateByKey,
+    	(combineByKey, foldByKey) will provide much better performance.
 
 
-
-INFO	Here are more transformations to prefer over groupByKey():
 
 - combineByKey() can be used when you are combining elements but your return
   type differs from your input value type.
 
+  >>> x = sc.parallelize([("a", 1), ("b", 1), ("a", 1)])
+  >>> def f(x): return x
+  >>> def add(a, b): return a + str(b)
+  >>> sorted(x.combineByKey(str, add, add).collect())
+  [('a', '11'), ('b', '1')]
+
+
 - foldByKey() merges the values for each key using an associative function and
   a neutral "zero value".
+
+  >>> print "foldByKey value=str: "
+  >>> rdd = sc.parallelize([("a", "hola"), ("b", "ddd"), ("a", "que hase")])
+  >>> rddfold = rdd.foldByKey("",add)
+  >>> print rddfold.collect()
+  [('a', 'holaque hase'), ('b', 'ddd')]
+
+
+  >>> print "foldByKey value=integer: "
+  >>> rdd = sc.parallelize([("a", 1), ("b", 1), ("a", 1)])
+  >>> print sorted(rdd.foldByKey(0, add).collect())
+  [('a', 2), ('b', 1)]
 
 
 4.4) pySpark Closures  (driver -> worker)
@@ -745,85 +805,20 @@ Solution: pySpark Shared Variables
   print ("blank lines: %d" % blank_lines.value)  # (driver) get value
 
 
+4.6) Operation's Tips & Tricks
 
-################################################################################
-Annex) spark_tutorial_student
-################################################################################
+a) How to refer to collections fields in lambda functions
 
-Web: http://localhost:8001/notebooks/spark_tutorial/spark_tutorial_student.ipynb
+   collection = ('id', value)
 
-Local: ../labs/spark_tutorial_student.read-only.html 
+   lambda x: x[1] > 10
 
+b) Order a MAP pairs(key,value) by value (a use example of a) above) 
 
-- Result(read-only) Watch the saved web 
-
-# Part 1-7) Context , transformations, actions
-
->>> type(sc)
->>> dir(sc)
->>> help(sc)
->>> sc.version
-
-xrangeRDD = sc.parallelize(data, 8)
-
-xrangeRDD.setName("Extra xrange RDD")
-
-print "info: id ({0}), name ({1})".format(xrangeRDD.id(), xrangeRDD.name())
-
-# View the lineage (set of transformations) of the RDD
-print xrangeRDD.toDebugString()
-
-xrangeRDD.getNumPartitions() # 8
-
-# transformation
-subRDD = xrangeRDD.map(sub)
-
-# action: tasks will now be launched to perform the parallelize, map, and
-# collect operations.
-sub_rdd2 = xrangeRDD.map(lambda x: x-1)
-collect_rdd2_list = sub_rdd2.collect()  # type list
-
-
-# Part 8: Debugging Spark applications and lazy evaluation 
-
-
-  INFO How Python is Executed in Spark
-
-  Internally, Spark executes using a Java Virtual Machine (JVM). pySpark runs
-  Python code in a JVM using Py4J. Py4J enables Python programs running in a
-  Python interpreter to dynamically access Java objects in a Java Virtual
-  Machine. Methods are called as if the Java objects resided in the Python
-  interpreter and Java collections can be accessed through standard Python
-  collection methods. Py4J also enables Java programs to call back Python
-  objects.
-
-  Because pySpark uses Py4J, coding errors often result in a complicated,
-  confusing stack trace that can be difficult to understand. In the following
-  section, we'll explore how to understand stack traces.
-
-
-# (8c) Moving toward expert style
-
-  (Recommended) Beginner code form:
-
-  		RDD.transformation1()
-		RDD.action1()
-		RDD.transformation2()
-		RDD.action2()
-
-   Advanced code form:
-
-   	    	RDD.transformation1().transformation2().action()
-
-
-# (8d) Readability and code style: " ( one command per line ) "
-
-       		(sc
-		.parallelize(data)
-		.map(lambda y: y - 1)
-		.filter(lambda x: x < 10)
-		.collect())
-
+  >>>rdd.parallelize([('rat', 2), ('elephant', 1), ('cat', 43)], )
+  >>>rdd.takeOrdered(2, lambda x: -x[1]) # -x == descending order
+  cat: 43
+  rat: 2
 
 
 #===============================================================================
@@ -891,9 +886,15 @@ collect_rdd2_list = sub_rdd2.collect()  # type list
 
 5.5) Semi-Structured Log Files
 
-5.5.1) Apache Web Server Log Format
+WARNING log files contain information supplied directly by the client, without
+	escaping. Therefore, it is possible for malicious clients to insert
+	control-characters in the log files, so care must be taken in dealing
+	with raw logs.
 
-• Apache Common Log Format specifies log file format
+5.5.1) Apache Web Server Log Format (GOTO Annex B)
+
+• Apache Common Log Format specifies log file format -
+  http://httpd.apache.org/docs/1.3/logs.html#common
 
 • Example line from log file:
 
@@ -901,11 +902,14 @@ collect_rdd2_list = sub_rdd2.collect()  # type list
   HTTP/1.0" 200 1839
 
 • Components:
-  » 127.0.0.1                    => User identity from remote/local machine
-  » [01/Aug/1995:00:00:01 -0400] => Request time
-  » "GET ...                     => Client request
-  » 200                          => Status code (2xx = OK); 3xx, 4xx, 5xx
-  » 1839                         => Size returned (0 if none)  
+  » 127.0.0.1    => IP (or host name) of the requester (remote) client  .
+  » -            => User id. from remote machine   ('-' == not available)
+  » -            => user identity from local logon ('-' == not available)
+  » [01/Aug/1995:00:00:01 -0400] => Request time (server finished the request)
+  # 
+  » "GET ... "   => First line of client request string:
+  » 200          => Status code sent back to client: (2xx = OK); 3xx, 4xx, 5xx
+  » 1839         => Size returned (0 if none)  
 
 - Some log analysis questions: overall (sizes, statuses), temporal (xxx/per day)
 
@@ -1012,9 +1016,9 @@ INTRO The Structure Spectrum
     	      	    	  	   but with left value = NULL	
 
 
-6.3) SQL and pySpark Joins
+6.3) pyspark.sql and pySpark Joins
 
-- SparkSQL: Supported by pySpark DataFrames.
+- pyspark.sql: Supported by pySpark DataFrames.
 
 - Spark Joins
 
@@ -1065,9 +1069,125 @@ d) X.fullOuterJoin(Y)
 
 
 ################################################################################
-# Annex) To do section
+Annex A) spark_tutorial_student
 ################################################################################
 
+Web: http://localhost:8001/notebooks/spark_tutorial/spark_tutorial_student.ipynb
+
+Local: ../labs/spark_tutorial_student.read-only.html 
+
+
+- Result(read-only) Watch the saved web 
+
+# Part 1-7) Context , transformations, actions
+
+>>> type(sc)
+>>> dir(sc)
+>>> help(sc)
+>>> sc.version
+
+xrangeRDD = sc.parallelize(data, 8)
+
+xrangeRDD.setName("Extra xrange RDD")
+
+print "info: id ({0}), name ({1})".format(xrangeRDD.id(), xrangeRDD.name())
+
+# View the lineage (set of transformations) of the RDD
+print xrangeRDD.toDebugString()
+
+xrangeRDD.getNumPartitions() # 8
+
+# transformation
+subRDD = xrangeRDD.map(sub)
+
+# action: tasks will now be launched to perform the parallelize, map, and
+# collect operations.
+sub_rdd2 = xrangeRDD.map(lambda x: x-1)
+collect_rdd2_list = sub_rdd2.collect()  # type list
+
+
+# Part 8: Debugging Spark applications and lazy evaluation 
+
+
+  INFO How Python is Executed in Spark
+
+  Internally, Spark executes using a Java Virtual Machine (JVM). pySpark runs
+  Python code in a JVM using Py4J. Py4J enables Python programs running in a
+  Python interpreter to dynamically access Java objects in a Java Virtual
+  Machine. Methods are called as if the Java objects resided in the Python
+  interpreter and Java collections can be accessed through standard Python
+  collection methods. Py4J also enables Java programs to call back Python
+  objects.
+
+  Because pySpark uses Py4J, coding errors often result in a complicated,
+  confusing stack trace that can be difficult to understand. In the following
+  section, we'll explore how to understand stack traces.
+
+
+# (8c) Moving toward expert style
+
+  (Recommended) Beginner code form:
+
+  		RDD.transformation1()
+		RDD.action1()
+		RDD.transformation2()
+		RDD.action2()
+
+   Advanced code form:
+
+   	    	RDD.transformation1().transformation2().action()
+
+
+# (8d) Readability and code style: " ( one command per line ) "
+
+       		(sc
+		.parallelize(data)
+		.map(lambda y: y - 1)
+		.filter(lambda x: x < 10)
+		.collect())
+
+
+
+################################################################################
+# Annex B) Course labs. 
+################################################################################
+
+1) lab1_word_count_student.ipynb (.py)
+
+2) lab2_apache_log_student.ipynb (.py)
+
+
+# access_logs: RDD (list) of Row objects
+
+# failed_logs: RDD (list) of string (log lines) objects
+
+
+Row fields:
+
+return (Row(
+        host          = match.group(1),
+        client_identd = match.group(2),
+        user_id       = match.group(3),
+        date_time     = parse_apache_time(match.group(4)),
+        method        = match.group(5),
+        endpoint      = match.group(6),
+        protocol      = match.group(7),
+        response_code = int(match.group(8)),
+        content_size  = size
+    ), 1)
+
+» 127.0.0.1 - - [01/Aug/1995:00:00:01 -0400] "GET /images/launch-logo.gif
+  HTTP/1.0" 200 1839
+
+• Components:
+  » 127.0.0.1    => IP (or host name) of the requester (remote) client  .
+  » -            => User id. from remote machine   ('-' == not available)
+  » -            => user identity from local logon ('-' == not available)
+  » [01/Aug/1995:00:00:01 -0400] => Request time (server finished the request)
+  # 
+  » "GET ... "   => First line of client request string:
+  » 200          => Status code sent back to client: (2xx = OK); 3xx, 4xx, 5xx
+  » 1839         => Size returned (0 if none)  
 
 
 
@@ -1085,4 +1205,6 @@ d) X.fullOuterJoin(Y)
     [3.1] pyspark DataFrame - https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame
 
 [4] How-to: Tune Your Apache Spark Jobs - http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-1/
+
+[5] Python plot lib (statistics graphs) - http://matplotlib.org/ 
 
