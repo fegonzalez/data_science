@@ -47,9 +47,21 @@
    6.3) pyspark.sql and pySpark Joins
    	6.3.1) Pair RDD Joins
 
-Annex A) spark_tutorial_student
+7) Lecture 7: Data Quality
+   7.1) Data Cleaning
+   7.2) Data Quality: Problems, Sources, and Continuum
+   7.3) Data Gathering, Delivery, Storage, Retrieval, Mining/Analysis
+   7.4) Data Quality Constraints and Metrics
+   7.5) Data Integration
 
-Annex B) Course labs.
+8) Lecture 8: Exploratory Data Analysis and Machine Learning
+   8.1) Descriptive Statistics 
+   	8.1.1) Exploratory Data Analysis [6]
+   8.2) Inferential  Statistics
+   	8.2.1) Machine learning techniques
+   	8.2.2) Spark’s Machine Learning Toolkit   
+
+Annex A) spark_tutorial_student
 
 References)
 
@@ -78,6 +90,7 @@ def) Data Science aims to derive knowledge from big data, efficiently and
 
 def) Data science encompasses the set of activities, tools, and methods that
      enable data-driven activities in science, business, medicine, ...
+
 
 def) Data science = mix (hacking skills, domain expertise, math & stats know.)
 
@@ -385,7 +398,7 @@ b) From files (text, HDFS, ...)
 >>> distFile = sc.textFile("README.md", 4) 
 
 
-4.2.2) Spark Transformations
+4.2.2) Spark Transformations [3]
 
 WARNING RDDs inmutables => each transformation actually creates a new RDD.
 
@@ -477,6 +490,20 @@ INFO You can see the set of transformations that were applied to create an RDD
     >>> rdd.mapPartitionsWithIndex(f).sum()
     6
 
+- union(other)
+
+    Return the union of this RDD and another one.
+
+    >>> rdd = sc.parallelize([1, 1, 2, 3])
+    >>> rdd.union(rdd).collect()
+    [1, 1, 2, 3, 1, 1, 2, 3]
+
+
+    ...
+
+    see [3]
+
+    ...
 
 4.2.3) Caching RDDs and storage options 
 
@@ -764,6 +791,9 @@ Solution: pySpark Shared Variables
   >>> broadvar.value  # At the worker (in code passed via closure)
   [1, 2, 3]
 
+  >>> idfsSmallWeights = idfsSmall.collectAsMap()
+  >>> idfsSmallBroadcast = sc.broadcast(idfsSmallWeights)
+
 
 4.5.2) Accumulators  (worker -> driver)
 
@@ -1040,7 +1070,7 @@ a) X.join(Y):  (k, (v1, v2)) tuple, where (k, v1) is in X and (k, v2) is in Y
    Value: [('a', (1, 2)), ('a', (1, 3))]
 
 
-b) X.leftOuterJoin(Y)
+b) X.leftOuterJoin(Y) 
 
    >>> x = sc.parallelize([("a", 1), ("b", 4)])
    >>> y = sc.parallelize([("a", 2)])
@@ -1048,14 +1078,18 @@ b) X.leftOuterJoin(Y)
 
    Value: [('a', (1, 2)), ('b', (4, None))]
 
+Hint: to calculate set_difference (X-Y), take only the pairs with 'None'.
+
 
 c) Y.rightOuterJoin(X)
 
    >>> x = sc.parallelize([("a", 1), ("b", 4)])
    >>> y = sc.parallelize([("a", 2)])
-   >>> sorted(y.rightOuterJoin(y).collect())
+   >>> sorted(y.rightOuterJoin(x).collect())
 
    Value: [('a', (2, 1)), ('b', (None, 4))]
+
+Hint: to calculate set_difference (Y-X), take only the pairs with 'None'.
 
 
 d) X.fullOuterJoin(Y)
@@ -1065,6 +1099,273 @@ d) X.fullOuterJoin(Y)
    >>> sorted(x.fullOuterJoin(y).collect())
 
    Value: [('a', (1, 2)), ('b', (4, None)), ('c', (None, 8))]
+
+
+
+#===============================================================================
+# 7) Lecture 7: Data Quality
+#===============================================================================
+
+7.1) Data Cleaning
+
+- Missing data, entity resolution, unit mismatch
+
+- What’s the best trade-off between accuracy and simplicity?
+
+7.2) Data Quality: Problems, Sources, and Continuum
+
+- Problems
+• (Source) Data is dirty on its own
+• Transformations corrupt data (complexity of software pipelines)
+• Clean datasets screwed up by integration (i.e., combining them)
+• “Rare” errors can become frequent after transformation/integration
+• Clean datasets can suffer “bit rot”: data loses value/accuracy over time
+• Any combination of the above
+
+- The Data Quality Continuum
+
+  » Data gathering
+  » Data delivery
+  » Data storage
+  » Data integration
+  » Data retrieval
+  » Data mining/analysis
+
+7.3) Data Gathering, Delivery, Storage, Retrieval, Mining/Analysis
+
+- Data Gathering – Potential Solutions
+
+• Preemptive:
+  » Process architecture (build in integrity checks)
+  » Process management (reward accurate data entry, sharing, stewards)
+• Retrospective:
+  » Cleaning focus (duplicate removal, merge/purge, name/addr matching, field
+  value standardization)
+  » Diagnostic focus (automated detection of glitches)
+
+
+- Data Delivery
+
+Problems:
+
+• Destroying/mutilating information by bad pre-processing
+• Loss of data
+
+Potential Solutions:
+
+• Build reliable transmission protocols: use a relay server
+• Verification: checksums, verification parser
+• Interface agreements: Data quality commitment from data supplier
+
+
+- Data Storage
+
+Problems:
+
+• Poor metadata
+• Inappropriate data models
+• Ad-hoc modifications.
+• Hardware / software constraints.
+
+Potential Solutions:
+
+• Metadata: document and publish data specifications
+• Planning
+• Data exploration
+
+
+- Data Retrieval
+
+Problems:
+
+• Source data not properly understood
+• Computational constraints: Full history too expensive
+• Incompatibility: ASCII? Unicode? UTF-8?
+
+Potential Solutions:
+
+
+- Data Mining and Analysis
+
+Problems:
+
+• What are you doing with all this data anyway?
+
+• Problems in the analysis
+  » Scale and performance
+  » Confidence bounds?
+  » Black boxes and dart boards
+  » Attachment to models
+  » Insufficient domain expertise
+  » Casual empiricism (use arbitrary number to support a pre-conception)
+
+• Poor metadata
+• Inappropriate data models
+• Ad-hoc modifications.
+• Hardware / software constraints.
+
+Potential Solutions:
+
+• Data exploration
+  » Determine which models and techniques are appropriate
+  » Find data bugs
+  » Develop domain expertise
+
+• Continuous analysis
+  » Are the results stable? How do they change?
+
+• Accountability
+  » Make the analysis part of the feedback loop
+
+
+7.4) Data Quality Constraints and Metrics
+
+• The constraints follow an 80-20 rule
+  » A few constraints capture most cases,
+  » Thousands of constraints to capture the last few cases
+
+- Metrics
+
+» Indicates what is wrong and how to improve
+» Realize that DQ is a messy problem, no set of numbers will be perfect
+
+- Examples of Data Quality Metrics
+• Conformance to schema: evaluate constraints on a snapshot
+• Conformance to business rules: evaluate constraints on DB changes
+• Accuracy: perform expensive inventory or track complaints (proxy)
+• Accessibility
+• Interpretability
+• Glitches in analysis
+• Successful completion of end-to-end process
+
+Technical Approaches
+• Use multi-disciplinary approach to attack data quality problems
+  » No one approach solves all problems
+• Process Management: ensure proper procedures
+• Statistics: focus on analysis – find and repair anomalies in data
+• Database: focus on relationships – ensure consistency
+• Metadata / Domain Expertise
+  » What does data mean? How to interpret?
+
+7.5) Data Integration
+
+- Duplicate Record Detection (DeDup)
+
+• Resolve multiple different entries:
+  » Entity resolution, reference reconciliation, object ID/consolidation
+• Remove Duplicates: Merge/Purge
+• Record Linking (across data sources)
+• Approximate Match (accept fuzziness)
+• Householding (special case)
+  » Different people in same house?
+
+- Preprocessing/Standardization
+
+Simple idea:
+• Convert to canonical form (Example: mailing addresses)
+
+More Sophisticated Techniques:
+• Use evidence from multiple fields: Positive & Negative instances are possible
+• Use evidence from linkage pattern with other records
+• Clustering-based approaches
+
+- Data Integration – Solutions
+
+• Commercial Tools
+  » Significant body of research in data integration
+  » Many tools for address matching, schema mapping are available.
+• Data browsing and exploration
+
+
+#===============================================================================
+# 8) Lecture 8: Exploratory Data Analysis and Machine Learning
+#===============================================================================
+
+8.1) Descriptive Statistics 
+
+- Description our current data, not predicting the future.
+
+- Two general types of statistic: Measures of central tendency and Measures of
+  spread.
+
+
+8.1.1) Exploratory Data Analysis [6]
+
+- Set of techniques for VISUALIZING and SUMMARIZING data
+
+- Goal: What can the data tell us? (vs “confirmatory” data analysis)
+
+  • Important to look at data graphically before analyzing it
+
+  • Basic statistics properties often fail to capture real-world complexities
+
+- The five-number summary is a descriptive statistic that provides information
+about a set of observations. It consists of the five most important sample
+percentiles:
+
+  • The sample minimum (smallest observation)
+  • The lower quartile or first quartile
+  • The median (middle value)
+  • The upper quartile or third quartile
+  • The sample maximum (largest observation)
+
+  HINT You can compare the five-number summaries of multiple observations using
+       a box plot.
+
+- Central Limit Theorem: the distribution of sum (or mean) of n
+  identically-distributed random variables Xi approaches a normal distribution
+  as n → ∞
+
+
+WARNING Understand your data’s distribution before applying any model
+
+
+8.2) Inferential  Statistics
+
+- Sampling: techniques that allow us to use small samples of the whole
+population to make generalizations about the populations from which the samples
+were drawn.
+
+
+8.2.1) Machine learning techniques
+
+a) Supervised Learning
+
+        kNN (k Nearest Neighbors)
+
+        Naive Bayes
+
+        Logistic Regression
+
+        Support Vector Machines
+
+        Random Forests
+
+b) Unsupervised Learning
+
+        Clustering
+
+        Factor Analysis
+
+        Latent Dirichlet Allocation
+
+
+8.2.2) Spark’s Machine Learning Toolkit
+
+• mllib: scalable, distributed machine learning library
+  » Scikit-learn like ML toolkit, Interoperates with NumPy
+
+• Classification:
+  » SVM, Logistic Regression, Decision Trees, Naive Bayes, …
+
+• Regression: Linear, Lasso, Ridge, …
+
+• Miscellaneous:
+  » Alternating Least Squares, K-Means, SVD
+  » Optimization primitives (SGD, L-BGFS)
+
+Lab: Collaborative Filtering
+
 
 
 
@@ -1147,51 +1448,6 @@ collect_rdd2_list = sub_rdd2.collect()  # type list
 		.collect())
 
 
-
-################################################################################
-# Annex B) Course labs. 
-################################################################################
-
-1) lab1_word_count_student.ipynb (.py)
-
-2) lab2_apache_log_student.ipynb (.py)
-
-
-# access_logs: RDD (list) of Row objects
-
-# failed_logs: RDD (list) of string (log lines) objects
-
-
-Row fields:
-
-return (Row(
-        host          = match.group(1),
-        client_identd = match.group(2),
-        user_id       = match.group(3),
-        date_time     = parse_apache_time(match.group(4)),
-        method        = match.group(5),
-        endpoint      = match.group(6),
-        protocol      = match.group(7),
-        response_code = int(match.group(8)),
-        content_size  = size
-    ), 1)
-
-» 127.0.0.1 - - [01/Aug/1995:00:00:01 -0400] "GET /images/launch-logo.gif
-  HTTP/1.0" 200 1839
-
-• Components:
-  » 127.0.0.1    => IP (or host name) of the requester (remote) client  .
-  » -            => User id. from remote machine   ('-' == not available)
-  » -            => user identity from local logon ('-' == not available)
-  » [01/Aug/1995:00:00:01 -0400] => Request time (server finished the request)
-  # 
-  » "GET ... "   => First line of client request string:
-  » 200          => Status code sent back to client: (2xx = OK); 3xx, 4xx, 5xx
-  » 1839         => Size returned (0 if none)  
-
-
-
-
 ################################################################################
 # References
 ################################################################################
@@ -1207,4 +1463,6 @@ return (Row(
 [4] How-to: Tune Your Apache Spark Jobs - http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-1/
 
 [5] Python plot lib (statistics graphs) - http://matplotlib.org/ 
+
+[6] Exploratory Data Analysis - http://www.itl.nist.gov/div898/handbook/eda/eda_d.htm
 
