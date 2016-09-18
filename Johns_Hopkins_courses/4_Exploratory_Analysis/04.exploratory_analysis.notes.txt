@@ -57,11 +57,14 @@ barplot()
 Density plot
 
 ## e.g.
-## hist(pollution$pm25, col = "green")
-## rug(pollution$pm25)
-## abline(v = median(pollution$pm25), col = "magenta", lwd = 4)
-## abline(h = 12, lwd = 2, lty = 2)
-## barplot(table(pollution$region), col = "wheat", main = "Counties per Region")
+pollution <- read.csv("data/avgpm25.csv", colClasses = c("numeric", "character", "factor", "numeric", "numeric"))
+head(pollution)
+hist(pollution$pm25, col = "green")
+rug(pollution$pm25)
+abline(v = median(pollution$pm25), col = "magenta", lwd = 4)
+abline(h = 12, lwd = 2, lty = 2)
+barplot(table(pollution$region), col = "wheat", main = "Counties per Region")
+
 
 b) Two dimensions
 
@@ -77,17 +80,17 @@ categorical variable, or two categorical variables.
 
 
 ## b.1)
-## boxplot(pm25 ~ region, data = pollution, col = "red")
+boxplot(pm25 ~ region, data = pollution, col = "red")
 ## b.2)
-## par(mfrow = c(2, 1), mar = c(4, 4, 2, 1))
-## hist(subset(pollution, region == "east")$pm25, col = "green")
-## hist(subset(pollution, region == "west")$pm25, col = "green")
+par(mfrow = c(2, 1), mar = c(4, 4, 2, 1)) # (see 6.1.1)
+hist(subset(pollution, region == "east")$pm25, col = "green")
+hist(subset(pollution, region == "west")$pm25, col = "green")
 
 ## b.3)
-## par(mfrow = c(1, 2), mar = c(5, 4, 2, 1))
-## with(subset(pollution, region == "west"), plot(latitude, pm25, main ="West"))
-## with(subset(pollution, region == "east"), plot(latitude, pm25, main ="East"))
-## with(pollution, plot(latitude, pm25, col = region))
+par(mfrow = c(1, 2), mar = c(5, 4, 2, 1))
+with(subset(pollution, region == "west"), plot(latitude, pm25, main ="West"))
+with(subset(pollution, region == "east"), plot(latitude, pm25, main ="East"))
+with(pollution, plot(latitude, pm25, col = region))
 
 c) >2 dimensions
 
@@ -188,11 +191,11 @@ When you make a plot in R, it has to be "sent" to a specific graphics device
 
   b) Call a plotting function to make a plot (no plot will appear on the screen)
 
-  ## with(faithful, plot(eruptions, waiting));
+with(faithful, plot(eruptions, waiting));
 
   c) Annotate plot if necessary
 
-  ## title(main = "Old Faithful Geyser data");  #still nothing on screen
+title(main = "Old Faithful Geyser data");  #still nothing on screen
 
   d) EXPLICITLY CLOSE graphics device with dev.off() (THIS IS VERY IMPORTANT!)
 
@@ -236,12 +239,12 @@ When you make a plot in R, it has to be "sent" to a specific graphics device
 ## 6) The Base Plotting System in R
 ##--------------------------------------------------------------------------
 
-* library(graphics): plotting functions (plot, hist, ...)
+library(graphics) # plotting functions (plot, hist, ...)
 
-* library(grDevices): contains all the code implementing the various graphics
-                      devices, including X11, PDF, PostScript, PNG, etc.
+library(grDevices) # contains all the code implementing the various graphics
+                   # devices, including X11, PDF, PostScript, PNG, etc.
 
-* There are two phases to creating a base plot
+There are two phases to creating a base plot
 
   i) Initializing a new plot
   ii) Annotating (adding to) an existing plot
