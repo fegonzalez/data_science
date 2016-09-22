@@ -57,7 +57,8 @@ barplot()
 Density plot
 
 ## e.g.
-pollution <- read.csv("data/avgpm25.csv", colClasses = c("numeric", "character", "factor", "numeric", "numeric"))
+pollution <- read.csv("data/avgpm25.csv", 
+                      colClasses = c("numeric", "character", "factor", "numeric", "numeric"))
 head(pollution)
 hist(pollution$pm25, col = "green")
 rug(pollution$pm25)
@@ -92,7 +93,7 @@ with(subset(pollution, region == "west"), plot(latitude, pm25, main ="West"))
 with(subset(pollution, region == "east"), plot(latitude, pm25, main ="East"))
 with(pollution, plot(latitude, pm25, col = region))
 
-c) >2 dimensions
+c) More than 2 dimensions
 
     Overlayed/multiple 2-D plots; coplots
     Use color, size, shape to add dimensions
@@ -187,7 +188,7 @@ When you make a plot in R, it has to be "sent" to a specific graphics device
 
   a) EXPLICITLY launch a graphics device
 
-  ## pdf(file = "myplot.pdf") # file created in my working directory
+  pdf(file = "myplot.pdf") # file created in my working directory
 
   b) Call a plotting function to make a plot (no plot will appear on the screen)
 
@@ -199,7 +200,7 @@ title(main = "Old Faithful Geyser data");  #still nothing on screen
 
   d) EXPLICITLY CLOSE graphics device with dev.off() (THIS IS VERY IMPORTANT!)
 
-  ## dev.off()  ## Close the PDF file device
+  dev.off()  ## Close the PDF file device
                 ## Now you can view the file 'myplot.pdf' on your computer
 
 
@@ -221,18 +222,18 @@ title(main = "Old Faithful Geyser data");  #still nothing on screen
 * dev.copy2pdf
 
 ## Example:
-## copy_plot_test <- function()
-## {
-##     dev.cur();
-##     with(faithful, plot(eruptions, waiting))  ## Create plot on screen device
-##     dev.cur()
-##     title(main = "Old Faithful Geyser data")  ## annotate
-##     dev.cur()
-##     dev.copy(png, file = "geyserplot.png")    ## Copy plot to a PNG file
-##     dev.cur()
-##     dev.off()  ## Don't forget to close the PNG device!
-##     dev.cur()
-## }
+copy_plot_test <- function()
+{
+    dev.cur();
+    with(faithful, plot(eruptions, waiting))  ## Create plot on screen device
+    dev.cur()
+    title(main = "Old Faithful Geyser data")  ## annotate
+    dev.cur()
+    dev.copy(png, file = "geyserplot.png")    ## Copy plot to a PNG file
+    dev.cur()
+    dev.off()  ## Don't forget to close the PNG device!
+    dev.cur()
+}
 
 
 ##--------------------------------------------------------------------------
@@ -322,37 +323,37 @@ with(subset(pollution, region == "west"), plot(latitude, pm25, main ="West"))
 
 ## Example:
 ##
-## plot_test <- function()
-## {
-##     library(datasets);
-##     par(mfcol = c(1,1), mar = c(5, 4, 2, 1));
-##     with(airquality,
-##          plot(Wind,Ozone,
-##               main = "Ozone and Wind in New York City",
-##               type = "n"))
-##     with(subset(airquality, Month == 5),
-##          points(Wind, Ozone, pch=1, col = "blue"))
-##     with(subset(airquality, Month != 5),
-##          points(Wind, Ozone, pch=4, col = "red"))
+ plot_test <- function()
+ {
+     library(datasets);
+     par(mfcol = c(1,1), mar = c(5, 4, 2, 1));
+     with(airquality,
+          plot(Wind,Ozone,
+               main = "Ozone and Wind in New York City",
+               type = "n"))
+     with(subset(airquality, Month == 5),
+          points(Wind, Ozone, pch=1, col = "blue"))
+     with(subset(airquality, Month != 5),
+          points(Wind, Ozone, pch=4, col = "red"))
 
-##     legend("topright",
-##            pch = c(1,4),
-##            col = c("blue", "red"),
-##            legend = c("May", "Other Months"));
-## }
+     legend("topright",
+            pch = c(1,4),
+            col = c("blue", "red"),
+            legend = c("May", "Other Months"));
+}
 
 ## Example:
-## multiplebase_plot_test <- function()
-## {
-  ## library(datasets);
-  ## par(mfrow = c(1, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 2, 0));
-  ## ##to see the result step by step
-  ## plot(airquality$Wind, airquality$Ozone, main = "Ozone and Wind");
-  ## plot(airquality$Solar, airquality$Ozone,
-  ##      main = "Ozone and Solar Radiation");
-  ## plot(airquality$Temp, airquality$Ozone, main = "Ozone and Temperature")
-  ## mtext("Ozone and Weather in New York City", outer = TRUE)
-## }
+ multiplebase_plot_test <- function()
+ {
+   library(datasets);
+   par(mfrow = c(1, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 2, 0));
+   #to see the result step by step
+   plot(airquality$Wind, airquality$Ozone, main = "Ozone and Wind");
+   plot(airquality$Solar, airquality$Ozone,
+        main = "Ozone and Solar Radiation");
+   plot(airquality$Temp, airquality$Ozone, main = "Ozone and Temperature")
+   mtext("Ozone and Weather in New York City", outer = TRUE)
+ }
 
 
 6.3) stripchart function
