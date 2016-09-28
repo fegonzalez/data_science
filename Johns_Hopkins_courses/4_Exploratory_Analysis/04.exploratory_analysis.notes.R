@@ -519,9 +519,9 @@ currently active device only.
 
 ## (e.g. project02/plot3.R: paint emissions ~ year + type)
 ##
-##  baltimore_emissions_by_type_and_year <-
-##    xtabs(Emissions ~ year + type , data = group_by(baltimore, year));
-##  baltimore_totals_df <- as.data.frame(baltimore_emissions_by_type_and_year)
+# baltimore_emissions_by_type_and_year <-
+#    xtabs(Emissions ~ year + type , data = group_by(baltimore, year));
+# baltimore_totals_df <- as.data.frame(baltimore_emissions_by_type_and_year)
 
 
 8.1) The Basics: qplot()
@@ -601,7 +601,7 @@ qplot(displ, hwy, data = mpg, geom = c("point", "smooth"), method="lm",
 
    - facet_grid: lay out panels in a grid.
 
-   - geom_bar: histogrmas
+   - geom_bar: histograms
 
 * Axes:
 
@@ -627,7 +627,8 @@ qplot(displ, hwy, data = mpg, geom = c("point", "smooth"), method="lm",
 
 a) Basic plot
 
-   qplot(x=log(pm25), y=duBedMusM, data=maacs, facets=.~mopos, geom=c("point", "smooth"), method="lm")
+qplot(x=log(pm25), y=duBedMusM, data=maacs, facets=.~mopos, 
+        geom=c("point", "smooth"), method="lm")
 
 b) Building Up in Layers
 
@@ -656,12 +657,13 @@ c) First Plot with Point Layer
 
 d) Adding More Layers: Smooth
 
-   ## g <- g + geom_point() + geom_smooth(); print(g)
+   g <- g + geom_point() + geom_smooth(); print(g)
    g <- g + geom_point() + geom_smooth(method = "lm"); print(g)
 
 e) Adding More Layers: Facets
 
-   g<-g + geom_point() + facet_grid(.~mopos) + geom_smooth(method="lm");print(g)
+   g<- g + geom_point() + facet_grid(.~mopos) + geom_smooth(method="lm")
+   print(g)
 
 
 8.2.2) Annotation
@@ -689,7 +691,7 @@ g) Modifying Labels
 
 h) Customizing the Smooth
 
-   ## g <- g + geom_point(aes(color=mopos), size=2, alpha=1/2); print(g);
+   g <- g + geom_point(aes(color=mopos), size=2, alpha=1/2); print(g);
    g <- g + geom_smooth(size=4, linetype=3, method="lm", se=FALSE, color="blue")
    print(g);
 
@@ -880,7 +882,7 @@ image(t(dataMatrix)[, order(kmeansObj$cluster)], yaxt = "n")
 ## --------------------------------------------------------------------------
 
 
-10.1) Principal Components Analysis (wikpedia)
+10.1) Principal Components Analysis (wikipedia)
 
 En estadística, el análisis de componentes principales (en español ACP, en
 inglés, PCA) es una técnica utilizada para reducir la dimensionalidad de un
